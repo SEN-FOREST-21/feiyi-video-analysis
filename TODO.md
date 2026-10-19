@@ -1,4 +1,4 @@
 # TODO
 ## 待做
-- [ ] 学pandas转置
-- [ ] 写README
+- [x] 学pandas转置
+- [x] 写README
