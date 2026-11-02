@@ -6,7 +6,7 @@ import seaborn as sns
 
 plt.rcParams['font.sans-serif']=['Microsoft YaHei']
 plt.rcParams['axes.unicode_minus']=False
-df=pd.read_csv('data_t.csv.csv',encoding='utf-8-sig')
+df=pd.read_csv('data_t.csv',encoding='utf-8-sig')
 df['platform']=df['platform'].map({1:'抖音',2:'B站'})
 
 cols=['duration','tag_count','follower_count','likes','comments','collects','shares']
@@ -16,4 +16,4 @@ print(corr['likes'].sort_values(ascending=False))
 plt.figure(figsize=(7,6))
 sns.heatmap(corr,annot=True,fmt='.2f',cmap='coolwarm',vmin=-1,vmax=1)
 plt.title('数值特征相关系数（spearman）')
-plt.savefig("practice/heatmap.png")
+plt.savefig("heatmap.png")
