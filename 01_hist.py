@@ -7,7 +7,7 @@ plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 # 空1:把文件路径填进引号内
-df = pd.read_csv('data_t.csv.csv',encoding='utf-8-sig') 
+df = pd.read_csv('data_t.csv',encoding='utf-8-sig') 
 
 print(df.shape)
 print(df.columns)
@@ -17,7 +17,7 @@ plt.title('点赞数分布')
 plt.xlabel('点赞数')
 plt.ylabel('视频数')
 
-plt.savefig('practice/practice_hist.png')
+plt.savefig('practice_hist.png')
 plt.figure()
 
 plt.hist(np.log1p(df['likes']),bins=25)
