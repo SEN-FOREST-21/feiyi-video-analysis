@@ -25,4 +25,4 @@ plt.title('取log后点赞数分布')
 plt.xlabel('log(1+点赞)')
 plt.ylabel('视频数')
 
-plt.savefig('practice/practice_hist_log.png')
+plt.savefig('practice_hist_log.png')
