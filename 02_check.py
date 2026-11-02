@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif']=['Microsoft YaHei']
 plt.rcParams['axes.unicode_minus'] = False
 
-df = pd.read_csv('data_t.csv.csv',encoding='utf-8-sig')
+df = pd.read_csv('data_t.csv',encoding='utf-8-sig')
 
 
 df['platform'] = df['platform'].map({1:'抖音',2:'B站'})
@@ -18,7 +18,7 @@ df['log_likes']=np.log1p(df['likes'])
 df.boxplot(column='log_likes',by='platform')
 plt.suptitle('')
 plt.title('点赞数（log）按平台对比')
-plt.savefig('practice/box_platform.png')
+plt.savefig('box_platform.png')
 
 print(df.isna().sum())
 
