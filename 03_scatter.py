@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 
 plt.rcParams['font.sans-serif']=['Microsoft YaHei']
 plt.rcParams['axes.unicode_minus']=False
-df=pd.read_csv('data_t.csv.csv',encoding='utf-8-sig')
+df=pd.read_csv('data_t.csv',encoding='utf-8-sig')
 df['platform']=df['platform'].map({1:'抖音',2:'B站'})
 
 plt.scatter(np.log1p(df['follower_count']),np.log1p(df['likes']))
 plt.xlabel('粉丝数（log）')
 plt.ylabel('点赞数（log）')
 plt.title('粉丝数 vs 点赞数')
-plt.savefig('practice/scatter_fans.png')
+plt.savefig('scatter_fans.png')
 print(df[['follower_count','likes']].corr(method='spearman'))
 
 df['per_follower']=df['likes']/(df['follower_count']+1)
