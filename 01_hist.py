@@ -7,7 +7,7 @@ plt.rcParams['font.sans-serif'] = ['Microsoft YaHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 # 空1:把文件路径填进引号内
-df = pd.read_csv('数据_清洗完成.csv',encoding='utf-8-sig') 
+df = pd.read_csv('data_t.csv.csv',encoding='utf-8-sig') 
 
 print(df.shape)
 print(df.columns)
