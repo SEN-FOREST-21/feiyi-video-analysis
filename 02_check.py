@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 plt.rcParams['font.sans-serif']=['Microsoft YaHei']
 plt.rcParams['axes.unicode_minus'] = False
 
-df = pd.read_csv('数据_清洗完成.csv',encoding='utf-8-sig')
-df=df.iloc[1:]
+df = pd.read_csv('data_t.csv.csv',encoding='utf-8-sig')
+
 
 df['platform'] = df['platform'].map({1:'抖音',2:'B站'})
 print(df['platform'].value_counts())
