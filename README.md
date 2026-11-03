@@ -71,9 +71,9 @@
 ## 如何运行
 
 ```bash
-ip install -r requirements.txt
+pip install -r requirements.txt
 python 01_hist.py      # 点赞分布与 log 对比
 python 02_check.py     # 数据体检、平台对比
 python 03_scatter.py   # 粉丝数 vs 点赞、效率分档
 python 04_heatmap.py   # 相关性热力图
-undefined
+```
