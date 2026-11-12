@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>概率论 笔记版 —— M1 至 M3、M5 考点速查</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{--ink:#1b1b1f;--muted:#6b7280;--line:#e4e4e7;--bg:#fcfcfb;--accent:#0f5c4e;--accent-l:#eef7f4;--trap:#9f1239;--trap-l:#fff1f4;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  font-size:15.5px;line-height:1.75}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px}
+header.top{border-bottom:2px solid var(--ink);margin:0 -20px 26px;padding:44px 20px 20px;background:#fff}
+header.top h1{font-size:27px;margin:0 0 6px;letter-spacing:-.4px}
+header.top .sub{color:var(--muted);font-size:14px}
+h2{font-size:19px;margin:38px 0 10px;padding:8px 0 8px 12px;border-left:5px solid var(--accent);background:linear-gradient(90deg,var(--accent-l),transparent 75%)}
+h2 small{display:block;font-size:12px;font-weight:400;color:var(--muted);margin-top:2px}
+h3{font-size:15px;margin:20px 0 6px;color:var(--accent)}
+h3::before{content:"▍";margin-right:5px}
+p{margin:7px 0}
+ul,ol{margin:7px 0;padding-left:22px}
+li{margin:4px 0}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14px;background:#fff}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:center}
+th{background:#f6f6f7;font-weight:600}
+td.l,th.l{text-align:left}
+.box{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:10px 0}
+.formula{background:var(--accent-l);border-left:3px solid var(--accent);padding:10px 14px;margin:10px 0;border-radius:0 6px 6px 0}
+.trap{background:var(--trap-l);border-left:3px solid var(--trap);padding:10px 14px;margin:10px 0;border-radius:0 6px 6px 0;font-size:14.5px}
+.trap b{color:var(--trap)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.two{grid-template-columns:1fr}body{font-size:15px}.wrap{padding:0 14px 60px}header.top{margin:0 -14px 22px;padding:32px 14px 16px}}
+@media print{body{background:#fff;font-size:10.5pt}header.top{background:#fff}h2{break-after:avoid}.box,.formula,.trap{break-inside:avoid}}
+mjx-container{overflow-x:auto;overflow-y:hidden}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>概率论 笔记版</h1>
+  <div class="sub">M1 · M2 · M3 · M5 ｜ 公式 + 一句话要点 + 易错提醒</div>
+</header>
+
+<!-- M1-01 -->
+<h2>M1-01 事件与概率公理<small>三种运算、三条公理、六个公式</small></h2>
+
+<div class="formula">
+  <b>德摩根</b>：$\overline{A\cup B}=\bar A\cap\bar B$，$\overline{A\cap B}=\bar A\cup\bar B$<br>
+  <b>加法</b>：$P(A\cup B)=P(A)+P(B)-P(AB)$<br>
+  <b>减法</b>：$P(A-B)=P(A)-P(AB)$<br>
+  <b>三事件</b>：$P(A\cup B\cup C)=\sum P-\sum P(\text{两两交})+P(ABC)$
+</div>
+
+<div class="two">
+  <div class="box"><b>关键翻译</b><br>
+  至少一个 → 并<br>同时 → 交<br>恰好 → 枚举<br>不全 → 德摩根</div>
+  <div class="box"><b>概率三条公理</b><br>
+  非负 · 正则 $P(\Omega)=1$ · 可列可加</div>
+</div>
+
+<div class="trap"><b>易错</b>：$A\subset B$ 时 $P(A)\le P(B)$，别写反；「至少」直接相加会重复计数。</div>
+
+<!-- M1-02 -->
+<h2>M1-02 古典概型与排列组合<small>本质是数数</small></h2>
+
+<div class="formula">
+  <b>古典</b>：$P(A)=\dfrac{n}{N}$（有限、等可能）<br>
+  <b>几何</b>：$P(A)=\dfrac{\text{测度}(A)}{\text{测度}(\Omega)}$<br>
+  <b>排列</b> $A_n^r=\dfrac{n!}{(n-r)!}$　<b>组合</b> $\binom{n}{r}=\dfrac{n!}{r!(n-r)!}$
+</div>
+
+<div class="box"><b>判断排列还是组合</b>：交换两元素后是否为同一件事。是 → 组合。</div>
+
+<div class="formula"><b>超几何</b>（不放回抽检）：$P=\dfrac{\binom{M}{m}\binom{N-M}{n-m}}{\binom{N}{n}}$</div>
+<div class="formula"><b>会面问题</b>：$|x-y|\le d$ 的面积占正方形比例。</div>
+
+<div class="trap"><b>易错</b>：分子用组合、分母用排列（混用必错）；二项式系数漏乘。</div>
+
+<!-- M1-03 -->
+<h2>M1-03 独立性 · 二项 · 泊松<small>本课分水岭</small></h2>
+
+<div class="formula">
+  <b>独立</b>：$P(AB)=P(A)P(B)\iff P(A|B)=P(A)$<br>
+  <b>二项</b> $b(n,p)$：$P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}$，$E=np$，$\mathrm{Var}=np(1-p)$<br>
+  <b>泊松</b> $\mathrm{Pois}(\lambda)$：$P(X=k)=\dfrac{\lambda^k}{k!}e^{-\lambda}$，$E=\mathrm{Var}=\lambda$
+</div>
+
+<div class="box"><b>泊松近似</b>：$n\ge20$、$p\le0.05$ 时，$b(n,p)\approx\mathrm{Pois}(np)$。</div>
+<div class="box"><b>可靠性</b>：串联 $p^n$；并联 $1-(1-p)^n$。</div>
+
+<div class="trap"><b>易错</b>：两两独立 ≠ 相互独立；「至少一个」用对立事件 $1-P(\text{全不发生})$。</div>
+
+<!-- M1-04 -->
+<h2>M1-04 几何分布 · 期望 · 方差<small>平均要试几次</small></h2>
+
+<div class="formula">
+  <b>几何</b> $Ge(p)$：$P(X=k)=(1-p)^{k-1}p$，$E=\dfrac1p$，$\mathrm{Var}=\dfrac{1-p}{p^2}$<br>
+  <b>期望</b>：$E(X)=\sum x_ip_i$，性质 $E(X+Y)=E(X)+E(Y)$（无需独立）<br>
+  <b>方差</b>：$\mathrm{Var}(X)=E(X^2)-[E(X)]^2$
+</div>
+
+<div class="box"><b>LOTUS</b>：$E[g(X)]=\sum g(x_i)p_i$ —— 不用先求 $g(X)$ 的分布。</div>
+
+<table>
+  <tr><th class="l">分布</th><th>$E$</th><th>$\mathrm{Var}$</th></tr>
+  <tr><td class="l">$b(n,p)$</td><td>$np$</td><td>$np(1-p)$</td></tr>
+  <tr><td class="l">$\mathrm{Pois}(\lambda)$</td><td>$\lambda$</td><td>$\lambda$</td></tr>
+  <tr><td class="l">$Ge(p)$</td><td>$1/p$</td><td>$(1-p)/p^2$</td></tr>
+  <tr><td class="l">$U(a,b)$</td><td>$\frac{a+b}{2}$</td><td>$\frac{(b-a)^2}{12}$</td></tr>
+  <tr><td class="l">$\mathrm{Exp}(\lambda)$</td><td>$1/\lambda$</td><td>$1/\lambda^2$</td></tr>
+  <tr><td class="l">$N(\mu,\sigma^2)$</td><td>$\mu$</td><td>$\sigma^2$</td></tr>
+</table>
+
+<div class="box"><b>切比雪夫</b>：$P(|X-\mu|\ge\varepsilon)\le\dfrac{\sigma^2}{\varepsilon^2}$。</div>
+
+<div class="trap"><b>易错</b>：$E(X^2)\neq[E(X)]^2$；$\mathrm{Var}(cX)=c^2\mathrm{Var}(X)$；不独立时方差不能直接相加。</div>
+
+<!-- M2-01 -->
+<h2>M2-01 条件概率 · 全概率 · 贝叶斯<small>有信息时怎么更新判断</small></h2>
+
+<div class="formula">
+  <b>条件</b>：$P(A|B)=\dfrac{P(AB)}{P(B)}$　<b>乘法</b>：$P(AB)=P(B)P(A|B)$<br>
+  <b>全概率</b>：$P(A)=\sum_i P(B_i)P(A|B_i)$<br>
+  <b>贝叶斯</b>：$P(B_i|A)=\dfrac{P(B_i)P(A|B_i)}{\sum_jP(B_j)P(A|B_j)}$
+</div>
+
+<div class="box"><b>口诀</b>：全概率 = 由因求果（分情况）；贝叶斯 = 执果索因（更新先验）。</div>
+
+<div class="box"><b>基础比率</b>：发病率 0.0004、阳性率 99%、特异度 99.9% 时，阳性者真患病仅约 <b>28.4%</b>。检测准 ≠ 阳性就是病。</div>
+
+<div class="trap"><b>易错</b>：$P(A|B)$ 与 $P(B|A)$ 弄反；贝叶斯分母漏项；「八成可靠 → 八成是」是检察官谬误。</div>
+
+<!-- M3-01 -->
+<h2>M3-01 连续变量 · 密度 · 分布函数<small>从数点到量面积</small></h2>
+
+<div class="formula">
+  <b>密度</b>：$P(a&lt;X\le b)=\int_a^b p(x)\mathrm dx$，$\int_{-\infty}^{\infty}p=1$，$p\ge0$<br>
+  <b>分布函数</b>：$F(x)=P(X\le x)=\int_{-\infty}^{x}p(t)\mathrm dt$<br>
+  <b>互推</b>：连续型 $F'(x)=p(x)$
+</div>
+
+<div class="two">
+  <div class="box"><b>连续型</b><br>单点概率 $=0$<br>端点开闭无所谓<br>$F$ 连续无跳跃</div>
+  <div class="box"><b>离散型</b><br>跳跃高度 = 该点概率<br>$F$ 是阶梯函数<br>端点有区别</div>
+</div>
+
+<div class="trap"><b>易错</b>：密度高度不是概率（要积分）；密度可以大于 1；$F$ 的三段式别漏常数段。</div>
+
+<!-- M3-02 -->
+<h2>M3-02 连续期望方差 · 指数分布<small>求和变积分</small></h2>
+
+<div class="formula">
+  $E(X)=\int x\,p(x)\mathrm dx$，$\mathrm{Var}(X)=\int(x-\mu)^2p(x)\mathrm dx=E(X^2)-\mu^2$<br>
+  <b>LOTUS</b>：$E[g(X)]=\int g(x)p(x)\mathrm dx$
+</div>
+
+<div class="formula">
+  <b>指数</b> $\mathrm{Exp}(\lambda)$：$p=\lambda e^{-\lambda x}$，$F=1-e^{-\lambda x}$，$E=\dfrac1\lambda$，$\mathrm{Var}=\dfrac1{\lambda^2}$<br>
+  <b>无记忆性</b>：$P(T&gt;s+t\mid T&gt;s)=P(T&gt;t)$
+</div>
+
+<div class="box"><b>指数 ↔ 泊松</b>：$[0,t]$ 内次数 $\sim\mathrm{Pois}(\lambda t)$ $\Rightarrow$ 首次发生时间 $\sim\mathrm{Exp}(\lambda)$。</div>
+<div class="box"><b>报童模型</b>：最优进货量 = 分布的 $\dfrac{\text{单位利润}}{\text{单位利润}+\text{单位损失}}$ 分位数。</div>
+
+<div class="trap"><b>易错</b>：$\mathrm{Var}(3X+2)=9\mathrm{Var}(X)$；给「平均寿命 4 年」则 $\lambda=1/4$；柯西分布无期望。</div>
+
+<!-- M3-03 -->
+<h2>M3-03 正态分布<small>主角</small></h2>
+
+<div class="formula">
+  $p(x)=\dfrac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$，$E=\mu$，$\mathrm{Var}=\sigma^2$<br>
+  <b>标准化</b>：$Z=\dfrac{X-\mu}{\sigma}\sim N(0,1)$，$P(X\le x)=\Phi\!\left(\dfrac{x-\mu}{\sigma}\right)$
+</div>
+
+<div class="formula">
+  $\Phi(-a)=1-\Phi(a)$；$P(|Z|&lt;a)=2\Phi(a)-1$<br>
+  <b>线性</b>：$aX+b\sim N(a\mu+b,\ a^2\sigma^2)$<br>
+  <b>可加</b>（独立）：$X+Y\sim N(\mu_1+\mu_2,\ \sigma_1^2+\sigma_2^2)$
+</div>
+
+<div class="box"><b>3σ 法则</b>：$\pm1\sigma$ 68.3%，$\pm2\sigma$ 95.4%，$\pm3\sigma$ 99.7%。</div>
+<div class="box"><b>分位点</b>：$x_p=\mu+\sigma z_p$；$z_{0.05}\approx-1.645$。</div>
+<div class="box"><b>常模转换</b>：$\text{分}=\dfrac{X-\text{Mean}}{\text{SD}}\times70+500$，即标准化后线性映射。</div>
+
+<div class="trap"><b>易错</b>：$\sigma^2$ 与 $\sigma$ 混用；独立才可直接加方差；漏 $\Phi(-a)$ 的转换。</div>
+
+<!-- M3-04 -->
+<h2>M3-04 随机变量函数的分布<small>一律归为 $P(g(X)\le y)$</small></h2>
+
+<div class="formula">
+  <b>四步</b>：定支撑 → 化事件 → 求 $F_Y$ → 求导<br>
+  <b>单调变换</b>：$p_Y(y)=p_X(g^{-1}(y))\left|(g^{-1})'(y)\right|$
+</div>
+
+<div class="box"><b>对数正态</b>：$X\sim N(\mu,\sigma^2)$，$Y=e^X$ 的密度 $\dfrac{1}{\sqrt{2\pi}\sigma y}e^{-\frac{(\ln y-\mu)^2}{2\sigma^2}}$。</div>
+<div class="box"><b>免赔额</b> $Y=(X-c)^+$：$E[Y]=E[X]e^{-\lambda c}$（指数情形），0 点有概率质量。</div>
+<div class="box"><b>概率积分变换</b>：$F$ 连续严格增 $\Rightarrow F(X)\sim U(0,1)$，反用可生成任意分布随机数。</div>
+
+<div class="trap"><b>易错</b>：单调公式丢绝对值；非单调（$X^2$、$|X|$）必须分段；漏写支撑集。</div>
+
+<!-- M5-01 -->
+<h2>M5-01 蒙特卡洛 · 大数定律<small>频率为什么能当概率</small></h2>
+
+<div class="formula">
+  <b>蒙特卡洛</b>：$\theta=E[g(X)]\approx\dfrac1n\sum g(x_i)$<br>
+  <b>积分写法</b>：$\displaystyle\int_a^b g(x)\mathrm dx=(b-a)E[g(X)]$<br>
+  <b>误差</b>：$\propto\dfrac{1}{\sqrt n}$（精度 ×10 需样本 ×100）
+</div>
+
+<div class="formula">
+  <b>辛钦大数定律</b>：$\dfrac1n\sum X_i\xrightarrow{P}\mu$（独立同分布，期望存在）
+</div>
+
+<div class="box"><b>证明路线</b>：$\mathrm{Var}(\bar X)=\sigma^2/n$，代入切比雪夫 $\to0$。</div>
+
+<div class="trap"><b>易错</b>：漏乘 $(b-a)$；大数定律是依概率收敛，不保证每条样本路径都靠近。</div>
+
+<!-- M5-02 -->
+<h2>M5-02 中心极限定理<small>正态为什么无处不在</small></h2>
+
+<div class="formula">
+  $\dfrac{\sum X_i-n\mu}{\sqrt n\,\sigma}\xrightarrow{L}N(0,1)$<br>
+  即 $S_n\approx N(n\mu,\ n\sigma^2)$，$\bar X\approx N\!\left(\mu,\ \dfrac{\sigma^2}{n}\right)$
+</div>
+
+<div class="formula">
+  <b>模板</b>：$P(a&lt;Y&lt;b)\approx\Phi\!\left(\dfrac{b-\mu_Y}{\sigma_Y}\right)-\Phi\!\left(\dfrac{a-\mu_Y}{\sigma_Y}\right)$
+</div>
+
+<div class="box"><b>四个版本</b>：棣莫弗–拉普拉斯（二项）⊂ 林德伯格–莱维（iid）⊂ 李雅普诺夫 / 林德伯格（独立非同分布）。</div>
+<div class="box"><b>典型</b>：10000 人、均值 280、标准差 800 → 总索赔 $N(280万,\ 80000^2)$。</div>
+
+<div class="trap"><b>易错</b>：标准差按 $\sqrt n$ 放大（不是 $n$）；离散和严格要连续性修正；CLT 是依分布收敛。</div>
+
+<div class="box" style="margin-top:26px;background:#fafafa;border-style:dashed">
+  <b>两小时速记路线</b>：公理与运算（M1-01）→ 数数（M1-02）→ 独立 + 二项/泊松（M1-03）→ 期望方差表（M1-04）→ 全概率/贝叶斯（M2-01）→ 密度与 $F$（M3-01）→ 积分求矩 + 指数（M3-02）→ 正态标准化（M3-03）→ 函数分布（M3-04）→ 大数定律（M5-01）→ CLT 模板（M5-02）。
+</div>
+
+</div>
+</body>
+</html>

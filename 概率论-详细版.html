@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>概率论 详细版 —— M1 至 M3、M5 全讲义</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --ink:#1b1b1f; --muted:#6b7280; --line:#e4e4e7; --bg:#fcfcfb;
+  --accent:#0f5c4e; --accent-l:#eef7f4;
+  --warn:#9a3412; --warn-l:#fff4ec;
+  --trap:#9f1239; --trap-l:#fff1f4;
+  --blue:#1e40af; --blue-l:#eff4ff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  font-size:16px;line-height:1.85}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px 100px}
+header.top{border-bottom:2px solid var(--ink);margin:0 -22px 32px;padding:52px 22px 26px;background:#fff}
+header.top h1{font-size:30px;margin:0 0 8px;letter-spacing:-.5px}
+header.top .sub{color:var(--muted);font-size:15px}
+header.top .meta{margin-top:16px;font-size:13px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap}
+h2.sec{font-size:23px;margin:56px 0 6px;padding:12px 0 12px 16px;
+  border-left:6px solid var(--accent);background:linear-gradient(90deg,var(--accent-l),transparent 70%)}
+h2.sec small{display:block;font-size:13px;font-weight:400;color:var(--muted);letter-spacing:.4px;margin-top:3px}
+h3{font-size:18px;margin:34px 0 10px;padding-left:10px;border-left:3px solid #d4d4d8}
+h4{font-size:15px;margin:22px 0 8px;color:var(--accent);letter-spacing:.3px}
+h4::before{content:"▍";margin-right:6px;color:var(--accent)}
+p{margin:10px 0}
+ul,ol{margin:10px 0;padding-left:24px}
+li{margin:6px 0}
+code{background:#f4f4f5;padding:1px 5px;border-radius:4px;font-size:90%}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0}
+.idea{background:var(--blue-l);border-left:4px solid var(--blue);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.idea b{color:var(--blue)}
+.key{background:var(--accent-l);border-left:4px solid var(--accent);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.trap{background:var(--trap-l);border-left:4px solid var(--trap);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.trap b{color:var(--trap)}
+.warn{background:var(--warn-l);border-left:4px solid var(--warn);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.warn b{color:var(--warn)}
+.ex{background:#fff;border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:6px;padding:16px 20px;margin:18px 0}
+.ex .tag{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:15px;background:#fff}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:center}
+th{background:#f6f6f7;font-weight:600}
+td.l,th.l{text-align:left}
+.tbl-note{font-size:13px;color:var(--muted);margin-top:-6px}
+hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.toc{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px 24px;margin:26px 0}
+.toc ol{margin:0;padding-left:20px}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #bbb}
+.toc a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.quiz{background:#fafafa;border:1px dashed #c9c9cf;border-radius:8px;padding:14px 18px;margin:18px 0}
+.quiz .h{font-size:13px;letter-spacing:1px;color:var(--muted);margin-bottom:8px}
+@media(max-width:720px){body{font-size:15.5px}.wrap{padding:0 15px 70px}header.top{margin:0 -15px 26px;padding:36px 15px 20px}}
+@media print{
+  body{background:#fff;font-size:11pt}
+  header.top{background:#fff}
+  h2.sec{break-after:avoid}h3{break-after:avoid}
+  .card,.ex,.trap,.key,.idea,.quiz{break-inside:avoid}
+}
+mjx-container{overflow-x:auto;overflow-y:hidden}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>概率论 详细版</h1>
+  <div class="sub">M1 事件与离散变量 · M2 条件概率 · M3 连续变量 · M5 极限定理</div>
+  <div class="meta"><span>11 讲全整理</span><span>概念 + 公式 + 例题 + 易错 + 小测样题</span></div>
+</header>
+
+<div class="toc">
+  <b>目录</b>
+  <ol>
+    <li><a href="#c1">M1-01 随机事件与概率的公理化定义</a></li>
+    <li><a href="#c2">M1-02 古典概型与排列组合</a></li>
+    <li><a href="#c3">M1-03 独立性、离散随机变量、二项与泊松</a></li>
+    <li><a href="#c4">M1-04 几何分布、期望、方差、矩</a></li>
+    <li><a href="#c5">M2-01 条件概率、全概率公式、贝叶斯公式</a></li>
+    <li><a href="#c6">M3-01 连续随机变量、密度函数、分布函数</a></li>
+    <li><a href="#c7">M3-02 连续随机变量的期望与方差、指数分布</a></li>
+    <li><a href="#c8">M3-03 正态分布</a></li>
+    <li><a href="#c9">M3-04 随机变量函数的分布</a></li>
+    <li><a href="#c10">M5-01 蒙特卡洛方法与大数定律</a></li>
+    <li><a href="#c11">M5-02 中心极限定理</a></li>
+  </ol>
+</div>
+
+<div class="card">
+  <b>三条主线</b>
+  <ul>
+    <li><b>怎么描述随机性</b>：事件 → 概率 → 随机变量 → 分布列 / 密度 / 分布函数。</li>
+    <li><b>怎么用已知信息</b>：条件概率 → 全概率 → 贝叶斯（M2），条件分布（M4）。</li>
+    <li><b>怎么从单个走向大量</b>：期望方差 → 大数定律 → 中心极限定理（M5）。</li>
+  </ul>
+</div>
+
+<!-- ================= M1-01 ================= -->
+<h2 class="sec" id="c1">M1-01 随机事件与概率的公理化定义<small>先学会精确地「说」随机现象，再给它一个数值</small></h2>
+
+<h3>一、四个基本概念</h3>
+<table>
+  <tr><th class="l">概念</th><th class="l">含义</th><th class="l">盲盒例子</th></tr>
+  <tr><td class="l">随机试验</td><td class="l">结果不确定，但可能结果的范围确定</td><td class="l">抽一次盲盒</td></tr>
+  <tr><td class="l">样本点 $\omega$</td><td class="l">每一个可能的具体结果</td><td class="l">抽到量子喵</td></tr>
+  <tr><td class="l">样本空间 $\Omega$</td><td class="l">全体样本点组成的集合</td><td class="l">$\{$量子喵, 甜心喵, …, 大圣喵$\}$</td></tr>
+  <tr><td class="l">随机事件 $A$</td><td class="l">样本点组成的集合（$\Omega$ 的子集）</td><td class="l">$R=\{$量子喵, …, 花艺喵$\}$</td></tr>
+</table>
+
+<h3>二、事件的关系与运算</h3>
+<div class="key">
+  <b>五种关系</b>
+  <ul>
+    <li><b>互斥（不相容）</b>：$A\cap B=\varnothing$，不能同时发生。</li>
+    <li><b>包含</b>：$A\subset B$，$A$ 发生则 $B$ 必发生。</li>
+    <li><b>对立</b>：$A\cup B=\Omega$ 且 $A\cap B=\varnothing$，有且仅有一个发生，记 $\bar A$。</li>
+    <li><b>分割（划分）</b>：$A_1,\dots,A_n$ 两两互斥且并集为 $\Omega$。</li>
+    <li><b>差</b>：$A-B=A\bar B$，$A$ 发生而 $B$ 不发生。</li>
+  </ul>
+</div>
+
+<h4>用运算表示复杂事件（必考翻译）</h4>
+<table>
+  <tr><th class="l">自然语言</th><th class="l">集合表达式</th></tr>
+  <tr><td class="l">$A,B,C$ 同时发生</td><td class="l">$ABC$</td></tr>
+  <tr><td class="l">至少发生一个</td><td class="l">$A\cup B\cup C$</td></tr>
+  <tr><td class="l">$A,B$ 发生、$C$ 不发生</td><td class="l">$AB\bar C$</td></tr>
+  <tr><td class="l">至少发生 2 个</td><td class="l">$AB\cup BC\cup AC$</td></tr>
+  <tr><td class="l">恰好发生 2 个</td><td class="l">$AB\bar C\cup A\bar BC\cup \bar ABC$</td></tr>
+  <tr><td class="l">不全发生</td><td class="l">$\overline{ABC}=\bar A\cup\bar B\cup\bar C$</td></tr>
+</table>
+<p class="tbl-note">「至少」用并、「恰好」要枚举、「不」用德摩根。「至少 2 个」与「恰好 2 个」的区别是最常见的失分点。</p>
+
+<div class="idea">
+  <b>德摩根律</b>
+  $$\overline{A\cup B}=\bar A\cap\bar B,\qquad \overline{A\cap B}=\bar A\cup\bar B.$$
+  口诀：<b>长杠变短杠，开口换方向</b>。
+</div>
+
+<h3>三、概率的公理化定义</h3>
+<div class="key">
+  概率 $P(\cdot)$ 是定义在事件集合上的实值函数，满足三条公理：
+  <ol>
+    <li><b>非负性</b>：$P(A)\ge 0$；</li>
+    <li><b>正则性</b>：$P(\Omega)=1$；</li>
+    <li><b>可列可加性</b>：若 $A_1,A_2,\dots$ 两两互斥，则 $P\!\left(\bigcup_{i=1}^{\infty}A_i\right)=\sum_{i=1}^{\infty}P(A_i)$。</li>
+  </ol>
+</div>
+
+<h4>由公理推出的六条性质</h4>
+<table>
+  <tr><th class="l">性质</th><th class="l">公式</th><th class="l">用途</th></tr>
+  <tr><td class="l">空集</td><td class="l">$P(\varnothing)=0$</td><td class="l">不可能事件</td></tr>
+  <tr><td class="l">对立</td><td class="l">$P(\bar A)=1-P(A)$</td><td class="l">「至少」类问题</td></tr>
+  <tr><td class="l">单调性</td><td class="l">$A\subset B\Rightarrow P(A)\le P(B)$</td><td class="l">比较大小</td></tr>
+  <tr><td class="l">减法</td><td class="l">$P(A-B)=P(A)-P(AB)$</td><td class="l">「只 A 不 B」</td></tr>
+  <tr><td class="l">加法</td><td class="l">$P(A\cup B)=P(A)+P(B)-P(AB)$</td><td class="l">并事件</td></tr>
+  <tr><td class="l">半可加</td><td class="l">$P(A\cup B)\le P(A)+P(B)$</td><td class="l">放缩估计</td></tr>
+</table>
+
+<div class="ex">
+  <span class="tag">例 1.3.4</span>
+  <p>$P(A)=0.4$，$P(B)=0.3$，$P(A\cup B)=0.6$，求 $P(A\bar B)$。</p>
+  <p><b>解</b>　由加法公式：$0.6=0.4+0.3-P(AB)\Rightarrow P(AB)=0.1$。</p>
+  <p>再由减法公式：$P(A\bar B)=P(A)-P(AB)=0.4-0.1=0.3$。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 1.3.5</span>
+  <p>$P(A)=P(B)=P(C)=\frac14$，$P(AB)=0$，$P(AC)=P(BC)=\frac1{16}$。求 (1) 至少发生一个；(2) 都不发生。</p>
+  <p><b>解</b>　三事件加法公式：</p>
+  <p>$$P(A\cup B\cup C)=\frac34-0-\frac1{16}-\frac1{16}+P(ABC)=\frac34-\frac18=\frac58.$$</p>
+  <p>这里 $P(ABC)=0$，因为 $ABC\subset AB$ 且 $P(AB)=0$。</p>
+  <p>都不发生：$1-\frac58=\frac38$。</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>算出的概率大于 1。</b>说明式子列错了，概率永远在 $[0,1]$ 内，可以当自检。</li>
+    <li><b>把 $A\subset B$ 写成 $P(A)\ge P(B)$。</b>方向反了：包含关系下，大集合概率大。</li>
+    <li><b>「至少一个发生」直接加。</b>必须减交集，否则重复计数。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> 抛硬币两次：$\Omega=\{HH,HT,TH,TT\}$；$A=\{HH,HT,TH\}$，$B=\{HH,TT\}$；$A\cap B=\{HH\}\ne\varnothing$，<b>不互斥</b>。</p>
+  <p><b>2.</b> $P(A\cup B)=0.5+0.3-0.1=0.7$；$P(\bar A)=0.5$；$P(A\bar B)=0.5-0.1=0.4$。</p>
+</div>
+
+<!-- ================= M1-02 ================= -->
+<h2 class="sec" id="c2">M1-02 古典概型与排列组合<small>概率 = 数数。难点全在「怎么数」</small></h2>
+
+<h3>一、两类等可能概型</h3>
+<div class="key">
+  <ul>
+    <li><b>古典概型</b>：样本点有限且等可能，$P(A)=\dfrac{A\text{ 包含的样本点数 }n}{\text{总样本点数 }N}$。</li>
+    <li><b>几何概型</b>：样本空间是区域，$P(A)=\dfrac{A\text{ 对应区域测度}}{\Omega\text{ 的测度}}$（长度 / 面积 / 体积之比）。</li>
+  </ul>
+</div>
+
+<div class="warn">
+  <b>古典概型的前提是「等可能」，这一步必须自己论证。</b>掷两枚硬币，「二正 / 二反 / 一正一反」是三结果但<b>不等可能</b>（一正一反占 2 个样本点），所以答案是 $\frac{2}{4}=\frac12$ 而不是 $\frac13$。
+</div>
+
+<h3>二、计数工具</h3>
+<table>
+  <tr><th class="l">工具</th><th class="l">公式</th><th class="l">何时用</th></tr>
+  <tr><td class="l">乘法原理</td><td class="l">$\prod_{i=1}^m n_i$</td><td class="l">分步完成</td></tr>
+  <tr><td class="l">排列 $A_n^r$</td><td class="l">$\dfrac{n!}{(n-r)!}$</td><td class="l">有顺序地取</td></tr>
+  <tr><td class="l">组合 $\binom{n}{r}$</td><td class="l">$\dfrac{n!}{r!(n-r)!}$</td><td class="l">无顺序地取</td></tr>
+</table>
+<p class="tbl-note">判断标准：交换两个元素后是不是「同一件事」。是 → 组合；否 → 排列。</p>
+
+<div class="ex">
+  <span class="tag">例 1.2.3</span>
+  <p>$N$ 件产品含 $M$ 件不合格，任取 $n$ 件，求恰好 $m$ 件不合格的概率。</p>
+  <p><b>解</b>　总数 $\binom{N}{n}$；有利方案 = 从合格品取 $n-m$ 件 × 从不合格品取 $m$ 件：</p>
+  <p>$$P(A_m)=\frac{\binom{N-M}{n-m}\binom{M}{m}}{\binom{N}{n}}.$$</p>
+  <p>这是<b>超几何分布</b>的原型，后续会反复出现。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 1.2.8 会面问题（几何概型）</span>
+  <p>甲、乙约定 6:00–7:00 会面，先到者等 20 分钟。求能会面的概率。</p>
+  <p><b>解</b>　设 $x,y$ 为两人到达时刻（分钟），$(x,y)$ 均匀分布在 $60\times60$ 正方形内。能会面 $\iff |x-y|\le 20$。</p>
+  <p>总面积 $3600$；不能会面是两个腰长 40 的等腰直角三角形：</p>
+  <p>$$P=1-\frac{2\times\frac12\times40^2}{3600}=1-\frac{1600}{3600}=\frac59.$$</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>几何概型画错区域。</b>「差不超过 20」是两条平行线之间的带子，别画成圆。</li>
+    <li><b>有序无序混用。</b>分子用组合、分母用排列，结果必然错。统一即可。</li>
+    <li><b>忘记 $0!=1$。</b>组合公式在 $r=0$ 或 $r=n$ 时要靠这条才成立。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> 10 个字中「留」3 个、「天」2 个，其余各 1 个，全排列数 $=\dfrac{10!}{3!\,2!}=302400$。目标排列只有 1 种，故概率 $=\dfrac{1}{302400}$。</p>
+  <p><b>2.</b> 设甲乙到达时刻 $x,y\in[0,24]$。甲占码头 $[x,x+1]$，乙占 $[y,y+2]$。不等候 $\iff$ 两区间不重叠，即 $y\ge x+1$ 或 $x\ge y+2$。</p>
+  <p>面积 $=\frac12\cdot23^2+\frac12\cdot22^2=264.5+242=506.5$，故 $P=\dfrac{506.5}{576}\approx0.879$。</p>
+</div>
+
+<!-- ================= M1-03 ================= -->
+<h2 class="sec" id="c3">M1-03 独立性、离散随机变量、二项与泊松<small>从「事件」跨到「变量」，本课是整门课的分水岭</small></h2>
+
+<h3>一、事件的独立性</h3>
+<div class="key">
+  <b>定义</b>：若 $P(AB)=P(A)P(B)$，称 $A,B$ 相互独立。<br>
+  <b>等价说法</b>：$A$ 发生与否不改变 $B$ 的概率，即 $P(B\mid A)=P(B)$。<br>
+  <b>$n$ 个事件相互独立</b>：任意 $k$ 个的交的概率都等于各自概率之积（<b>要验证所有组合</b>，两两独立不够）。
+</div>
+
+<div class="warn">
+  <b>两两独立 $\ne$ 相互独立。</b>教材经典反例：三个事件两两独立，但三者交的概率不等于乘积。判断「相互独立」必须逐一验证所有子集。
+</div>
+
+<p>独立性的最大用途：<b>把「且」拆成乘法</b>。</p>
+<div class="ex">
+  <span class="tag">例 1.5.6 系统可靠性</span>
+  <p>各元件独立正常工作的概率为 $p=0.9$。</p>
+  <ul>
+    <li><b>串联</b>（全部正常才工作）：$P=p^n$。3 个串联：$0.9^3=0.729$。</li>
+    <li><b>并联</b>（至少一个正常就工作）：$P=1-(1-p)^n$。3 个并联：$1-0.1^3=0.999$。</li>
+  </ul>
+  <p>记忆：串联求「全部」，并联求「至少一个」（用对立事件）。</p>
+</div>
+
+<h3>二、随机变量与分布列</h3>
+<div class="key">
+  <b>随机变量</b>：定义在样本空间 $\Omega$ 上的实值函数 $X=X(\omega)$。把「结果」翻译成「数」。
+  <ul>
+    <li><b>离散型</b>：取值有限或可列。</li>
+    <li><b>分布列</b>：$p(x_i)=P(X=x_i)$，满足 $p(x_i)\ge0$ 且 $\sum_i p(x_i)=1$。</li>
+  </ul>
+</div>
+
+<h3>三、二项分布 $b(n,p)$</h3>
+<div class="key">
+  <b>模型</b>：$n$ 重伯努利试验（独立重复、每次成功概率 $p$），成功总次数 $X$。
+  $$P(X=k)=\binom{n}{k}p^k(1-p)^{n-k},\qquad k=0,1,\dots,n.$$
+  $$E(X)=np,\qquad \mathrm{Var}(X)=np(1-p).$$
+</div>
+<p>公式三要素：$\binom{n}{k}$ 选位置、$p^k$ 成功、$(1-p)^{n-k}$ 失败。</p>
+
+<h3>四、泊松分布 $\mathrm{Pois}(\lambda)$</h3>
+<div class="key">
+  $$P(X=k)=\frac{\lambda^k}{k!}e^{-\lambda},\qquad k=0,1,2,\dots$$
+  $$E(X)=\mathrm{Var}(X)=\lambda.$$
+  <b>建模条件</b>：独立、平稳（速率恒定）、非重合（极短时间内最多一次）。
+</div>
+
+<div class="ex">
+  <span class="tag">泊松定理</span>
+  <p>$n\to\infty$，$p_n=\lambda/n$ 时，$\dbinom{n}{k}p_n^k(1-p_n)^{n-k}\to\dfrac{\lambda^k}{k!}e^{-\lambda}$。</p>
+  <p><b>实用结论</b>：$n$ 大、$p$ 小、$\lambda=np$ 适中（一般 $n\ge20$、$p\le0.05$）时，用 $\mathrm{Pois}(np)$ 近似二项。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 2.4.6</span>
+  <p>发病率 0.001，5000 人中患病不超过 5 人的概率。</p>
+  <p><b>二项</b>：$\sum_{k=0}^{5}\binom{5000}{k}0.001^k0.999^{5000-k}$。</p>
+  <p><b>泊松</b>：$\lambda=5$，$\sum_{k=0}^{5}\dfrac{5^k}{k!}e^{-5}=0.6160$。两者一致到四位小数。</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>用 $P(AB)=P(A)P(B)$ 判断独立而不看前提。</b>这只适用于两个事件；多事件要验证所有子集。</li>
+    <li><b>「至少一个」直接算。</b>用对立事件 $1-P(\text{一个都没有})$ 快得多。</li>
+    <li><b>泊松近似的条件。</b>$p$ 不小时（如 0.3），近似误差很大，不能乱用。</li>
+    <li><b>二项分布把 $\binom{n}{k}$ 漏掉。</b>最常见的失分点。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> $A=\{2,4,6\}$，$P(A)=\frac12$；$B=\{5,6\}$，$P(B)=\frac13$；$AB=\{6\}$，$P(AB)=\frac16=\frac12\cdot\frac13$，<b>独立</b>。</p>
+  <p><b>2.</b> 5 球取 3，共 $\binom53=10$ 种。<br>
+  $X$：$P(X=3)=\frac1{10}$，$P(X=4)=\frac3{10}$，$P(X=5)=\frac6{10}$。<br>
+  $Y$：$P(Y=1)=\frac6{10}$，$P(Y=2)=\frac3{10}$，$P(Y=3)=\frac1{10}$。</p>
+  <p><b>3.</b> $\lambda e^{-\lambda}=\frac{\lambda^2}{2}e^{-\lambda}\Rightarrow\lambda=2$；$P(X=3)=\frac{8}{6}e^{-2}=\frac43e^{-2}\approx0.180$。</p>
+  <p><b>4.</b> $1-(1-p)^2=\frac89\Rightarrow(1-p)^2=\frac19\Rightarrow p=\frac23$。</p>
+  <p><b>5.</b> $\mathrm{Pois}(2)$：$P(X=2)=2e^{-2}\approx0.271$；$P(X\ge1)=1-e^{-2}\approx0.865$。</p>
+  <p><b>6.</b> $n=1000,p=0.002$：二项 $P(X=2)=\binom{1000}{2}0.002^2 0.998^{998}$；泊松 $\lambda=2$，$P(X\le2)=e^{-2}(1+2+2)=5e^{-2}\approx0.677$。</p>
+</div>
+
+<!-- ================= M1-04 ================= -->
+<h2 class="sec" id="c4">M1-04 几何分布、期望、方差、矩<small>「平均要抽几次」——期望的来历</small></h2>
+
+<h3>一、几何分布 $Ge(p)$</h3>
+<div class="key">
+  首次成功所需的试验次数 $X$：
+  $$P(X=k)=(1-p)^{k-1}p,\qquad k=1,2,\dots$$
+  $$E(X)=\frac1p,\qquad \mathrm{Var}(X)=\frac{1-p}{p^2}.$$
+</div>
+<p><b>推导期望</b>：记 $q=1-p$，$E(X)=p\sum_{k\ge1}kq^{k-1}=p\cdot\frac{1}{(1-q)^2}=\frac{1}{p}$。<br>
+用到了 $\sum_{k\ge0}q^k=\frac{1}{1-q}$ 两边求导。<b>这是必会的推导</b>。</p>
+
+<div class="ex">
+  <span class="tag">开全图鉴（期望可加性的漂亮应用）</span>
+  <p>9 只等概率，集齐所需抽数 $X=\sum_{i=1}^{9}X_i$，其中 $X_i\sim Ge\!\left(\frac{10-i}{9}\right)$。</p>
+  <p>$$E(X)=\sum_{i=1}^{9}\frac{9}{i}=25.46.$$</p>
+  <p>注意：这里<b>只用了期望可加性</b>，完全不需要 $X_i$ 独立（虽然它们确实独立）。</p>
+</div>
+
+<h3>二、期望</h3>
+<div class="key">
+  <b>离散</b>：$E(X)=\sum_i x_ip(x_i)$（要求 $\sum_i|x_i|p(x_i)&lt;\infty$）。<br>
+  <b>几何直观</b>：用<b>概率</b>替代<b>频率</b>的加权平均。<br>
+  <b>性质</b>：$E(c)=c$；$E(cX)=cE(X)$；$E(X+Y)=E(X)+E(Y)$（<b>无需独立</b>）。
+</div>
+
+<div class="warn">
+  <b>为什么要求绝对收敛？</b>因为条件收敛的级数可以重新排列得到任意和。若 $\sum|x_i|p(x_i)=\infty$，期望的定义就依赖求和次序，失去唯一性。柯西分布就是典型：$\int|x|p(x)\mathrm dx=\infty$，故<b>柯西分布没有期望</b>。
+</div>
+
+<h4>懒惰的统计学家定律（LOTUS）</h4>
+<div class="key">
+  $$E[g(X)]=\sum_i g(x_i)P(X=x_i)\quad\text{或}\quad \int g(x)p(x)\mathrm dx.$$
+  <b>不需要先求 $g(X)$ 的分布</b>，直接在原分布上对 $g(x)$ 加权即可。
+</div>
+
+<h4>常见分布的期望与方差</h4>
+<table>
+  <tr><th class="l">分布</th><th class="l">$E(X)$</th><th class="l">$\mathrm{Var}(X)$</th><th class="l">记忆点</th></tr>
+  <tr><td class="l">$b(n,p)$</td><td class="l">$np$</td><td class="l">$np(1-p)$</td><td class="l">$n$ 次，每次 $p$</td></tr>
+  <tr><td class="l">$\mathrm{Pois}(\lambda)$</td><td class="l">$\lambda$</td><td class="l">$\lambda$</td><td class="l">均值 = 方差</td></tr>
+  <tr><td class="l">$Ge(p)$</td><td class="l">$1/p$</td><td class="l">$(1-p)/p^2$</td><td class="l">成功率的倒数</td></tr>
+  <tr><td class="l">$U(a,b)$</td><td class="l">$\frac{a+b}{2}$</td><td class="l">$\frac{(b-a)^2}{12}$</td><td class="l">中点、宽度平方/12</td></tr>
+  <tr><td class="l">$\mathrm{Exp}(\lambda)$</td><td class="l">$1/\lambda$</td><td class="l">$1/\lambda^2$</td><td class="l">与 $Ge$ 对应</td></tr>
+  <tr><td class="l">$N(\mu,\sigma^2)$</td><td class="l">$\mu$</td><td class="l">$\sigma^2$</td><td class="l">参数即矩</td></tr>
+</table>
+
+<h3>三、方差</h3>
+<div class="key">
+  $$\mathrm{Var}(X)=E\big[(X-E(X))^2\big]=E(X^2)-[E(X)]^2.$$
+  <b>性质</b>：$\mathrm{Var}(c)=0$；$\mathrm{Var}(X+c)=\mathrm{Var}(X)$；$\mathrm{Var}(cX)=c^2\mathrm{Var}(X)$；独立时 $\mathrm{Var}(\sum X_i)=\sum\mathrm{Var}(X_i)$。
+</div>
+<p class="tbl-note">计算式 $E(X^2)-[E(X)]^2$ 比定义式好用得多，考试一律用它。</p>
+
+<div class="ex">
+  <span class="tag">切比雪夫不等式</span>
+  $$P(|X-\mu|\ge\varepsilon)\le\frac{\sigma^2}{\varepsilon^2}.$$
+  <p>含义：<b>方差控制着偏离</b>。$\sigma$ 越小，取值越集中。M5 证明大数定律时就靠它。</p>
+</div>
+
+<h3>四、矩、偏度、峰度、变异系数</h3>
+<table>
+  <tr><th class="l">名称</th><th class="l">定义</th><th class="l">说明</th></tr>
+  <tr><td class="l">$k$ 阶原点矩</td><td class="l">$E(X^k)$</td><td class="l">期望是一阶原点矩</td></tr>
+  <tr><td class="l">$k$ 阶中心矩</td><td class="l">$E[(X-E(X))^k]$</td><td class="l">方差是二阶中心矩</td></tr>
+  <tr><td class="l">偏度</td><td class="l">$\dfrac{E[(X-\mu)^3]}{\sigma^3}$</td><td class="l">左右不对称程度</td></tr>
+  <tr><td class="l">峰度</td><td class="l">$\dfrac{E[(X-\mu)^4]}{\sigma^4}$</td><td class="l">尖峭与厚尾（正态为 0）</td></tr>
+  <tr><td class="l">变异系数</td><td class="l">$\dfrac{\sigma}{E(X)}$</td><td class="l">消除量纲的波动度量</td></tr>
+</table>
+<p class="tbl-note">金融里的「尖峰厚尾」= 峰度显著大于 0，极端涨跌比正态预测更频繁。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>$E(X^2)\ne[E(X)]^2$。</b>二者之差正是方差。只有常数才相等。</li>
+    <li><b>$\mathrm{Var}(X+Y)=\mathrm{Var}(X)+\mathrm{Var}(Y)$ 不独立时也照用。</b>不独立要加 $2\mathrm{Cov}$（M4-3）。</li>
+    <li><b>几何分布从 0 开始数。</b>本课定义从 1 开始（第几次成功），$E=1/p$。若从 0 开始（失败次数），期望是 $(1-p)/p$，别混。</li>
+    <li><b>变异系数带量纲。</b>它正是为了消除量纲才存在，算出来应是纯数。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> $E(X)=-0.2+0+0.3+0.4=0.5$；$E(X^2)=0.2+0+0.3+0.8=1.3$；$\mathrm{Var}=1.3-0.25=1.05$。</p>
+  <p><b>2.</b> $X\sim b(10,0.3)$：$E(X)=3$，$\mathrm{Var}=2.1$。<br>
+  $E(3X+1)=10$；$\mathrm{Var}(3X+1)=9\times2.1=18.9$；$E(X^2)=2.1+9=11.1$；$E[(X-2)^2]=11.1-12+4=3.1$。</p>
+  <p><b>3.</b> $E(Z)=3.5+3.5=7$；独立故 $\mathrm{Var}(Z)=2\times\frac{35}{12}=\frac{35}{6}$。</p>
+</div>
+
+<!-- ================= M2-01 ================= -->
+<h2 class="sec" id="c5">M2-01 条件概率、全概率公式、贝叶斯公式<small>本课程最重要的一课：如何在有信息时更新判断</small></h2>
+
+<h3>一、条件概率</h3>
+<div class="key">
+  $$P(A\mid B)=\frac{P(AB)}{P(B)},\qquad P(B)&gt;0.$$
+  <b>直观</b>：$B$ 把样本空间从 $\Omega$ 压缩成 $B$，除以 $P(B)$ 是<b>重新归一化</b>，让 $P(B\mid B)=1$。
+</div>
+<p>条件概率本身也是概率，满足全部公理。因此第 1 章的加法公式、减法公式在条件概率下全部照用，例如 $P(\bar A\mid B)=1-P(A\mid B)$。</p>
+
+<div class="key">
+  <b>乘法公式</b>：$P(AB)=P(B)P(A\mid B)$。<br>
+  多事件链式：$P(A_1A_2\cdots A_n)=P(A_1)P(A_2|A_1)\cdots P(A_n|A_1\cdots A_{n-1})$。
+</div>
+
+<div class="ex">
+  <span class="tag">例 1.4.3</span>
+  <p>100 个零件含 10 个不合格，不放回逐个取，求<b>第三次才</b>取到不合格品的概率。</p>
+  <p><b>解</b>　「前两次合格，第三次不合格」：</p>
+  <p>$$P(\bar A_1\bar A_2A_3)=\frac{90}{100}\times\frac{89}{99}\times\frac{10}{98}\approx0.0826.$$</p>
+  <p>每次抽取后总数和合格数都在变，<b>这就是不放回的特征</b>。</p>
+</div>
+
+<h3>二、全概率公式</h3>
+<div class="key">
+  设 $B_1,\dots,B_n$ 是 $\Omega$ 的划分且 $P(B_i)&gt;0$，则
+  $$P(A)=\sum_{i=1}^{n}P(B_i)P(A\mid B_i).$$
+  <b>解读</b>：把 $A$ 按「原因」分情况，各条路径概率的加权和。权重是 $P(B_i)$，路径上的发生率是 $P(A\mid B_i)$。
+</div>
+
+<div class="ex">
+  <span class="tag">例 1.4.5 抽签公平性</span>
+  <p>$n$ 张券 1 张有奖，第 2 人中奖概率？</p>
+  <p>$$P(A_2)=P(A_1)P(A_2|A_1)+P(\bar A_1)P(A_2|\bar A_1)=\frac1n\times0+\frac{n-1}{n}\cdot\frac{1}{n-1}=\frac1n.$$</p>
+  <p>结论：<b>抽签与顺序无关</b>，先抽后抽一样公平。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 1.4.6 保险风控</span>
+  <p>危险者占 20%，事故率 0.4；安全者事故率 0.1。求任一人出事故的概率。</p>
+  <p>$$P(A)=0.2\times0.4+0.8\times0.1=0.08+0.08=0.16.$$</p>
+</div>
+
+<h3>三、贝叶斯公式</h3>
+<div class="key">
+  $$P(B_i\mid A)=\frac{P(B_i)P(A\mid B_i)}{\sum_{j}P(B_j)P(A\mid B_j)}.$$
+  $$\text{后验}=\frac{\text{先验}\times\text{似然}}{\text{证据}}.$$
+  <b>作用</b>：执果索因。看到证据 $A$，反推是哪个原因 $B_i$ 造成的。
+</div>
+
+<div class="ex">
+  <span class="tag">例 1.4.8 疾病筛查（基础比率陷阱）</span>
+  <p>发病率 0.0004；患者阳性率 99%；未患病者阴性率 99.9%。某人阳性，求患病概率。</p>
+  <p><b>解</b>　记 $D$ 患病，$+$ 阳性。先算证据（全概率）：</p>
+  <p>$$P(+)=0.0004\times0.99+0.9996\times0.001\approx0.000396+0.001=0.001396.$$</p>
+  <p>$$P(D\mid +)=\frac{0.0004\times0.99}{0.001396}\approx28.4\%.$$</p>
+  <p><b>关键洞察</b>：即使检测很准，阳性者中真患病的仍不到三成——因为<b>健康人基数太大</b>，假阳性绝对数超过了真阳性。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">出租车谜案（本课主线）</span>
+  <p>蓝车 15%，绿车 85%；目击者准确率 80%，称「蓝车」。</p>
+  <p>$$P(\text{蓝}\mid\text{说蓝})=\frac{0.15\times0.8}{0.15\times0.8+0.85\times0.2}=\frac{0.12}{0.29}\approx41.4\%.$$</p>
+  <p>再加一个独立目击者（也说蓝）：分母变为 $0.15\times0.64+0.85\times0.04=0.096+0.034=0.13$，</p>
+  <p>$$P=\frac{0.096}{0.13}\approx73.8\%.$$</p>
+  <p><b>信念轨迹：15% → 41.4% → 73.8%</b>。每份新证据都把上一轮的后验变成这一轮的先验。</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>把 $P(A|B)$ 与 $P(B|A)$ 搞混。</b>这是本课第一大错。$P(\text{阳性}|\text{患病})$ 与 $P(\text{患病}|\text{阳性})$ 完全不同，差的就是基础比率。</li>
+    <li><b>贝叶斯分母漏掉其他分支。</b>分母必须是全概率，不是单独的 $P(B_i)P(A|B_i)$。</li>
+    <li><b>全概率公式的划分不互斥或不完备。</b>划分必须两两互斥且并集为 $\Omega$。</li>
+    <li><b>「八成可靠 → 八成是蓝车」。</b>典型的基础比率谬误（检察官谬误），必须用贝叶斯纠正。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> 和为 8 的组合：$(2,6),(3,5),(4,4),(5,3),(6,2)$ 共 5 个；其中含 5 的有 $(3,5),(5,3)$ 共 2 个。$P=\frac25$。</p>
+  <p><b>2.</b> $P(\text{蓝}\mid\text{说蓝})=\dfrac{0.1\times0.9}{0.1\times0.9+0.9\times0.1}=\dfrac{0.09}{0.18}=0.5$。</p>
+  <p><b>3.</b> 说法<b>错误</b>。目击可靠度只描述 $P(\text{说蓝}\mid\text{蓝})$，而我们要的是 $P(\text{蓝}\mid\text{说蓝})$，必须乘先验 10% 并用全概率归一化。这就是基础比率谬误。</p>
+</div>
+
+<!-- ================= M3-01 ================= -->
+<h2 class="sec" id="c6">M3-01 连续随机变量、密度函数、分布函数<small>从「数点」到「量面积」</small></h2>
+
+<h3>一、为什么需要连续随机变量</h3>
+<p>赔付金额、寿命、等待时间这类量，取值充满一个区间，<b>取某个确切值的概率为 0</b>。分布列失效，改用密度。</p>
+
+<div class="key">
+  <b>定义</b>：若存在非负可积函数 $p(x)$，使对任意 $a&lt;b$ 有
+  $$P(a&lt;X\le b)=\int_a^b p(x)\,\mathrm dx,$$
+  则称 $p(x)$ 为 $X$ 的<b>概率密度函数</b>。
+  <ul>
+    <li><b>非负</b>：$p(x)\ge0$；</li>
+    <li><b>正则</b>：$\displaystyle\int_{-\infty}^{\infty}p(x)\,\mathrm dx=1$。</li>
+  </ul>
+</div>
+
+<div class="warn">
+  <b>密度的高度不是概率。</b>概率是<b>面积</b>：$P(x&lt;X\le x+\mathrm dx)\approx p(x)\mathrm dx$。所以 $p(x)$ 可以大于 1（只要积分仍然是 1），这一点和分布列完全不同。
+</div>
+
+<p>连续型还有一条重要性质：<b>单点概率为 0</b>，因此端点开闭无所谓，
+$$P(a&lt;X&lt;b)=P(a\le X\le b)=P(a&lt;X\le b).$$</p>
+
+<div class="ex">
+  <span class="tag">例 2.1.7 均匀分布 $U(0,a)$</span>
+  <p>向 $(0,a)$ 上任意投点，落点概率与区间长度成正比、与位置无关。</p>
+  <p>密度必为常数 $c$，由 $\int_0^a c\,\mathrm dx=ca=1$ 得 $c=\frac1a$：</p>
+  <p>$$p(x)=\begin{cases}\frac1a,&0&lt;x&lt;a\\0,&\text{其他}\end{cases}\qquad F(x)=\frac{x}{a},\ 0&lt;x&lt;a.$$</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 2.1.8 寿命问题</span>
+  <p>$p(x)=\dfrac{1000}{x^2}\ (x&gt;1000)$。求 (1) $P(X&gt;1500)$；(2) 4 只都 $&gt;1500$；(3) 至少 1 只 $&gt;1500$。</p>
+  <p><b>解</b>　$$P(X&gt;1500)=\int_{1500}^{\infty}\frac{1000}{x^2}\mathrm dx=\frac{1000}{1500}=\frac23.$$</p>
+  <p>(2) 独立性 → $\left(\frac23\right)^4=\frac{16}{81}$。</p>
+  <p>(3) 用对立事件 → $1-\left(\frac13\right)^4=\frac{80}{81}$。</p>
+</div>
+
+<h3>二、分布函数</h3>
+<div class="key">
+  $$F(x)=P(X\le x)=\int_{-\infty}^{x}p(t)\,\mathrm dt.$$
+  <b>性质</b>：单调不减；$0\le F\le1$；$\lim_{x\to-\infty}F=0$，$\lim_{x\to+\infty}F=1$；<b>右连续</b>。
+  <p style="margin-bottom:0"><b>连续型</b>：$F'(x)=p(x)$（在可导处）。<br>
+  <b>离散型</b>：$F$ 是阶梯函数，<b>跳跃高度 = 该点概率</b>。</p>
+</div>
+
+<table>
+  <tr><th class="l">对比项</th><th class="l">离散</th><th class="l">连续</th></tr>
+  <tr><td class="l">描述工具</td><td class="l">分布列 $p_k$</td><td class="l">密度 $p(x)$</td></tr>
+  <tr><td class="l">归一化</td><td class="l">$\sum p_k=1$</td><td class="l">$\int p=1$</td></tr>
+  <tr><td class="l">$F$ 求法</td><td class="l">累加</td><td class="l">积分</td></tr>
+  <tr><td class="l">单点概率</td><td class="l">$p_k&gt;0$</td><td class="l">$0$</td></tr>
+  <tr><td class="l">$F$ 的形态</td><td class="l">阶梯</td><td class="l">连续曲线</td></tr>
+  <tr><td class="l">端点开闭</td><td class="l">有区别</td><td class="l">无所谓</td></tr>
+</table>
+
+<div class="ex">
+  <span class="tag">例 2.1.9 混合分布</span>
+  <p>$$F(x)=\begin{cases}0,&x&lt;0\\ \dfrac{1+x}{2},&0\le x&lt;1\\ 1,&x\ge1\end{cases}$$</p>
+  <p>在 $x=0$ 处跳跃 $0.5$（离散成分：$P(X=0)=0.5$），在 $(0,1)$ 上线性增长（连续成分，密度为 $\frac12$）。<b>既非离散也非连续</b>。</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>用 $p(x)$ 直接当概率。</b>必须积分。</li>
+    <li><b>求 $F$ 时忘记分段常数。</b>$x&lt;a$ 时 $F=0$，$x&gt;b$ 时 $F=1$，这两段一定要写。</li>
+    <li><b>由 $F$ 求 $p$ 时忘记在分段点处理。</b>逐段求导即可，分段点取值不影响积分。</li>
+    <li><b>离散型 $F$ 求分布列时漏掉跳跃。</b>跳跃高度就是该点概率，这个性质反过来用最方便。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> $\int_0^1cx^2\mathrm dx=\frac{c}{3}=1\Rightarrow c=3$。$P(X&gt;0.5)=\int_{0.5}^1 3x^2\mathrm dx=1-\frac18=\frac78$。$F(x)=x^3\ (0&lt;x&lt;1)$。</p>
+  <p><b>2.</b> $P(T&gt;2)=e^{-0.8}\approx0.449$；$P(1&lt;T\le3)=e^{-0.4}-e^{-1.2}\approx0.369$；$F(t)=1-e^{-0.4t}\ (t&gt;0)$。</p>
+  <p><b>3.</b> 逐段求导：$p(x)=x\ (0&lt;x&lt;1)$，$p(x)=2-x\ (1&lt;x&lt;2)$。<br>
+  $P(0.5&lt;X\le1.5)=F(1.5)-F(0.5)=\left(1-\frac{0.25}{2}\right)-\frac{0.25}{2}=0.875-0.125=0.75$。</p>
+  <p><b>4.</b> 跳跃点 $0,1,2$，跳跃高度 $0.3,0.4,0.3$，故 $P(X=0)=0.3$，$P(X=1)=0.4$，$P(X=2)=0.3$。</p>
+</div>
+
+<!-- ================= M3-02 ================= -->
+<h2 class="sec" id="c7">M3-02 连续随机变量的期望与方差、指数分布<small>求和变积分，其余全部照搬</small></h2>
+
+<h3>一、期望与方差</h3>
+<div class="key">
+  $$E(X)=\int_{-\infty}^{\infty}x\,p(x)\,\mathrm dx,\qquad \mathrm{Var}(X)=\int_{-\infty}^{\infty}(x-\mu)^2p(x)\,\mathrm dx=E(X^2)-[E(X)]^2.$$
+  <b>LOTUS（连续版）</b>：$E[g(X)]=\displaystyle\int_{-\infty}^{\infty}g(x)p(x)\,\mathrm dx$。
+</div>
+
+<div class="warn">
+  <b>柯西分布没有期望。</b>$p(x)=\dfrac{1}{\pi(1+x^2)}$，$\int|x|p(x)\mathrm dx=\infty$。这说明「每个分布都有期望」是错的，绝对收敛的条件不是摆设。
+</div>
+
+<div class="ex">
+  <span class="tag">例 2.2.4 均匀分布的期望与方差</span>
+  <p>$$E(X)=\int_a^b x\cdot\frac{1}{b-a}\mathrm dx=\frac{a+b}{2}.$$</p>
+  <p>$$E(X^2)=\frac{1}{b-a}\cdot\frac{b^3-a^3}{3},\qquad \mathrm{Var}(X)=\frac{(b-a)^2}{12}.$$</p>
+  <p>记忆：均值是中点，方差是「宽度平方除以 12」。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 2.2.7 最优进货量（期望最大化）</span>
+  <p>需求 $X\sim U(300,500)$ 吨。售出每吨赚 0.15 万，积压每吨亏 0.05 万。求最优进货量 $q$。</p>
+  <p><b>思路</b>：利润是 $q$ 的函数，先写 $E[\text{利润}(q)]$ 再对 $q$ 求导令其为 0。</p>
+  <p>$$E[\text{利润}]=0.15E[\min(X,q)]-0.05E[(q-X)^+].$$</p>
+  <p>求导后得临界分位数条件 $\dfrac{0.15-0}{0.15+0.05}=0.75$，即取需求分布的 75% 分位数：</p>
+  <p>$$q=300+0.75\times200=450\ \text{吨}.$$</p>
+  <p><b>这类「报童模型」结论</b>：最优进货量 = 需求分布的 $\frac{\text{单位利润}}{\text{单位利润}+\text{单位损失}}$ 分位数。</p>
+</div>
+
+<h3>二、指数分布 $\mathrm{Exp}(\lambda)$</h3>
+<div class="key">
+  $$p(x)=\lambda e^{-\lambda x}\ (x\ge0),\qquad F(x)=1-e^{-\lambda x}\ (x\ge0).$$
+  $$E(X)=\frac1\lambda,\qquad \mathrm{Var}(X)=\frac{1}{\lambda^2}.$$
+</div>
+
+<div class="ex">
+  <span class="tag">指数分布与泊松分布的关系（重要）</span>
+  <p>若 $[0,t]$ 内故障次数 $N(t)\sim\mathrm{Pois}(\lambda t)$，则首次故障时间 $T\sim\mathrm{Exp}(\lambda)$。</p>
+  <p><b>证</b>　「$T&gt;t$」等价于「$t$ 时间内零次故障」：</p>
+  <p>$$P(T&gt;t)=P(N(t)=0)=e^{-\lambda t}\ \Rightarrow\ F_T(t)=1-e^{-\lambda t}.$$</p>
+  <p>反过来，$t$ 时间内的次数服从泊松，事件间隔服从指数。这两个分布是同一随机过程的两种看法。</p>
+</div>
+
+<h4>指数分布的无记忆性</h4>
+<div class="key">
+  $$P(T&gt;s+t\mid T&gt;s)=P(T&gt;t).$$
+  已经等了 $s$ 小时，再等多久的分布与刚来时完全相同。<b>这是指数分布独有的性质</b>，几何分布是它的离散版本。
+</div>
+
+<h3>三、核（kernel）技巧</h3>
+<div class="key">
+  若 $p(x)=ck(x)$，称 $k(x)$ 为<b>核</b>。利用 $\int p=1$ 可反求 $c$，或把积分「凑成」某个已知密度从而直接得 1。
+</div>
+
+<div class="ex">
+  <span class="tag">用核求期望（正态为例）</span>
+  <p>$$E(X)=\int x\cdot\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}\mathrm dx.$$</p>
+  <p>令 $t=\frac{x-\mu}{\sigma}$，则 $x=\mu+\sigma t$：</p>
+  <p>$$E(X)=\mu\underbrace{\int\frac{1}{\sqrt{2\pi}}e^{-t^2/2}\mathrm dt}_{=1}+\sigma\underbrace{\int t\frac{1}{\sqrt{2\pi}}e^{-t^2/2}\mathrm dt}_{=0\ (\text{奇函数})}=\mu.$$</p>
+  <p>第二项为 0 靠的是奇函数在对称区间积分为 0——<b>这就是「核 + 对称性」的威力</b>。</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>积分上下限没用支撑集。</b>$p(x)=0$ 的区域不能积分进去。</li>
+    <li><b>$\mathrm{Var}(3X+2)$ 算成 $3\mathrm{Var}(X)+2$。</b>正确是 $9\mathrm{Var}(X)$，常数项不影响方差。</li>
+    <li><b>指数分布参数混淆。</b>$\mathrm{Exp}(\lambda)$ 的均值是 $1/\lambda$。若题目给「平均 4 年」，则 $\lambda=1/4$。</li>
+    <li><b>忘记无记忆性适用范围。</b>只有指数分布（和几何分布）有无记忆性，正态、均匀都没有。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> $F(x)=1-e^{-x^2}\Rightarrow p(x)=2xe^{-x^2}\ (x&gt;0)$。</p>
+  <p>$$E(X)=\int_0^\infty 2x^2e^{-x^2}\mathrm dx=\frac{\sqrt\pi}{2}\approx0.886.$$</p>
+  <p>$$E(X^2)=\int_0^\infty 2x^3e^{-x^2}\mathrm dx=1,\qquad \mathrm{Var}(X)=1-\frac{\pi}{4}\approx0.215.$$</p>
+  <p><b>2.</b> 密度关于 0 对称 $\Rightarrow E(X)=0$。</p>
+  <p>$$E(X^2)=2\int_0^1x^2(1-x)\mathrm dx=2\left(\frac13-\frac14\right)=\frac16,\quad \mathrm{Var}(X)=\frac16.$$</p>
+  <p>$E(3X+2)=2$；$\mathrm{Var}(3X+2)=9\times\frac16=1.5$。</p>
+  <p><b>3.</b> 由正则性 $\frac a2+\frac b3=1$，由 $E(X)=0.5$ 得 $\frac a3+\frac b4=0.5$。解得 $a=6,\ b=-6$（此时 $p(x)=6x(1-x)\ge0$，合法）。</p>
+  <p>$$E(X^2)=\int_0^1 6x^2\cdot x(1-x)\mathrm dx=\frac{3}{10},\qquad \mathrm{Var}(X)=\frac{3}{10}-\frac14=0.05.$$</p>
+  <p><b>4.</b> 单个元件 200h 内损坏概率 $1-e^{-200/500}=1-e^{-0.4}$。三个独立，至少一个损坏：</p>
+  <p>$$1-\left(e^{-0.4}\right)^3=1-e^{-1.2}\approx0.699.$$</p>
+</div>
+
+<!-- ================= M3-03 ================= -->
+<h2 class="sec" id="c8">M3-03 正态分布<small>应用最广的连续分布，整门课的「主角」</small></h2>
+
+<h3>一、密度与参数</h3>
+<div class="key">
+  $$p(x)=\frac{1}{\sqrt{2\pi}\,\sigma}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right),\qquad x\in\mathbb R.$$
+  $$E(X)=\mu,\qquad \mathrm{Var}(X)=\sigma^2.$$
+  <ul>
+    <li>$\mu$ 定<b>位置</b>：密度关于 $x=\mu$ 对称。</li>
+    <li>$\sigma$ 定<b>形状</b>：越大越矮胖，越小越高瘦。</li>
+  </ul>
+</div>
+
+<div class="ex">
+  <span class="tag">作业：识别参数（把密度凑成标准形）</span>
+  <p>$p(x)=\dfrac{1}{\sqrt\pi}e^{-(x^2+4x+4)}$。配方：$x^2+4x+4=(x+2)^2$，故</p>
+  <p>$$p(x)=\frac{1}{\sqrt\pi}e^{-\frac{(x-(-2))^2}{2\cdot(1/\sqrt2)^2}}\ \Rightarrow\ X\sim N\!\left(-2,\ \frac12\right).$$</p>
+  <p><b>方法</b>：对照 $\dfrac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$，逐项比系数和指数。</p>
+</div>
+
+<h3>二、标准正态与标准化</h3>
+<div class="key">
+  $Z\sim N(0,1)$，密度 $\varphi(x)=\dfrac{1}{\sqrt{2\pi}}e^{-x^2/2}$，分布函数 $\Phi(x)=\displaystyle\int_{-\infty}^{x}\varphi(t)\mathrm dt$。<br>
+  <b>标准化定理</b>：$X\sim N(\mu,\sigma^2)\Rightarrow Z=\dfrac{X-\mu}{\sigma}\sim N(0,1)$。<br>
+  <b>反用</b>：$P(X\le x)=\Phi\!\left(\dfrac{x-\mu}{\sigma}\right)$。
+</div>
+
+<h4>$\Phi$ 的四条常用性质</h4>
+<div class="key">
+  $$P(a&lt;Z&lt;b)=\Phi(b)-\Phi(a),\qquad P(Z&gt;x)=1-\Phi(x),$$
+  $$P(|Z|&lt;a)=2\Phi(a)-1,\qquad \Phi(-a)=1-\Phi(a).$$
+</div>
+
+<div class="ex">
+  <span class="tag">3σ 法则</span>
+  $$P(\mu-k\sigma&lt;X&lt;\mu+k\sigma)=2\Phi(k)-1.$$
+  <p>$k=1,2,3$ 时分别为 <b>68.3%、95.4%、99.7%</b>。超出 $\mu\pm3\sigma$ 的概率不足 0.3%，统计上视为极端值。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 2.5.2</span>
+  <p>$X\sim N(108,3^2)$。用 $\Phi$ 表示 $P(102&lt;X&lt;117)$。</p>
+  <p><b>解</b>　标准化：$\frac{102-108}{3}=-2$，$\frac{117-108}{3}=3$。</p>
+  <p>$$P(102&lt;X&lt;117)=\Phi(3)-\Phi(-2)=\Phi(3)+\Phi(2)-1.$$</p>
+</div>
+
+<h3>三、正态的两条封闭性</h3>
+<div class="key">
+  <ol>
+    <li><b>线性不变</b>：$X\sim N(\mu,\sigma^2)$，$a\ne0$ $\Rightarrow$ $aX+b\sim N(a\mu+b,\ a^2\sigma^2)$。</li>
+    <li><b>可加性</b>：$X,Y$ 独立且都正态 $\Rightarrow$ $X+Y\sim N(\mu_1+\mu_2,\ \sigma_1^2+\sigma_2^2)$。</li>
+  </ol>
+  这两条让正态的运算极简：<b>只需跟踪均值和方差</b>。
+</div>
+
+<h3>四、分位数</h3>
+<div class="key">
+  $p$ 分位数 $x_p$ 满足 $F(x_p)=p$。标准正态记 $z_p$，即 $\Phi(z_p)=p$。<br>
+  <b>一般正态</b>：$x_p=\mu+\sigma z_p$。
+</div>
+<p>例：$z_{0.05}\approx-1.645$（下侧 5% 分位数）。</p>
+
+<h3>五、案例：四六级常模转换</h3>
+<div class="key">
+  $$\text{总分}=\frac{X-\text{Mean}}{\text{SD}}\times70+500.$$
+  这就是<b>标准化后再线性变换</b>：$Z=\frac{X-\text{Mean}}{\text{SD}}$，再映射到均值 500、标准差 70 的尺度。
+</div>
+<p>所以四六级分数天然可比：它是「你在本次考生中的相对位置」，而不是卷面绝对水平。用 $\Phi$ 反查即可得排名百分位。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>$\Phi(-a)$ 直接当负数。</b>用 $\Phi(-a)=1-\Phi(a)$ 转正。</li>
+    <li><b>方差相加时漏掉系数平方。</b>$2X+Y$ 的方差是 $4\sigma_X^2+\sigma_Y^2$（独立时）。</li>
+    <li><b>把 $\sigma^2$ 当 $\sigma$。</b>标准化时分母是标准差 $\sigma$。</li>
+    <li><b>独立正态的和才可加。</b>不独立时要加 $2\rho\sigma_1\sigma_2$（M4-3）。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> $p_1(x)=\frac{1}{\sqrt\pi}e^{-(x-1)^2}$：对照标准形，$2\sigma^2=1\Rightarrow\sigma^2=\frac12$，$\mu=1$，系数 $\frac{1}{\sqrt{2\pi}\cdot\frac{1}{\sqrt2}}=\frac{1}{\sqrt\pi}$ ✓。故 $X\sim N(1,\frac12)$。</p>
+  <p>$p(x)\approx e^{-x/2}$ 的核是指数型，对应 $\mathrm{Exp}\!\left(\frac12\right)$。</p>
+  <p><b>2.</b> $X\sim N(108,9)$：<br>
+  $P(102&lt;X&lt;117)=\Phi(3)-\Phi(-2)=\Phi(3)+\Phi(2)-1$；<br>
+  $P(X&gt;117)=1-\Phi(3)$；<br>
+  $P(|X-108|&gt;6)=P(|Z|&gt;2)=2[1-\Phi(2)]$。</p>
+  <p><b>3.</b> $X\sim N(3,4)\Rightarrow 2X\sim N(6,16)$；<br>
+  $Y\sim N(-1,9)$ 独立 $\Rightarrow 2X-Y\sim N(7,25)$；<br>
+  $X\sim N(5,36),Y\sim N(2,9)\Rightarrow X+2Y-1\sim N(5+4-1,\ 36+4\times9)=N(8,72)$。</p>
+</div>
+
+<!-- ================= M3-04 ================= -->
+<h2 class="sec" id="c9">M3-04 随机变量函数的分布<small>一切归为求 $P(g(X)\le y)$</small></h2>
+
+<h3>一、统一视角</h3>
+<div class="key">
+  求 $Y=g(X)$ 的分布，就是求
+  $$F_Y(y)=P(g(X)\le y)=\begin{cases}\displaystyle\sum_{x_i:\,g(x_i)\le y}P(X=x_i),&X\text{ 离散}\\[10pt]\displaystyle\int_{x:\,g(x)\le y}p_X(x)\,\mathrm dx,&X\text{ 连续}\end{cases}$$
+  <b>然后再对 $y$ 求导得密度</b>。
+</div>
+
+<h4>四步流程</h4>
+<ol>
+  <li>写出 $Y$ 的<b>支撑集</b>（$p_Y&gt;0$ 的范围）；</li>
+  <li>把 $\{g(X)\le y\}$ 化成 $\{X\in A\}$；</li>
+  <li>积分求 $F_Y(y)$；</li>
+  <li>求导得 $p_Y(y)$。</li>
+</ol>
+
+<div class="ex">
+  <span class="tag">例 2.6.3 $Y=X^2$，$X\sim N(0,1)$</span>
+  <p>$$F_Y(y)=P(X^2\le y)=P(-\sqrt y\le X\le\sqrt y)=2\Phi(\sqrt y)-1,\quad y&gt;0.$$</p>
+  <p>$$p_Y(y)=2\varphi(\sqrt y)\cdot\frac{1}{2\sqrt y}=\frac{1}{\sqrt{2\pi y}}e^{-y/2},\qquad y&gt;0.$$</p>
+  <p>这是自由度 1 的卡方分布。</p>
+</div>
+
+<h3>二、单调变换公式</h3>
+<div class="key">
+  若 $g$ 严格单调、反函数 $g^{-1}$ 有连续导数，则
+  $$p_Y(y)=p_X\big(g^{-1}(y)\big)\left|\big(g^{-1}\big)'(y)\right|,\qquad y\in g(\text{支撑集}).$$
+  <b>绝对值不能丢</b>：$g$ 递减时导数负，但密度必须非负。
+</div>
+
+<div class="ex">
+  <span class="tag">对数正态分布</span>
+  <p>$X\sim N(\mu,\sigma^2)$，$Y=e^X\sim LN(\mu,\sigma^2)$：</p>
+  <p>$$p_Y(y)=p_X(\ln y)\cdot\frac1y=\frac{1}{\sqrt{2\pi}\sigma y}\exp\left(-\frac{(\ln y-\mu)^2}{2\sigma^2}\right),\qquad y&gt;0.$$</p>
+  <p>常用于建模损失额、收入、股价——<b>非负、右偏、长尾</b>。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">免赔额模型 $Y=(X-c)^+$（本讲高潮）</span>
+  <p>$X\sim\mathrm{Exp}(\lambda)$，保险公司只赔超出免赔额 $c$ 的部分。</p>
+  <p><b>第一步：写分布函数（分 y 讨论）</b></p>
+  <p>$$F_Y(y)=\begin{cases}0,&y&lt;0\\ 1-e^{-\lambda c},&y=0\\ 1-e^{-\lambda(c+y)},&y&gt;0\end{cases}$$</p>
+  <p><b>关键观察</b>：$F_Y$ 在 $y=0$ 处有跳跃 $1-e^{-\lambda c}&gt;0$，说明 $Y$ <b>不是连续随机变量</b>，而是「混合型」——在 0 点有质量（没超免赔额就不赔），在 $(0,\infty)$ 上有密度。</p>
+  <p><b>密度（仅连续部分）</b>：$p_Y(y)=\lambda e^{-\lambda(c+y)},\ y&gt;0$。</p>
+  <p><b>期望</b>：</p>
+  <p>$$E[Y]=0\cdot P(Y=0)+\int_0^\infty y\lambda e^{-\lambda(c+y)}\mathrm dy=\frac{e^{-\lambda c}}{\lambda}=E[X]e^{-\lambda c}.$$</p>
+  <p>数值：$\lambda=1/2000$，$c=1000$ 元，$E[Y]=2000e^{-0.5}\approx1213$ 元，免赔额帮公司省下约 <b>787 元</b>。</p>
+</div>
+
+<h3>三、特殊函数的分布</h3>
+<table>
+  <tr><th class="l">情形</th><th class="l">结论</th></tr>
+  <tr><td class="l">正态线性变换</td><td class="l">$aX+b\sim N(a\mu+b,\ a^2\sigma^2)$</td></tr>
+  <tr><td class="l">独立正态之和</td><td class="l">$N(\mu_1+\mu_2,\ \sigma_1^2+\sigma_2^2)$</td></tr>
+  <tr><td class="l">独立泊松之和</td><td class="l">$\mathrm{Pois}(\lambda_1+\lambda_2)$</td></tr>
+  <tr><td class="l">离散函数的分布</td><td class="l">把相同取值的概率<b>合并</b></td></tr>
+</table>
+
+<div class="ex">
+  <span class="tag">离散函数：合并取值</span>
+  <p>$X$ 取 $-1,0,1,2$，概率 $0.2,0.3,0.1,0.4$。求 $Y=X^2-1$ 的分布列。</p>
+  <p>$X=-1\Rightarrow Y=0$（0.2）；$X=0\Rightarrow Y=-1$（0.3）；$X=1\Rightarrow Y=0$（0.1）；$X=2\Rightarrow Y=3$（0.4）。</p>
+  <p>合并 $Y=0$：$0.2+0.1=0.3$。故 $P(Y=-1)=0.3,\ P(Y=0)=0.3,\ P(Y=3)=0.4$。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">定理 2.6.5 概率积分变换</span>
+  <p>若 $F_X$ 严格单调连续，则 $Y=F_X(X)\sim U(0,1)$。</p>
+  <p><b>证</b>　$F_Y(y)=P(F_X(X)\le y)=P(X\le F_X^{-1}(y))=F_X(F_X^{-1}(y))=y$。</p>
+  <p><b>用途</b>：给定 $U\sim U(0,1)$，可用 $X=F_X^{-1}(U)$ 生成任意分布的随机数。例如指数分布：$X=\dfrac{-\ln(1-U)}{\lambda}$。</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>忘记支撑集。</b>$Y=X^2$ 的支撑是 $[0,\infty)$，写成 $\mathbb R$ 就错。</li>
+    <li><b>单调变换丢绝对值。</b>递减变换时 $(g^{-1})'&lt;0$，必须加绝对值。</li>
+    <li><b>非单调函数硬套公式。</b>$Y=X^2$、$Y=|X|$ 这类必须用分布函数法分段处理。</li>
+    <li><b>忽略混合型。</b>$Y=(X-c)^+$ 在 0 点有概率质量，不能只写密度。</li>
+  </ul>
+</div>
+
+<div class="quiz">
+  <div class="h">小测样题 · 参考解答</div>
+  <p><b>1.</b> $Y=-1$：$P(X=0)=0.3$；$Y=0$：$P(X=\pm1)=0.2+0.1=0.3$；$Y=3$：$P(X=2)=0.4$。</p>
+  <p><b>2.</b> $X\sim U(-1,2)$，$Y=X^2$。<br>
+  $0&lt;y&lt;1$：$F_Y(y)=P(-\sqrt y\le X\le\sqrt y)=\dfrac{2\sqrt y}{3}$，$p_Y(y)=\dfrac{1}{3\sqrt y}$；<br>
+  $1\le y&lt;4$：$F_Y(y)=P(-1\le X\le\sqrt y)=\dfrac{\sqrt y+1}{3}$，$p_Y(y)=\dfrac{1}{6\sqrt y}$。</p>
+  <p><b>3.</b> $X\sim\mathrm{Exp}(2)$，$Y=e^X$：$p_Y(y)=p_X(\ln y)\cdot\frac1y=2e^{-2\ln y}\cdot\frac1y=2y^{-3},\ y&gt;1$。</p>
+  <p><b>4.</b> $X\sim N(2,9)$，$Y=4-2X\sim N(4-4,\ 4\times9)=N(0,36)$；<br>
+  $Z=X+2Y$：$N(1-2,\ 4+4)=N(-1,8)$；<br>
+  $X\sim\mathrm{Pois}(2),Y\sim\mathrm{Pois}(5)$ 独立 $\Rightarrow X+Y\sim\mathrm{Pois}(7)$。</p>
+</div>
+
+<!-- ================= M5-01 ================= -->
+<h2 class="sec" id="c10">M5-01 蒙特卡洛方法与大数定律<small>用随机数算常数：频率为什么能替代概率</small></h2>
+
+<h3>一、蒙特卡洛的三个案例</h3>
+<table>
+  <tr><th class="l">案例</th><th class="l">目标</th><th class="l">构造的 $g(X)$</th></tr>
+  <tr><td class="l">投点求 $\pi$</td><td class="l">$\pi$</td><td class="l">$\mathbf 1\{\text{点在圆内}\}$，$\pi\approx4\bar g$</td></tr>
+  <tr><td class="l">积分 $\int_{-1}^1e^{-x^2}\mathrm dx$</td><td class="l">定积分</td><td class="l">$g(x)=e^{-x^2}$，$X\sim U(-1,1)$，积分 $\approx2\bar g$</td></tr>
+  <tr><td class="l">日销售额超 30 万</td><td class="l">概率</td><td class="l">$\mathbf 1\{PQ&gt;300000\}$</td></tr>
+</table>
+
+<div class="key">
+  <b>蒙特卡洛思想</b>：要算 $\theta$，先找到随机变量 $X$ 和函数 $g$ 使 $\theta=E[g(X)]$；生成 $x_1,\dots,x_n$，用样本均值
+  $$\bar g=\frac1n\sum_{i=1}^{n}g(x_i)\approx E[g(X)]=\theta.$$
+  <b>依据</b>：大数定律。
+</div>
+
+<div class="ex">
+  <span class="tag">积分案例展开</span>
+  <p>$$\int_{-1}^{1}e^{-x^2}\mathrm dx=(1-(-1))E[e^{-X^2}]=2E[e^{-X^2}],\quad X\sim U(-1,1).$$</p>
+  <p>所以生成 $n$ 个 $U(-1,1)$ 的点，算 $e^{-x_i^2}$ 的平均，乘 2 即可。<b>核心技巧：把积分写成「区间长度 × 期望」</b>。</p>
+</div>
+
+<h3>二、大数定律</h3>
+<div class="key">
+  <b>辛钦大数定律</b>：$\{X_i\}$ 独立同分布，$E(X_i)=\mu$，则
+  $$\lim_{n\to\infty}P\left(\left|\frac1n\sum_{i=1}^{n}X_i-\mu\right|&lt;\varepsilon\right)=1.$$
+  即<b>样本均值依概率收敛到总体期望</b>。
+</div>
+
+<h4>证明（切比雪夫路线）</h4>
+<p>$\bar X_n$ 的期望为 $\mu$，方差为 $\sigma^2/n$。由切比雪夫不等式：</p>
+<p>$$P(|\bar X_n-\mu|\ge\varepsilon)\le\frac{\mathrm{Var}(\bar X_n)}{\varepsilon^2}=\frac{\sigma^2}{n\varepsilon^2}\to0.$$</p>
+<p><b>关键</b>：方差随 $n$ 缩小到 0，所以均值必然挤向 $\mu$。</p>
+
+<div class="warn">
+  <b>「$n$ 越大，$\bar X$ 与 $\mu$ 差距必然越小」是错的。</b>大数定律说的是<b>概率意义</b>上的收敛（依概率收敛），不是每个样本路径都单调靠近。个别样本仍可能偏离，只是偏离的概率趋于 0。
+</div>
+
+<h3>三、蒙特卡洛的误差</h3>
+<p>由中心极限定理（下一讲），$\bar g$ 的标准误约为 $\dfrac{\sigma_g}{\sqrt n}$。所以</p>
+<div class="key">
+  <b>误差 $\propto 1/\sqrt n$</b>：精度提高 10 倍，样本量要增加 100 倍。<b>这是蒙特卡洛最本质的代价。</b>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>把蒙特卡洛当成「随机猜测」。</b>它是有严格理论保证的数值方法，误差可量化。</li>
+    <li><b>忘记乘区间长度。</b>$\int_a^b g=(b-a)E[g(X)]$，漏掉 $(b-a)$ 是常见错误。</li>
+    <li><b>以为大数定律保证「一定收敛到」。</b>是依概率收敛，不是必然收敛。</li>
+  </ul>
+</div>
+
+<!-- ================= M5-02 ================= -->
+<h2 class="sec" id="c11">M5-02 中心极限定理<small>为什么正态分布无处不在</small></h2>
+
+<h3>一、定理</h3>
+<div class="key">
+  <b>林德伯格–莱维 CLT</b>：$\{X_n\}$ 独立同分布，$E(X_n)=\mu$，$\mathrm{Var}(X_n)=\sigma^2$，则
+  $$Y_n^*=\frac{\sum_{i=1}^{n}X_i-n\mu}{\sqrt n\,\sigma}\ \xrightarrow{L}\ N(0,1).$$
+  等价写法：$S_n=\sum X_i$ 近似服从 $N(n\mu,\ n\sigma^2)$；$\bar X$ 近似服从 $N\!\left(\mu,\ \frac{\sigma^2}{n}\right)$。
+</div>
+
+<h3>二、四个版本（由特殊到一般）</h3>
+<table>
+  <tr><th class="l">版本</th><th class="l">对序列的要求</th><th class="l">关键条件</th></tr>
+  <tr><td class="l">棣莫弗–拉普拉斯</td><td class="l">$S_n\sim B(n,p)$</td><td class="l">$0&lt;p&lt;1$</td></tr>
+  <tr><td class="l">林德伯格–莱维</td><td class="l">独立同分布</td><td class="l">期望、方差有限</td></tr>
+  <tr><td class="l">李雅普诺夫</td><td class="l">独立，可不同分布</td><td class="l">$2+\delta$ 阶矩条件</td></tr>
+  <tr><td class="l">林德伯格</td><td class="l">独立，可不同分布</td><td class="l">大波动贡献趋 0</td></tr>
+</table>
+<p class="tbl-note">共同结论：独立随机变量的和，标准化后依分布收敛到 $N(0,1)$。</p>
+
+<h3>三、两种收敛的区别</h3>
+<div class="key">
+  <ul>
+    <li><b>依分布收敛</b>：$F_n(x)\to F(x)$（分布函数逐点收敛），记 $X_n\xrightarrow{L}X$。</li>
+    <li><b>依概率收敛</b>：$P(|X_n-X|&gt;\varepsilon)\to0$，记 $X_n\xrightarrow{P}X$。</li>
+  </ul>
+  <b>依概率收敛 $\Rightarrow$ 依分布收敛，反之不然。</b>反例：$X\sim N(0,1)$，$X_n=-X$，分布相同但 $|X_n-X|=2|X|$ 不趋 0。
+</div>
+
+<h3>四、解题模板（必背）</h3>
+<div class="key">
+  <ol>
+    <li>求 $Y$（$S_n$ 或 $\bar X$）的期望 $\mu_Y$ 与方差 $\sigma_Y^2$；</li>
+    <li>写近似分布 $N(\mu_Y,\sigma_Y^2)$；</li>
+    <li>标准化并用 $\Phi$ 表示：
+    $$P(a&lt;Y&lt;b)\approx\Phi\!\left(\frac{b-\mu_Y}{\sigma_Y}\right)-\Phi\!\left(\frac{a-\mu_Y}{\sigma_Y}\right).$$</li>
+  </ol>
+</div>
+
+<div class="ex">
+  <span class="tag">经典样题：10000 名投保人</span>
+  <p>每人平均索赔 280 元，标准差 800 元。求总索赔 $S$ 超过 270 万元的概率。</p>
+  <p><b>解</b>　$E(S)=10000\times280=2{,}800{,}000$。</p>
+  <p>$$\sigma_S=800\times\sqrt{10000}=800\times100=80{,}000.$$</p>
+  <p>$$\begin{aligned}P(S&gt;2{,}700{,}000)&=1-\Phi\!\left(\frac{2{,}700{,}000-2{,}800{,}000}{80{,}000}\right)\\&=1-\Phi(-1.25)=\Phi(1.25)\approx0.8944.\end{aligned}$$</p>
+  <p><b>注意</b>：$\sigma_S$ 要用 $\sqrt n$ 缩放，不是 $n$。<b>方差可加，标准差按 $\sqrt n$ 增长</b>。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 4.4.3 生成正态随机数</span>
+  <p>12 个 $U(0,1)$ 之和 $S$：$E(S)=6$，$\mathrm{Var}(S)=12\times\frac{1}{12}=1$。由 CLT，$Z=S-6$ 近似 $N(0,1)$。</p>
+  <p>故 $\mu+\sigma(S-6)\sim N(\mu,\sigma^2)$。<b>这就是早期计算机生成正态随机数的经典方法</b>。</p>
+</div>
+
+<div class="ex">
+  <span class="tag">例 4.4.4 数值计算误差</span>
+  <p>保留 $k$ 位小数，每个数的舍入误差 $\varepsilon_i\sim U(-0.5\times10^{-k},\ 0.5\times10^{-k})$，均值 0，方差 $\frac{10^{-2k}}{12}$。</p>
+  <p>$n$ 个数求和的总误差 $\approx N\!\left(0,\ \frac{n}{12}10^{-2k}\right)$，故</p>
+  <p>$$P\!\left(|S-S'|\le\frac{2}{\sqrt{12}}\sqrt n\,10^{-k}\right)\approx0.95.$$</p>
+  <p><b>实用含义</b>：误差随 $\sqrt n$ 增长，而不是随 $n$ 线性增长。</p>
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>标准差按 $n$ 放大。</b>应为 $\sqrt n$ 倍。这是本题型第一大错。</li>
+    <li><b>忘记连续性修正。</b>求「至少」「不超过」这类离散和时，严格做法要 ±0.5，多数教材题可省略，但要心里有数。</li>
+    <li><b>把 CLT 用于非独立序列。</b>强相关时 CLT 不成立。</li>
+    <li><b>混用依分布收敛与依概率收敛。</b>CLT 给的是依分布收敛。</li>
+  </ul>
+</div>
+
+<hr>
+
+<div class="card">
+  <b>全书脉络回顾</b>
+  <p>M1 建立语言（事件、概率、随机变量）；M2 教会「有信息时怎么更新」；M3 把离散推广到连续；M4（另册）处理多个变量的联动；M5 说明为什么单个随机性在大量重复下会呈现确定规律。</p>
+  <p style="margin-bottom:0">一句话：<b>概率论 = 用几条公理，推出整套在不确定中做判断的规则</b>。</p>
+</div>
+
+</div>
+</body>
+</html>

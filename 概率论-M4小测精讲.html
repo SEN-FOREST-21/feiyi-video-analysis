@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>概率论 M4 小测精讲 —— 11 道样题逐题详解</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --ink:#1b1b1f; --muted:#6b7280; --line:#e4e4e7; --bg:#fcfcfb;
+  --accent:#0f5c4e; --accent-l:#eef7f4;
+  --warn:#9a3412; --warn-l:#fff4ec;
+  --trap:#9f1239; --trap-l:#fff1f4;
+  --blue:#1e40af; --blue-l:#eff4ff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  font-size:16px; line-height:1.85;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px 100px}
+header.top{
+  border-bottom:2px solid var(--ink); margin:0 -22px 34px; padding:52px 22px 26px; background:#fff;
+}
+header.top h1{font-size:30px;margin:0 0 8px;letter-spacing:-.5px}
+header.top .sub{color:var(--muted);font-size:15px}
+header.top .meta{margin-top:16px;font-size:13px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap}
+h2.sec{
+  font-size:23px;margin:56px 0 6px;padding:12px 0 12px 16px;
+  border-left:6px solid var(--accent); background:linear-gradient(90deg,var(--accent-l),transparent 70%);
+}
+h2.sec small{display:block;font-size:13px;font-weight:400;color:var(--muted);letter-spacing:.4px;margin-top:3px}
+h3.q{
+  font-size:18px;margin:40px 0 14px;padding:10px 14px;
+  border:1px solid var(--line); border-left:4px solid var(--ink); background:#fff; border-radius:0 8px 8px 0;
+}
+h3.q .no{display:inline-block;background:var(--ink);color:#fff;font-size:12px;
+  padding:1px 9px;border-radius:99px;margin-right:10px;vertical-align:2px;letter-spacing:.5px}
+h4{font-size:15px;margin:24px 0 8px;color:var(--accent);letter-spacing:.3px}
+h4::before{content:"▍";margin-right:6px;color:var(--accent)}
+p{margin:10px 0}
+ul,ol{margin:10px 0;padding-left:24px}
+li{margin:6px 0}
+code{background:#f4f4f5;padding:1px 5px;border-radius:4px;font-size:90%}
+
+/* 卡片 */
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0}
+.qbox{
+  background:#fff;border:1px solid var(--line);border-top:3px solid var(--ink);
+  border-radius:6px;padding:16px 20px;margin:14px 0;
+}
+.qbox .tag{font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.idea{
+  background:var(--blue-l); border-left:4px solid var(--blue); padding:14px 18px;
+  border-radius:0 8px 8px 0; margin:16px 0;
+}
+.idea b{color:var(--blue)}
+.key{
+  background:var(--accent-l); border-left:4px solid var(--accent); padding:14px 18px;
+  border-radius:0 8px 8px 0; margin:16px 0;
+}
+.trap{
+  background:var(--trap-l); border-left:4px solid var(--trap); padding:14px 18px;
+  border-radius:0 8px 8px 0; margin:16px 0;
+}
+.trap b{color:var(--trap)}
+.warn{
+  background:var(--warn-l); border-left:4px solid var(--warn); padding:14px 18px;
+  border-radius:0 8px 8px 0; margin:16px 0;
+}
+.warn b{color:var(--warn)}
+.step{counter-reset:s;margin:14px 0}
+.step>div{position:relative;padding-left:42px;margin:14px 0}
+.step>div::before{
+  counter-increment:s;content:counter(s);
+  position:absolute;left:0;top:2px;width:26px;height:26px;line-height:26px;text-align:center;
+  background:var(--accent);color:#fff;border-radius:50%;font-size:13px;font-weight:600;
+}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:15px;background:#fff}
+th,td{border:1px solid var(--line);padding:9px 12px;text-align:center}
+th{background:#f6f6f7;font-weight:600}
+td.l,th.l{text-align:left}
+.tbl-note{font-size:13px;color:var(--muted);margin-top:-6px}
+.ans{
+  display:inline-block;background:var(--accent);color:#fff;font-size:13px;
+  padding:2px 10px;border-radius:4px;letter-spacing:.5px;margin-right:8px;
+}
+hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.toc{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px 24px;margin:26px 0}
+.toc ol{margin:0;padding-left:20px}
+.toc a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #bbb}
+.toc a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}body{font-size:15.5px}.wrap{padding:0 15px 70px}header.top{margin:0 -15px 26px;padding:36px 15px 20px}}
+@media print{
+  body{background:#fff;font-size:11pt}
+  header.top{background:#fff}
+  h2.sec{break-after:avoid}
+  h3.q{break-after:avoid}
+  .card,.qbox,.trap,.key,.idea{break-inside:avoid}
+}
+mjx-container{overflow-x:auto;overflow-y:hidden}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>概率论 M4 小测精讲</h1>
+  <div class="sub">多维随机变量 —— 11 道小测样题逐题拆解</div>
+  <div class="meta">
+    <span>4-1 联合分布 / 4-2 函数分布 / 4-3 矩 / 4-4 条件分布</span>
+    <span>每题：考点 → 思路 → 分步解 → 易错 → 变式</span>
+  </div>
+</header>
+
+<div class="toc">
+  <b>目录</b>
+  <ol>
+    <li><a href="#m41">4-1 联合分布、边际分布与独立性（4 题）</a></li>
+    <li><a href="#m42">4-2 多维随机变量函数的分布（2 题）</a></li>
+    <li><a href="#m43">4-3 多维随机变量的矩（3 题）</a></li>
+    <li><a href="#m44">4-4 条件分布、条件期望、条件方差（2 题）</a></li>
+    <li><a href="#app">附录：M4 速查表</a></li>
+  </ol>
+</div>
+
+<div class="card">
+  <b>怎么用这份精讲</b>
+  <ul>
+    <li>每道题都按同一套结构展开，先看「考点」确认这题在考什么，再看「思路」理解为什么这样下手。</li>
+    <li>「分步解」里每一步都写了<strong>为什么可以这样做</strong>，不是只给算式。</li>
+    <li>「易错」是阅卷时真正扣分的地方，比正解更值得看两遍。</li>
+    <li>「变式」给你一个改条件后的同型题，检验是不是真会了。</li>
+  </ul>
+</div>
+
+<!-- ============ 4-1 ============ -->
+<h2 class="sec" id="m41">4-1 联合分布、边际分布与独立性<small>四个基本动作：归一化求常数 → 求边际 → 判断独立 → 算区域概率</small></h2>
+
+<div class="key">
+  <b>本讲四类必考动作</b>
+  <ol>
+    <li><b>定常数 $c$</b>：用 $\iint p(x,y)\,\mathrm{d}x\mathrm{d}y=1$（离散则全部概率和 $=1$）。</li>
+    <li><b>求边际</b>：$p_X(x)=\int_{-\infty}^{\infty}p(x,y)\,\mathrm{d}y$，即「把 $y$ 积掉」。离散就是按行/按列求和。</li>
+    <li><b>判断独立</b>：对所有 $(x,y)$ 都有 $p(x,y)=p_X(x)p_Y(y)$ 才独立。<b>支撑集不是矩形，一定不独立</b>。</li>
+    <li><b>算区域概率</b>：$P\big((X,Y)\in D\big)=\iint_D p(x,y)\,\mathrm{d}x\mathrm{d}y$，先画区域再定积分限。</li>
+  </ol>
+</div>
+
+<h3 class="q" id="q411"><span class="no">4-1 · 题1</span>离散型：边际分布列与独立性判断</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合分布列为</p>
+  <table>
+    <tr><th>$X\backslash Y$</th><th>0</th><th>1</th></tr>
+    <tr><td><b>0</b></td><td>0.2</td><td>0.3</td></tr>
+    <tr><td><b>1</b></td><td>0.1</td><td>0.4</td></tr>
+  </table>
+  <p>求 $X$、$Y$ 的边际分布列，并判断 $X$ 与 $Y$ 是否独立。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>离散型二维随机变量的两个基本操作：<b>行和 / 列和</b>得到边际分布列；用「联合 = 边际之积」验证独立性。</p>
+
+<h4>解题思路</h4>
+<p>边际分布列不需要任何积分，就是把联合分布表<b>按行求和</b>得到 $p_X$、<b>按列求和</b>得到 $p_Y$。原因是</p>
+<p>$$p_X(x_i)=P(X=x_i)=\sum_j P(X=x_i,\,Y=y_j),$$</p>
+<p>即「固定这一行，把所有列的概率加起来」——这就是全概率的思想：不管 $Y$ 取什么值，只要 $X$ 取了这个值就算数。</p>
+<p>判断独立性时，<b>只要找到一对 $(x,y)$ 使 $p(x,y)\neq p_X(x)p_Y(y)$，就可以立刻判定不独立</b>，不必把所有格子都验证一遍。反过来，要判定「独立」则必须全部成立。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>求 $X$ 的边际（行和）</b><br>
+  $$p_X(0)=0.2+0.3=0.5,\qquad p_X(1)=0.1+0.4=0.5.$$
+  检验：$0.5+0.5=1$ ✓</div>
+
+  <div><b>求 $Y$ 的边际（列和）</b><br>
+  $$p_Y(0)=0.2+0.1=0.3,\qquad p_Y(1)=0.3+0.4=0.7.$$
+  检验：$0.3+0.7=1$ ✓</div>
+
+  <div><b>逐个比对「联合 vs 边际之积」</b><br>
+  先看最容易算的格子 $(X,Y)=(0,0)$：
+  $$p(0,0)=0.2,\qquad p_X(0)p_Y(0)=0.5\times0.3=0.15.$$
+  因为 $0.2\neq0.15$，独立性已经被否定，<b>无需再算</b>。</div>
+
+  <div><b>补全对照表（写作业时建议列出来，一眼看出规律）</b>
+  <table>
+    <tr><th>$(x,y)$</th><th>$p(x,y)$</th><th>$p_X(x)p_Y(y)$</th><th>相等？</th></tr>
+    <tr><td>(0,0)</td><td>0.2</td><td>0.15</td><td>✗</td></tr>
+    <tr><td>(0,1)</td><td>0.3</td><td>0.35</td><td>✗</td></tr>
+    <tr><td>(1,0)</td><td>0.1</td><td>0.15</td><td>✗</td></tr>
+    <tr><td>(1,1)</td><td>0.4</td><td>0.35</td><td>✗</td></tr>
+  </table>
+  四个格子全不相等——这不是巧合，说明这张表<b>系统性地</b>偏离独立结构。</div>
+</div>
+
+<div class="ans">答案</div>
+<p>$p_X(0)=p_X(1)=0.5$；$p_Y(0)=0.3,\ p_Y(1)=0.7$；$X$ 与 $Y$ <b>不独立</b>。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>把行和列搞反。</b>$p_X$ 是对 $y$ 求和，即横向加；写反了答案就对不上。记法：$p_X$ 的下标是 $X$，就把 $X$ 固定住，让另一个变量动。</li>
+    <li><b>只验证一个格子就断言独立。</b>必须全部格子都相等才能说独立；找到一个反例只能否定独立。</li>
+    <li><b>以为「边际都均匀所以独立」。</b>本例两个边际都是 (0.5,0.5) 和 (0.3,0.7)，但并不独立。边际分布完全不能反推联合分布，这是二维情形最反直觉的一点。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式</b>：如果把右上角 0.4 改成 0.3、右下角 0.1 改成 0.2（即 $p(0,0)=0.2,p(0,1)=0.3,p(1,0)=0.3,p(1,1)=0.2$），此时 $p_X=(0.5,0.5)$，$p_Y=(0.5,0.5)$，四个格子全部等于 $0.25$ —— 这才独立。体会一下「全相等」和「有一处不等」的差别。
+</div>
+
+<h3 class="q" id="q412"><span class="no">4-1 · 题2</span>连续型：$p(x,y)=c(x+y)$ 的四连问</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合密度为</p>
+  <p>$$p(x,y)=c(x+y),\qquad 0&lt;x&lt;1,\ 0&lt;y&lt;1.$$</p>
+  <p>求：(1) 常数 $c$；(2) 边际密度 $p_X(x)$；(3) 判断独立性；(4) $P(X+Y&lt;1)$。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>这是<b>最标准的连续型综合题模板</b>：归一化 → 积分求边际 → 乘积比对 → 区域积分。四问正好对应四个动作，考试中几乎必出这个套路。</p>
+
+<h4>解题思路</h4>
+<p><b>为什么第一问一定是求 $c$？</b>因为密度函数必须满足正则性 $\iint p=1$，在没定出 $c$ 之前，后面所有积分都带一个未知常数，算出来没有意义。所以「先归一化」是本能反应。</p>
+<p><b>为什么求 $p_X$ 是把 $y$ 积掉？</b>直观上，$p_X(x)$ 描述「$X$ 落在 $x$ 附近」的密度，而 $Y$ 取什么值都行，所以要把所有可能的 $y$ 的贡献累加（积分）起来。</p>
+<p><b>为什么第 (4) 问要画图？</b>因为积分限由区域 $x+y&lt;1$ 和矩形支撑集共同决定，不画图极易写错上下限。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>归一化定 $c$</b><br>
+  $$\iint p\,\mathrm{d}x\mathrm{d}y=\int_0^1\!\!\int_0^1 c(x+y)\,\mathrm{d}y\,\mathrm{d}x=1.$$
+  先对 $y$ 积分：
+  $$\int_0^1 (x+y)\,\mathrm{d}y=\Big[xy+\tfrac{y^2}{2}\Big]_0^1=x+\tfrac12.$$
+  再对 $x$ 积分：
+  $$c\int_0^1\Big(x+\tfrac12\Big)\mathrm{d}x=c\Big(\tfrac12+\tfrac12\Big)=c.$$
+  故 $c=1$。</div>
+
+  <div><b>求 $p_X(x)$</b>（把 $y$ 从 $0$ 到 $1$ 积掉）<br>
+  $$p_X(x)=\int_0^1 (x+y)\,\mathrm{d}y=x+\tfrac12,\qquad 0&lt;x&lt;1.$$
+  检验：$\int_0^1(x+\tfrac12)\mathrm{d}x=1$ ✓</div>
+
+  <div><b>顺带求 $p_Y(y)$</b>（由对称性可直接写）<br>
+  $$p_Y(y)=\int_0^1(x+y)\,\mathrm{d}x=y+\tfrac12,\qquad 0&lt;y&lt;1.$$</div>
+
+  <div><b>判断独立性</b><br>
+  $$p_X(x)p_Y(y)=\Big(x+\tfrac12\Big)\Big(y+\tfrac12\Big)=xy+\tfrac{x}{2}+\tfrac{y}{2}+\tfrac14,$$
+  而 $p(x,y)=x+y$。两者显然不恒等（例如取 $x=y=0$，左边 $=1/4$，右边 $=0$）。<br>
+  <b>结论：不独立。</b></div>
+
+  <div><b>求 $P(X+Y&lt;1)$</b><br>
+  区域 $D=\{(x,y):0&lt;x&lt;1,\ 0&lt;y&lt;1,\ x+y&lt;1\}$，即单位正方形被对角线 $y=1-x$ 切出的下三角。<br>
+  先固定 $x\in(0,1)$，$y$ 从 $0$ 到 $1-x$：
+  $$\begin{aligned}
+  P(X+Y&lt;1)&=\int_0^1\!\!\int_0^{1-x}(x+y)\,\mathrm{d}y\,\mathrm{d}x\\
+  &=\int_0^1\Big[x(1-x)+\frac{(1-x)^2}{2}\Big]\mathrm{d}x.
+  \end{aligned}$$
+  化简括号内：
+  $$x-x^2+\frac{1-2x+x^2}{2}=\frac12-\frac{x^2}{2}.$$
+  再积分：
+  $$\int_0^1\Big(\frac12-\frac{x^2}{2}\Big)\mathrm{d}x=\frac12-\frac16=\frac13.$$</div>
+</div>
+
+<div class="ans">答案</div>
+<p>$c=1$；$p_X(x)=x+\tfrac12\ (0&lt;x&lt;1)$；<b>不独立</b>；$P(X+Y&lt;1)=\dfrac13$。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>积分限写错</b>：求 $p_X$ 时 $y$ 的限是 $0\to1$（支撑集），不是 $0\to x$ 之类。只有当支撑集含 $x$ 时才需要变限。</li>
+    <li><b>把 $P(X+Y&lt;1)$ 写成 $P(X&lt;1)P(Y&lt;1)$</b>。只有独立时才能拆，本题不独立，必须真的做二重积分。</li>
+    <li><b>化简时算错</b>：$\frac{(1-x)^2}{2}$ 展开是 $\frac{1-2x+x^2}{2}$，与 $x(1-x)=x-x^2$ 相加后 $x$ 恰好抵消，结果是 $\frac12-\frac{x^2}{2}$。这一步是本题最容易出错的地方，建议在草稿上单独算。</li>
+    <li><b>忘了验证 $c$</b>：$c$ 没定出来，后面每个答案都是错的。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式</b>：若改为 $p(x,y)=c(x+y)$，$0&lt;x&lt;2,\ 0&lt;y&lt;1$，则
+  $\int_0^1(x+y)\mathrm{d}y=x+\frac12$，再积分 $c\int_0^2(x+\frac12)\mathrm dx=c(2+1)=3c$，故 $c=\frac13$。
+  支撑集变了，$c$ 就变——<b>$c$ 永远依赖支撑集</b>，这也是必须看清定义域的原因。
+</div>
+
+<h3 class="q" id="q413"><span class="no">4-1 · 题3</span>指数型联合密度：定常数、求边际、判独立、算尾概率</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合密度为</p>
+  <p>$$p(x,y)=c\,e^{-(2x+y)},\qquad x&gt;0,\ y&gt;0.$$</p>
+  <p>求：(1) $c$；(2) 边际密度 $p_X(x)$ 与 $p_Y(y)$；(3) 判断独立性；(4) $P(X&gt;1,\ Y&gt;1)$。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>可分离的联合密度 $p(x,y)=f(x)g(y)$，以及由此带来的三重好处：<b>归一化可以拆成两个一维积分相乘、边际直接读出来、独立性一眼可见</b>。</p>
+
+<h4>解题思路</h4>
+<p>关键观察：$e^{-(2x+y)}=e^{-2x}\cdot e^{-y}$，<b>变量完全分离</b>。这类题目有一个极强的技巧：</p>
+<p>$$\iint f(x)g(y)\,\mathrm{d}x\mathrm{d}y=\Big(\int f(x)\mathrm{d}x\Big)\Big(\int g(y)\mathrm{d}y\Big).$$</p>
+<p>所以归一化不需要真的做二重积分，两个一维积分一乘即可。同理，$p_X(x)\propto e^{-2x}$，一眼看出是参数为 2 的指数分布——<b>这题本质上是在考「能不能认出指数分布的核」</b>。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>归一化定 $c$（用可分离性）</b><br>
+  $$\iint c e^{-2x}e^{-y}\,\mathrm{d}x\mathrm{d}y=c\Big(\int_0^\infty e^{-2x}\mathrm{d}x\Big)\Big(\int_0^\infty e^{-y}\mathrm{d}y\Big)=c\cdot\frac12\cdot1=\frac{c}{2}=1.$$
+  故 $c=2$。</div>
+
+  <div><b>求 $p_X(x)$</b><br>
+  $$p_X(x)=\int_0^\infty 2e^{-2x}e^{-y}\,\mathrm{d}y=2e^{-2x}\int_0^\infty e^{-y}\mathrm{d}y=2e^{-2x},\qquad x&gt;0.$$
+  即 $X\sim \mathrm{Exp}(2)$。</div>
+
+  <div><b>求 $p_Y(y)$</b><br>
+  $$p_Y(y)=\int_0^\infty 2e^{-2x}e^{-y}\,\mathrm{d}x=e^{-y}\int_0^\infty 2e^{-2x}\mathrm{d}x=e^{-y},\qquad y&gt;0.$$
+  即 $Y\sim \mathrm{Exp}(1)$。</div>
+
+  <div><b>判断独立性（最快的做法）</b><br>
+  $$p_X(x)p_Y(y)=2e^{-2x}\cdot e^{-y}=2e^{-(2x+y)}=p(x,y),\qquad \forall x,y&gt;0,$$
+  且支撑集是矩形 $(0,\infty)\times(0,\infty)$。<br>
+  <b>结论：独立。</b></div>
+
+  <div><b>求 $P(X&gt;1,\ Y&gt;1)$（独立性直接拆）</b><br>
+  因为独立，$P(X&gt;1,Y&gt;1)=P(X&gt;1)P(Y&gt;1)$：
+  $$P(X&gt;1)=\int_1^\infty 2e^{-2x}\mathrm{d}x=e^{-2},\qquad P(Y&gt;1)=\int_1^\infty e^{-y}\mathrm{d}y=e^{-1}.$$
+  故 $P(X&gt;1,Y&gt;1)=e^{-3}$。<br>
+  <i>注：即使没想到独立，直接二重积分 $\int_1^\infty\!\!\int_1^\infty 2e^{-2x}e^{-y}\mathrm{d}y\mathrm{d}x$ 结果一样，只是慢。</i></div>
+</div>
+
+<div class="ans">答案</div>
+<p>$c=2$；$p_X(x)=2e^{-2x}\ (x&gt;0)$，$p_Y(y)=e^{-y}\ (y&gt;0)$；<b>独立</b>；$P(X&gt;1,Y&gt;1)=e^{-3}$。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>把 $c$ 算成 1/2。</b>$\int_0^\infty e^{-2x}\mathrm dx=\frac12$ 容易漏掉，导致 $c$ 算反。建议写下 $\int_0^\infty e^{-ax}\mathrm dx=\frac1a$ 再代入。</li>
+    <li><b>以为「能拆成 $f(x)g(y)$」就等于独立。</b>严格说是「<b>加上支撑集是矩形</b>」才等价。若支撑是三角形（如 $0&lt;x&lt;y$），即使表达式能拆，也不独立——因为支撑集把两个变量绑在一起了。</li>
+    <li><b>边际分布漏写支撑集。</b>$p_X(x)=2e^{-2x}$ 必须标注 $x&gt;0$，否则不构成概率密度（在负半轴积分为正，总和超过 1）。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式</b>：若 $p(x,y)=ce^{-(2x+y)}$，但 $0&lt;y&lt;x&lt;\infty$（三角形支撑），则
+  $c$ 变为 $c\int_0^\infty\!\!\int_0^x e^{-2x}e^{-y}\mathrm dy\mathrm dx=c\int_0^\infty e^{-2x}(1-e^{-x})\mathrm dx=c(\frac12-\frac13)=\frac{c}{6}$，故 $c=6$；
+  且<b>不独立</b>，尽管表达式可分离。这就是「支撑集决定独立性」的典型例子。
+</div>
+
+<h3 class="q" id="q414"><span class="no">4-1 · 题4</span>三角形支撑：$p(x,y)=3x,\ 0&lt;y&lt;x&lt;1$</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合密度为</p>
+  <p>$$p(x,y)=3x,\qquad 0&lt;y&lt;x&lt;1.$$</p>
+  <p>求：(1) 边际密度 $p_X(x)$、$p_Y(y)$；(2) $P(X+Y&gt;1)$；(3) 判断独立性。</p>
+</div>
+
+<h4>考点定位</h4>
+<p><b>变限积分</b>。这是 M4 最容易失分的一类：支撑集是三角形，求边际时积分限依赖另一个变量。</p>
+
+<h4>解题思路</h4>
+<p>先画图。$0&lt;y&lt;x&lt;1$ 描述的是单位正方形中<b>对角线 $y=x$ 下方的三角形</b>：</p>
+<ul>
+  <li>横着切（固定 $x$）：$y$ 从 $0$ 到 $x$。所以 $p_X(x)=\int_0^x 3x\,\mathrm dy$。</li>
+  <li>竖着切（固定 $y$）：$x$ 从 $y$ 到 $1$。所以 $p_Y(y)=\int_y^1 3x\,\mathrm dx$。</li>
+</ul>
+<p><b>这两个限正好相反</b>，是最容易写错的地方。口诀：<b>求谁的边际，就把谁固定，看另一个变量的活动范围</b>。</p>
+<p>第 (2) 问需要「三角形 ∩ 半平面 $x+y&gt;1$」，必须重新确定积分限；第 (3) 问支撑集是三角形，可以直接秒判不独立。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>求 $p_X(x)$（固定 $x$，$y:0\to x$）</b><br>
+  $$p_X(x)=\int_0^x 3x\,\mathrm{d}y=3x\cdot x=3x^2,\qquad 0&lt;x&lt;1.$$
+  检验：$\int_0^1 3x^2\mathrm dx=1$ ✓</div>
+
+  <div><b>求 $p_Y(y)$（固定 $y$，$x:y\to1$）</b><br>
+  $$p_Y(y)=\int_y^1 3x\,\mathrm{d}x=\frac{3}{2}\Big[x^2\Big]_y^1=\frac32(1-y^2),\qquad 0&lt;y&lt;1.$$
+  检验：$\int_0^1\frac32(1-y^2)\mathrm dy=\frac32(1-\frac13)=1$ ✓</div>
+
+  <div><b>判断独立性</b><br>
+  支撑集是三角形而非矩形 —— 例如 $p(0.9,\,0.1)=3\times0.9=2.7&gt;0$，但 $p(0.1,\,0.9)=0$（因为要求 $y&lt;x$）。<br>
+  <b>结论：不独立。</b><br>
+  <i>更严格地：$p_X(0.1)p_Y(0.9)=3(0.01)\times\frac32(1-0.81)&gt;0$，而联合密度为 0，故不独立。</i></div>
+
+  <div><b>求 $P(X+Y&gt;1)$</b><br>
+  在三角形 $0&lt;y&lt;x&lt;1$ 内再要求 $y&gt;1-x$。<br>
+  固定 $x$：需要 $\max(0,\,1-x)&lt;y&lt;x$。当 $x\le\frac12$ 时 $1-x\ge x$，无解；故 $x$ 从 $\frac12$ 到 $1$，$y$ 从 $1-x$ 到 $x$。
+  $$\begin{aligned}
+  P(X+Y&gt;1)&=\int_{1/2}^{1}\!\!\int_{1-x}^{x}3x\,\mathrm{d}y\,\mathrm{d}x
+  =\int_{1/2}^{1}3x\big[x-(1-x)\big]\mathrm{d}x\\
+  &=\int_{1/2}^{1}3x(2x-1)\,\mathrm{d}x=\int_{1/2}^{1}(6x^2-3x)\,\mathrm{d}x\\
+  &=\Big[2x^3-\tfrac32x^2\Big]_{1/2}^{1}
+  =\Big(2-\tfrac32\Big)-\Big(\tfrac14-\tfrac38\Big)\\
+  &=\tfrac12-\Big(-\tfrac18\Big)=\tfrac58.
+  \end{aligned}$$</div>
+</div>
+
+<div class="ans">答案</div>
+<p>$p_X(x)=3x^2\ (0&lt;x&lt;1)$；$p_Y(y)=\frac32(1-y^2)\ (0&lt;y&lt;1)$；<b>不独立</b>；$P(X+Y&gt;1)=\dfrac58$。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>$p_Y$ 的积分限写成 $0\to y$。</b>固定 $y$ 时，$x$ 的范围是 $y&lt;x&lt;1$，即 $x$ 从 $y$ 到 $1$，不是 $0$ 到 $y$。这是本题第一大坑。</li>
+    <li><b>$p_X$ 里把 $3x$ 当作常数提出后忘了乘长度。</b>$\int_0^x 3x\,\mathrm dy=3x\cdot x=3x^2$，多一个 $x$。</li>
+    <li><b>$P(X+Y&gt;1)$ 的下限用 $0$。</b>必须判断 $x$ 从 $\frac12$ 才开始有解，写 $0$ 会导致算出错误结果。</li>
+    <li><b>用「密度里没有 $y$」判断独立。</b>$p(x,y)=3x$ 确实不含 $y$，但支撑集含 $y&lt;x$，所以不独立。再次强调：<b>独立性看支撑集</b>。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式</b>：把密度改为 $p(x,y)=8xy,\ 0&lt;x&lt;y&lt;1$（支撑颠倒），则
+  $p_X(x)=\int_x^1 8xy\,\mathrm dy=4x(1-x^2)$，$p_Y(y)=\int_0^y 8xy\,\mathrm dx=4y^3$。
+  这道题在 4-4 题2 会以条件密度的形式再次出现，可以对照看。
+</div>
+
+<!-- ============ 4-2 ============ -->
+<h2 class="sec" id="m42">4-2 多维随机变量函数的分布<small>核心只有一句话：先写分布函数 $F_Z(z)=P(g(X,Y)\le z)$，再求导</small></h2>
+
+<div class="key">
+  <b>本讲两条主线</b>
+  <ol>
+    <li><b>最大值 / 最小值</b>：用「$M\le m$ 等价于全部 $\le m$」和「$L&gt;l$ 等价于全部 $&gt;l$」，把多维事件拆成一维事件的交，再用独立性变成乘积。这是<b>唯一需要技巧但套路固定</b>的题型。</li>
+    <li><b>变量代换（雅可比）</b>：$p_{U,V}(u,v)=p_{X,Y}\big(x(u,v),y(u,v)\big)\cdot|J|$，<b>换完必须重写支撑集</b>，这是本讲最大失分点。</li>
+  </ol>
+</div>
+
+<h3 class="q" id="q421"><span class="no">4-2 · 题1</span>最大值与最小值的分布：$M=\max(X,Y)$，$L=\min(X,Y)$</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $X,Y$ 独立同分布，均服从 $U(0,1)$。令</p>
+  <p>$$M=\max(X,Y),\qquad L=\min(X,Y).$$</p>
+  <p>求：(1) $M$ 与 $L$ 的分布函数与密度；(2) $P(L&gt;0.5)$；(3) $P(M&lt;0.5)$。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>次序统计量的最简单情形。核心是把「最大/最小」这类<b>逻辑量词</b>翻译成事件的交/并。</p>
+
+<h4>解题思路</h4>
+<p>这类题不能直接对 $\max$ 求导，因为 $\max$ 不是单调函数（它是分段的）。标准的处理是<b>绕开密度、直接算分布函数</b>：</p>
+<ul>
+  <li><b>最大值用「$\le$」方向</b>：$M\le m \iff X\le m$ 且 $Y\le m$。交事件在独立时变成乘积，非常好算。</li>
+  <li><b>最小值用「$&gt;$」方向</b>：$L&gt;l \iff X&gt;l$ 且 $Y&gt;l$。同理。</li>
+</ul>
+<p>这就是为什么要「反着用不等号」——<b>$\max\le$ 和 $\min&gt;$ 才是能拆成「且」的方向</b>。如果用 $M&gt;m$，那是「或」，需要容斥，反而麻烦。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>$M$ 的分布函数</b>（$0&lt;m&lt;1$）<br>
+  $$F_M(m)=P(M\le m)=P(X\le m,\ Y\le m)\overset{\text{独立}}{=}P(X\le m)P(Y\le m)=m\cdot m=m^2.$$
+  完整写法：
+  $$F_M(m)=\begin{cases}0,& m\le 0\\ m^2,& 0&lt;m&lt;1\\ 1,& m\ge 1\end{cases}$$</div>
+
+  <div><b>$M$ 的密度</b>（对 $m$ 求导，支撑集内）<br>
+  $$p_M(m)=F_M'(m)=2m,\qquad 0&lt;m&lt;1.$$
+  注意 $m=0,1$ 处不可导无所谓，密度只在几乎处处有定义即可。</div>
+
+  <div><b>$L$ 的分布函数</b>（$0&lt;l&lt;1$）<br>
+  $$F_L(l)=P(L\le l)=1-P(L&gt;l)=1-P(X&gt;l,\ Y&gt;l)=1-(1-l)^2.$$
+  展开：$F_L(l)=2l-l^2$。</div>
+
+  <div><b>$L$ 的密度</b><br>
+  $$p_L(l)=F_L'(l)=2-2l=2(1-l),\qquad 0&lt;l&lt;1.$$</div>
+
+  <div><b>$P(L&gt;0.5)$：直接用「且」的形式最快</b><br>
+  $$P(L&gt;0.5)=P(X&gt;0.5,\ Y&gt;0.5)=P(X&gt;0.5)P(Y&gt;0.5)=0.5\times0.5=0.25.$$</div>
+
+  <div><b>$P(M&lt;0.5)$：同理</b><br>
+  $$P(M&lt;0.5)=P(X&lt;0.5,\ Y&lt;0.5)=0.5\times0.5=0.25.$$
+  也可用 $F_M(0.5)=0.5^2=0.25$ 验证 ✓</div>
+</div>
+
+<div class="ans">答案</div>
+<p>$F_M(m)=m^2,\ p_M(m)=2m$；$F_L(l)=2l-l^2,\ p_L(l)=2(1-l)$（均限于 $0&lt;m,l&lt;1$）；$P(L&gt;0.5)=0.25$；$P(M&lt;0.5)=0.25$。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>以为 $M$ 和 $L$ 同分布。</b>虽然 $X,Y$ 同分布，但 $M$ 的密度是 $2m$（偏右），$L$ 的是 $2(1-l)$（偏左），完全不同。因为「最大」天然偏大、「最小」天然偏小。</li>
+    <li><b>用 $P(M&gt;m)=P(X&gt;m)P(Y&gt;m)$。</b>这是错的！$M&gt;m$ 只需「至少一个」大于 $m$，是<b>并</b>不是交。正确做法是先算 $P(M\le m)$ 再取补。</li>
+    <li><b>忘记 $F_L$ 的常数 1。</b>$P(L\le l)=1-P(L&gt;l)$ 里的 1 漏掉，答案会变成 $\le 0$ 的数。</li>
+    <li><b>忽略独立性的使用前提。</b>本题能拆成乘积全靠 $X,Y$ 独立。若不独立，$P(X\le m,Y\le m)\neq P(X\le m)P(Y\le m)$，必须用联合分布。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式（必会）</b>：$n$ 个独立 $U(0,1)$ 的最大值 $M_n$：
+  $$F_{M_n}(m)=m^n,\qquad p_{M_n}(m)=n m^{n-1},\qquad E(M_n)=\frac{n}{n+1}.$$
+  当 $n=10$ 时 $E(M_{10})=\frac{10}{11}\approx0.909$ —— 最大值几乎贴着 1，这符合直觉。
+</div>
+
+<h3 class="q" id="q422"><span class="no">4-2 · 题2</span>变量代换：$U=X+Y$，$V=X-Y$</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合密度为</p>
+  <p>$$p(x,y)=e^{-(x+y)},\qquad x&gt;0,\ y&gt;0.$$</p>
+  <p>令 $U=X+Y$，$V=X-Y$。求：(1) $(U,V)$ 的联合密度；(2) 边际密度 $p_U(u)$、$p_V(v)$；(3) 判断 $U$ 与 $V$ 是否独立。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>二维变量代换公式（雅可比法）。三道工序：<b>求反变换 → 算雅可比 → 重写支撑集</b>。</p>
+
+<h4>解题思路</h4>
+<p>公式为</p>
+<p>$$p_{U,V}(u,v)=p_{X,Y}\big(x(u,v),\,y(u,v)\big)\cdot|J|,\qquad J=\det\frac{\partial(x,y)}{\partial(u,v)}.$$</p>
+<p><b>为什么会有 $|J|$？</b>因为密度的含义是「单位面积的概率」，换坐标后面积被拉伸/压缩了 $|J|$ 倍，必须补偿，否则总积分不再是 1。这是「换元必配雅可比」的本质。</p>
+<p>另一个关键：<b>支撑集必须跟着换</b>。$x&gt;0,y&gt;0$ 在 $(u,v)$ 坐标下变成什么形状，决定了后面边际积分的上下限。这一步是绝大多数人失分的地方。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>求反变换</b><br>
+  由 $u=x+y,\ v=x-y$ 相加、相减：
+  $$x=\frac{u+v}{2},\qquad y=\frac{u-v}{2}.$$</div>
+
+  <div><b>算雅可比</b><br>
+  $$J=\det\begin{pmatrix}\dfrac{\partial x}{\partial u}&\dfrac{\partial x}{\partial v}\\[6pt] \dfrac{\partial y}{\partial u}&\dfrac{\partial y}{\partial v}\end{pmatrix}
+  =\det\begin{pmatrix}\tfrac12&\tfrac12\\[4pt] \tfrac12&-\tfrac12\end{pmatrix}
+  =-\tfrac14-\tfrac14=-\tfrac12.$$
+  故 $|J|=\dfrac12$。</div>
+
+  <div><b>重写支撑集（最关键的一步）</b><br>
+  原条件 $x&gt;0$ 且 $y&gt;0$，代入反变换：
+  $$\frac{u+v}{2}&gt;0\ \Rightarrow\ v&gt;-u,\qquad \frac{u-v}{2}&gt;0\ \Rightarrow\ v&lt;u.$$
+  合起来：$-u&lt;v&lt;u$，这要求 $u&gt;0$。<br>
+  几何上：$(u,v)$ 平面中被两条射线 $v=\pm u$ 夹出的<b>右向楔形</b>。</div>
+
+  <div><b>写联合密度</b><br>
+  $$p_{U,V}(u,v)=e^{-(x+y)}\Big|_{x+y=u}\cdot\frac12=\frac12 e^{-u},\qquad 0&lt;u&lt;\infty,\ -u&lt;v&lt;u.$$</div>
+
+  <div><b>求 $p_U(u)$（把 $v$ 积掉，长度是 $2u$）</b><br>
+  $$p_U(u)=\int_{-u}^{u}\frac12 e^{-u}\,\mathrm{d}v=\frac12 e^{-u}\cdot 2u=u e^{-u},\qquad u&gt;0.$$
+  检验：$\int_0^\infty u e^{-u}\mathrm du=1$ ✓（这是 Gamma(2,1) 分布）</div>
+
+  <div><b>求 $p_V(v)$（把 $u$ 积掉；注意 $u&gt;|v|$）</b><br>
+  由 $-u&lt;v&lt;u$ 且 $u&gt;0$ 得 $u&gt;|v|$：
+  $$p_V(v)=\int_{|v|}^{\infty}\frac12 e^{-u}\,\mathrm{d}u=\frac12 e^{-|v|},\qquad -\infty&lt;v&lt;\infty.$$
+  检验：$\int_{-\infty}^{\infty}\frac12 e^{-|v|}\mathrm dv=1$ ✓（这是拉普拉斯分布）</div>
+
+  <div><b>判断独立性</b><br>
+  $$p_U(u)p_V(v)=u e^{-u}\cdot\frac12 e^{-|v|}=\frac12 u e^{-u}e^{-|v|},$$
+  而 $p_{U,V}(u,v)=\frac12 e^{-u}$，两者相差一个因子 $u$（且 $p_{U,V}$ 不含 $v$）。<br>
+  <b>结论：不独立。</b></div>
+</div>
+
+<div class="ans">答案</div>
+<p>$p_{U,V}(u,v)=\frac12 e^{-u}$，$0&lt;u&lt;\infty,\ -u&lt;v&lt;u$；$p_U(u)=ue^{-u}\ (u&gt;0)$；$p_V(v)=\frac12 e^{-|v|}$；<b>不独立</b>。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>支撑集没换。</b>直接写 $u&gt;0,v\in\mathbb R$ 是错的 —— 必须保留 $-u&lt;v&lt;u$。这一步错了，$p_U$ 就积成 $e^{-u}$ 而不是 $ue^{-u}$，整题崩。</li>
+    <li><b>雅可比漏绝对值。</b>$J=-\frac12$，若直接乘 $-\frac12$ 会得到负密度。</li>
+    <li><b>雅可比方向算反。</b>公式里是 $\partial(x,y)/\partial(u,v)$，即<b>旧变量对新的求导</b>。写成 $\partial(u,v)/\partial(x,y)$ 得到的是倒数 $-2$，结果差 4 倍。</li>
+    <li><b>求 $p_V$ 时把 $u$ 的下限写成 0。</b>由 $-u&lt;v$ 得 $u&gt;v$；由 $v&lt;u$ 得 $u&gt;v$；综合是 $u&gt;|v|$。写 $0$ 会得到 $\frac12$（常数），明显不等于 1，可以自我检验出来。</li>
+    <li><b>认为「$U,V$ 是 $X,Y$ 的线性变换所以独立」。</b>线性变换不保证独立，只有正交变换在正态情形下才保独立。本题原分布不是正态，结论不独立。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式（重要）</b>：若 $(X,Y)$ 服从<b>二元正态</b>且 $X,Y$ 独立（$\rho=0$），则 $U=X+Y,\ V=X-Y$ 也<b>独立</b>——这正是正态的特殊性。所以上面的结论「不独立」是<strong>专属于指数型密度</strong>的，别记成通用规律。
+</div>
+
+<!-- ============ 4-3 ============ -->
+<h2 class="sec" id="m43">4-3 多维随机变量的矩<small>协方差、相关系数、线性组合的方差 —— 全是「期望的线性性 + 平方展开」</small></h2>
+
+<div class="key">
+  <b>本讲五条公式（背下来直接套）</b>
+  <ol>
+    <li>$\mathrm{Cov}(X,Y)=E(XY)-E(X)E(Y)$ —— 最常用的计算式。</li>
+    <li>$\rho_{XY}=\dfrac{\mathrm{Cov}(X,Y)}{\sigma_X\sigma_Y}\in[-1,1]$ —— 无量纲，只衡量<b>线性</b>相关。</li>
+    <li>$\mathrm{Var}(aX+bY)=a^2\mathrm{Var}(X)+b^2\mathrm{Var}(Y)+2ab\,\mathrm{Cov}(X,Y)$。</li>
+    <li>$\mathrm{Cov}(X,X)=\mathrm{Var}(X)$；$\mathrm{Cov}$ 对两个槽位都是<b>线性</b>的。</li>
+    <li>独立 $\Rightarrow$ 不相关（$\rho=0$），<b>反之不成立</b>（除非联合正态）。</li>
+  </ol>
+</div>
+
+<h3 class="q" id="q431"><span class="no">4-3 · 题1</span>三角形支撑上求 Cov 与 ρ</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合密度为</p>
+  <p>$$p(x,y)=2,\qquad 0&lt;x&lt;y&lt;1.$$</p>
+  <p>求：(1) $\mathrm{Cov}(X,Y)$；(2) $\rho_{XY}$；(3) 判断 $X,Y$ 是否独立。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>「先求五个期望，再套协方差公式」。所需原料：$E(X)$、$E(Y)$、$E(XY)$、$E(X^2)$、$E(Y^2)$。</p>
+
+<h4>解题思路</h4>
+<p>本题密度是常数 2，意味着<b>在三角形区域上均匀分布</b>。这类题可以用「重心公式」快速验证答案（见下方检验）。</p>
+<p>计算顺序建议固定为：</p>
+<ol>
+  <li>先算 $E(X),E(Y)$（一阶矩，用于 $E(XY)-E(X)E(Y)$）；</li>
+  <li>再算 $E(X^2),E(Y^2)$（二阶矩，用于方差）；</li>
+  <li>最后算 $E(XY)$（交叉矩）。</li>
+</ol>
+<p>每一步都是「固定一个、积另一个」，支撑集 $0&lt;x&lt;y&lt;1$ 决定积分限。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>$E(X)$</b>（固定 $y$，$x:0\to y$）<br>
+  $$E(X)=\int_0^1\!\!\int_0^y x\cdot 2\,\mathrm{d}x\,\mathrm{d}y=\int_0^1 2\cdot\frac{y^2}{2}\,\mathrm{d}y=\int_0^1 y^2\mathrm{d}y=\frac13.$$</div>
+
+  <div><b>$E(Y)$</b>（固定 $y$，$x:0\to y$，被积函数是 $y$）<br>
+  $$E(Y)=\int_0^1\!\!\int_0^y y\cdot2\,\mathrm{d}x\,\mathrm{d}y=\int_0^1 2y\cdot y\,\mathrm{d}y=2\int_0^1 y^2\mathrm{d}y=\frac23.$$</div>
+
+  <div><b>$E(X^2)$ 与 $E(Y^2)$</b><br>
+  $$E(X^2)=\int_0^1\!\!\int_0^y 2x^2\mathrm{d}x\mathrm{d}y=\int_0^1\frac{2y^3}{3}\mathrm{d}y=\frac{2}{3}\cdot\frac14=\frac16.$$
+  $$E(Y^2)=\int_0^1\!\!\int_0^y 2y^2\mathrm{d}x\mathrm{d}y=\int_0^1 2y^3\mathrm{d}y=\frac12.$$</div>
+
+  <div><b>$E(XY)$</b><br>
+  $$E(XY)=\int_0^1\!\!\int_0^y 2xy\,\mathrm{d}x\mathrm{d}y=\int_0^1 2y\cdot\frac{y^2}{2}\mathrm{d}y=\int_0^1 y^3\mathrm{d}y=\frac14.$$</div>
+
+  <div><b>算方差</b><br>
+  $$\mathrm{Var}(X)=\frac16-\Big(\frac13\Big)^2=\frac16-\frac19=\frac{1}{18},$$
+  $$\mathrm{Var}(Y)=\frac12-\Big(\frac23\Big)^2=\frac12-\frac49=\frac{1}{18}.$$</div>
+
+  <div><b>算协方差</b><br>
+  $$\mathrm{Cov}(X,Y)=E(XY)-E(X)E(Y)=\frac14-\frac13\cdot\frac23=\frac14-\frac29=\frac{9-8}{36}=\frac{1}{36}.$$</div>
+
+  <div><b>算相关系数</b><br>
+  $$\rho_{XY}=\frac{\mathrm{Cov}(X,Y)}{\sqrt{\mathrm{Var}(X)}\sqrt{\mathrm{Var}(Y)}}=\frac{1/36}{\sqrt{1/18}\sqrt{1/18}}=\frac{1/36}{1/18}=\frac12.$$</div>
+
+  <div><b>判断独立性</b><br>
+  支撑集是三角形（$0&lt;x&lt;y&lt;1$），不是矩形，故<b>不独立</b>。<br>
+  <i>数值验证：$p_X(0.9)p_Y(0.1)&gt;0$，但 $p(0.9,0.1)=0$（因 $0.9\not&lt;0.1$）。</i></div>
+</div>
+
+<div class="ans">答案</div>
+<p>$\mathrm{Cov}(X,Y)=\dfrac1{36}$；$\rho_{XY}=\dfrac12$；<b>不独立</b>。</p>
+
+<div class="warn">
+  <b>快速检验（重心法）</b>：在三角形 $\{0&lt;x&lt;y&lt;1\}$ 上均匀分布，重心为顶点 $(0,0),(0,1),(1,1)$ 的算术平均，即
+  $$\big(\bar x,\bar y\big)=\Big(\frac{0+0+1}{3},\ \frac{0+1+1}{3}\Big)=\Big(\frac13,\frac23\Big),$$
+  与 $E(X)=\frac13,\ E(Y)=\frac23$ 完全一致 ✓。这个方法能在考场上 10 秒验证一阶矩。
+</div>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>$E(Y)$ 漏乘长度。</b>$\int_0^y 2y\,\mathrm dx=2y\cdot y=2y^2$，容易写成 $2y$。</li>
+    <li><b>把 $\mathrm{Var}(X)$ 和 $\mathrm{Var}(Y)$ 算成不同值。</b>本题由于支撑集的对称性（交换 $x\leftrightarrow 1-y$），两者相等，都等于 $\frac1{18}$。若算出不等，要回头检查。</li>
+    <li><b>认为 $\rho=\frac12$ 说明「相关性很强」。</b>$\rho$ 只度量<b>线性</b>关系。$\frac12$ 表示中等正线性相关，说明 $X$ 大时 $Y$ 倾向也大（因为 $x&lt;y$），符合直觉。</li>
+    <li><b>用独立性去推 $E(XY)=E(X)E(Y)$。</b>本题不独立，$E(XY)$ 必须老实做二重积分。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式</b>：若改为 $p(x,y)=2,\ 0&lt;y&lt;x&lt;1$（支撑翻转），则重心变为 $\big(\frac23,\frac13\big)$，$\mathrm{Cov}$ 变为 $-\frac1{36}$，$\rho=-\frac12$。支撑集的方向决定了相关的正负。
+</div>
+
+<h3 class="q" id="q432"><span class="no">4-3 · 题2</span>已知方差与协方差，求线性组合的方差</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $\mathrm{Var}(X)=4$，$\mathrm{Var}(Y)=9$，$\mathrm{Cov}(X,Y)=-2$。求：</p>
+  <p>(1) $\mathrm{Var}(2X+Y)$；(2) $\mathrm{Var}(X-2Y)$；(3) $\mathrm{Cov}(X,\ X+Y)$。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>协方差的双线性。这类题<b>不需要任何分布信息</b>，纯粹是代数展开——是考场上性价比最高的送分题。</p>
+
+<h4>解题思路</h4>
+<p>把 $\mathrm{Var}$ 看成「协方差的平方形式」。核心恒等式：</p>
+<p>$$\mathrm{Var}(aX+bY)=a^2\mathrm{Var}(X)+b^2\mathrm{Var}(Y)+2ab\,\mathrm{Cov}(X,Y).$$</p>
+<p>推导只需一行：$\mathrm{Var}(Z)=\mathrm{Cov}(Z,Z)$，而 $\mathrm{Cov}$ 对每个槽位都线性，展开即得。记住这个来源，就不需要死记系数。</p>
+<p><b>符号是最容易错的地方</b>：当 $b&lt;0$ 时，$2ab$ 为负，但 $\mathrm{Cov}$ 自身的符号再叠一层，容易算错。建议<b>先把 $a,b$ 带符号代进去，再统一算</b>。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>(1) $\mathrm{Var}(2X+Y)$</b>：$a=2,\ b=1$<br>
+  $$\mathrm{Var}(2X+Y)=4\mathrm{Var}(X)+1\cdot\mathrm{Var}(Y)+2\cdot2\cdot1\cdot\mathrm{Cov}(X,Y)$$
+  $$=4\times4+9+4\times(-2)=16+9-8=17.$$</div>
+
+  <div><b>(2) $\mathrm{Var}(X-2Y)$</b>：$a=1,\ b=-2$<br>
+  $$\mathrm{Var}(X-2Y)=1\cdot\mathrm{Var}(X)+4\mathrm{Var}(Y)+2\cdot1\cdot(-2)\cdot\mathrm{Cov}(X,Y)$$
+  $$=4+4\times9-4\times(-2)=4+36+8=48.$$
+  <b>注意最后一项是 $+8$</b>：因为 $b=-2$ 带来负号，而 $\mathrm{Cov}=-2$ 也是负，负负得正。</div>
+
+  <div><b>(3) $\mathrm{Cov}(X,\ X+Y)$</b>：用线性性拆开<br>
+  $$\mathrm{Cov}(X,\ X+Y)=\mathrm{Cov}(X,X)+\mathrm{Cov}(X,Y)=\mathrm{Var}(X)+\mathrm{Cov}(X,Y)$$
+  $$=4+(-2)=2.$$</div>
+</div>
+
+<div class="ans">答案</div>
+<p>$\mathrm{Var}(2X+Y)=17$；$\mathrm{Var}(X-2Y)=48$；$\mathrm{Cov}(X,X+Y)=2$。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>第 (2) 问把 $+8$ 写成 $-8$。</b>这是本题唯一的坑。口诀：<b>「减号 $+$ 负协方差 $=$ 加」</b>。用极端检验：若 $\mathrm{Cov}(X,Y)=-2$ 且 $Y$ 与 $X$ 负相关，那么 $X-2Y$ 相当于把负相关翻成正向叠加，方差应该<b>变大</b>，$48&gt;4+36=40$ ✓</li>
+    <li><b>$\mathrm{Var}(2X)$ 算成 $2\mathrm{Var}(X)$。</b>系数要平方，$\mathrm{Var}(2X)=4\mathrm{Var}(X)$。</li>
+    <li><b>把 $\mathrm{Cov}(X,X)$ 写成 1。</b>它等于 $\mathrm{Var}(X)=4$，不是相关系数。</li>
+    <li><b>误以为 $\mathrm{Var}(X-Y)=\mathrm{Var}(X)-\mathrm{Var}(Y)$。</b>方差不能直接加减（除非独立），必须走协方差展开。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式（考试高频）</b>：若 $X,Y$ 独立，则 $\mathrm{Cov}=0$，此时 $\mathrm{Var}(X-Y)=\mathrm{Var}(X)+\mathrm{Var}(Y)=13$。这就是「独立时方差可加、相减也变加」的由来。<b>只有独立才成立。</b>
+</div>
+
+<h3 class="q" id="q433"><span class="no">4-3 · 题3</span>二元正态：线性组合的分布与独立性</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)\sim N(\mu_1,\mu_2,\sigma_1^2,\sigma_2^2,\rho)=N(1,0,1,4,0.5)$，即</p>
+  <p>$$\mu_1=1,\quad\mu_2=0,\quad\sigma_1^2=1,\quad\sigma_2^2=4,\quad\rho=0.5.$$</p>
+  <p>求：(1) $Z=X+Y$ 的分布；(2) $P(Z&lt;4)$ 用 $\Phi(\cdot)$ 表示；(3) 判断 $X,Y$ 是否独立。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>二元正态的三条铁律：<b>线性组合仍正态（无须独立）、参数按方差公式叠加、$\rho=0\iff$ 独立</b>。</p>
+
+<h4>解题思路</h4>
+<p><b>为什么线性组合一定是正态？</b>这是二元正态的<b>封闭性</b>：正态族对线性变换封闭。所以只需求出均值与方差，分布就定了 —— 不需要卷积、不需要雅可比。</p>
+<p><b>均值</b>：$E(X+Y)=E(X)+E(Y)$，永远可加，与独立无关。</p>
+<p><b>方差</b>：$\mathrm{Var}(X+Y)=\sigma_1^2+\sigma_2^2+2\rho\sigma_1\sigma_2$，<b>必须带 $\rho$</b>。注意公式里用的是 $\sigma_1\sigma_2$（标准差之积），不是方差之积 —— 这一步特别容易错。</p>
+<p><b>独立性</b>：对二元正态，$\rho=0$ 是独立的<b>充要条件</b>（这是正态独有的特权）。本题 $\rho=0.5\ne0$，故不独立。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>求 $E(Z)$</b><br>
+  $$E(Z)=E(X)+E(Y)=1+0=1.$$</div>
+
+  <div><b>求 $\mathrm{Var}(Z)$（带 $\rho$ 项）</b><br>
+  先取标准差：$\sigma_1=1$，$\sigma_2=2$。则
+  $$\mathrm{Var}(Z)=\sigma_1^2+\sigma_2^2+2\rho\sigma_1\sigma_2=1+4+2\times0.5\times1\times2=1+4+2=7.$$</div>
+
+  <div><b>写出 $Z$ 的分布</b><br>
+  $$Z=X+Y\sim N(1,\ 7).$$</div>
+
+  <div><b>标准化求 $P(Z&lt;4)$</b><br>
+  $$P(Z&lt;4)=P\Big(\frac{Z-1}{\sqrt7}&lt;\frac{4-1}{\sqrt7}\Big)=\Phi\Big(\frac{3}{\sqrt7}\Big).$$
+  数值上 $\frac{3}{\sqrt7}\approx1.134$，查表 $\Phi(1.134)\approx0.8716$。</div>
+
+  <div><b>判断独立性</b><br>
+  $\rho=0.5\neq0$，故 $X$ 与 $Y$ <b>不独立</b>。</div>
+</div>
+
+<div class="ans">答案</div>
+<p>$Z\sim N(1,7)$；$P(Z&lt;4)=\Phi\!\left(\dfrac{3}{\sqrt7}\right)$；<b>不独立</b>。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>方差里用 $\sigma_1^2\sigma_2^2$。</b>公式是 $2\rho\sigma_1\sigma_2=2\times0.5\times1\times2=2$；若误用 $1\times4$ 会得到 $2\times0.5\times4=4$，答案变成 9。</li>
+    <li><b>忘记加 $2\rho\sigma_1\sigma_2$ 这一项。</b>得到 $\mathrm{Var}=5$，是「假设独立」的错误结果。</li>
+    <li><b>把 $P(Z&lt;4)$ 写成 $\Phi(4)$。</b>必须先标准化 $(4-1)/\sqrt7$，不能直接用原值。</li>
+    <li><b>以为 $\rho=0.5$ 只是「有点相关」所以近似独立。</b>只要 $\rho\ne0$ 就是不独立，没有「近似」一说。</li>
+    <li><b>用 $\mathrm{Var}(Z)=\mathrm{Var}(X)+\mathrm{Var}(Y)$。</b>这是独立时的特例，本题不适用。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式</b>：若 $\rho=0$，则 $\mathrm{Var}(Z)=1+4=5$，$Z\sim N(1,5)$，且 $X,Y$ 独立。若再求 $P(Z&lt;4)$，则是 $\Phi(3/\sqrt5)$。对比两个答案能看出 $\rho$ 对分布的实际影响。
+</div>
+
+<!-- ============ 4-4 ============ -->
+<h2 class="sec" id="m44">4-4 条件分布、条件期望、条件方差<small>「给定 $Y=y$ 之后，$X$ 的世界长什么样」</small></h2>
+
+<div class="key">
+  <b>本讲核心公式链</b>
+  <ol>
+    <li><b>条件密度</b>：$p_{X|Y}(x|y)=\dfrac{p(x,y)}{p_Y(y)}$，要求 $p_Y(y)&gt;0$。</li>
+    <li><b>条件期望</b>：$E(X|Y=y)=\int x\,p_{X|Y}(x|y)\,\mathrm{d}x$ —— <b>把条件密度当普通密度用</b>。</li>
+    <li><b>条件方差</b>：$\mathrm{Var}(X|Y=y)=E(X^2|Y=y)-\big[E(X|Y=y)\big]^2$。</li>
+    <li><b>重期望公式</b>：$E(X)=E\big[E(X|Y)\big]$ —— 分层求平均，M5 的蒙特卡洛会反复用。</li>
+    <li><b>方差分解</b>：$\mathrm{Var}(X)=\mathrm{Var}\big(E(X|Y)\big)+E\big(\mathrm{Var}(X|Y)\big)$。</li>
+  </ol>
+  <p style="margin-bottom:0"><b>几何直觉</b>：条件密度 = 在联合密度曲面上沿 $Y=y$ 切一刀，得到的截面曲线<b>重新归一化</b>（除以 $p_Y(y)$ 让它积分为 1）。</p>
+</div>
+
+<h3 class="q" id="q441"><span class="no">4-4 · 题1</span>离散型：给定 $Y=1$ 时 $X$ 的条件分布</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合分布列为</p>
+  <table>
+    <tr><th>$X\backslash Y$</th><th>0</th><th>1</th><th>2</th></tr>
+    <tr><td><b>0</b></td><td>0.10</td><td>0.20</td><td>0.10</td></tr>
+    <tr><td><b>1</b></td><td>0.30</td><td>0.20</td><td>0.10</td></tr>
+  </table>
+  <p>求：(1) $Y=1$ 时 $X$ 的条件分布列；(2) $E(X|Y=1)$；(3) $\mathrm{Var}(X|Y=1)$；(4) 判断 $X,Y$ 是否独立。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>离散条件分布 = <b>「那一列的每个格子」除以「那一列的和」</b>。条件期望与条件方差就是对这条新分布列做普通的期望、方差计算。</p>
+
+<h4>解题思路</h4>
+<p>公式 $p_{X|Y}(x|y)=\dfrac{p(x,y)}{p_Y(y)}$ 在离散情形就是「<b>看列、按比例缩放</b>」。具体到本题，取 $Y=1$ 那一列：</p>
+<p>$$p(0,1)=0.20,\qquad p(1,1)=0.20.$$</p>
+<p>列和 $p_Y(1)=0.20+0.20=0.40$。于是条件概率就是把 0.20 和 0.20 分别除以 0.40，得到 $(0.5,\,0.5)$。<b>这个过程本质上是「在 $Y=1$ 这个子总体里重新分配概率质量」</b>，让总量重新变成 1。</p>
+<p>有了条件分布列，后面的期望、方差就是标准动作，<b>只不过把 $p_X$ 换成 $p_{X|Y}(\cdot|1)$</b>。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>先求 $p_Y(1)$</b>（列和）<br>
+  $$p_Y(1)=p(0,1)+p(1,1)=0.20+0.20=0.40.$$</div>
+
+  <div><b>求条件分布列</b><br>
+  $$P(X=0\mid Y=1)=\frac{p(0,1)}{p_Y(1)}=\frac{0.20}{0.40}=\frac12,$$
+  $$P(X=1\mid Y=1)=\frac{p(1,1)}{p_Y(1)}=\frac{0.20}{0.40}=\frac12.$$
+  检验：$\frac12+\frac12=1$ ✓</div>
+
+  <div><b>条件期望</b><br>
+  $$E(X|Y=1)=0\times\frac12+1\times\frac12=\frac12.$$</div>
+
+  <div><b>条件二阶矩</b><br>
+  $$E(X^2|Y=1)=0^2\times\frac12+1^2\times\frac12=\frac12.$$</div>
+
+  <div><b>条件方差</b><br>
+  $$\mathrm{Var}(X|Y=1)=E(X^2|Y=1)-\big[E(X|Y=1)\big]^2=\frac12-\frac14=\frac14.$$</div>
+
+  <div><b>判断独立性</b><br>
+  算边际：$p_X(0)=0.10+0.20+0.10=0.40$，$p_X(1)=0.30+0.20+0.10=0.60$；
+  $p_Y(0)=0.40$，$p_Y(1)=0.40$，$p_Y(2)=0.20$。<br>
+  取格子 $(0,0)$：$p(0,0)=0.10$，而 $p_X(0)p_Y(0)=0.40\times0.40=0.16$。$0.10\ne0.16$，故<b>不独立</b>。</div>
+</div>
+
+<div class="ans">答案</div>
+<p>$P(X=0|Y=1)=P(X=1|Y=1)=\frac12$；$E(X|Y=1)=\frac12$；$\mathrm{Var}(X|Y=1)=\frac14$；<b>不独立</b>。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>用行和当分母。</b>$p_Y(1)$ 是<b>列</b>和 0.40，不是行和。若误用行和，条件概率之和不为 1，可以立刻发现错误。</li>
+    <li><b>条件分布不归一化。</b>直接写 $(0.20,0.20)$ —— 这加起来只有 0.4，不是分布列。必须除以列和。</li>
+    <li><b>把 $E(X|Y=1)$ 写成 $E(X)$。</b>无条件期望是 $E(X)=0\times0.4+1\times0.6=0.6$，与条件期望 $0.5$ 不同。二者有别正是「条件」二字的含义。</li>
+    <li><b>条件方差用 $\frac14$ 之外的值。</b>本例条件分布是 Bernoulli(1/2)，方差就是 $\frac12\cdot\frac12=\frac14$，可用伯努利方差公式 $p(1-p)$ 交叉验证。</li>
+    <li><b>由「条件分布是均匀」推断独立。</b>条件均匀 ≠ 独立。要看 $p(x,y)$ 是否等于边际之积。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式</b>：求 $E(X|Y=0)$。$p_Y(0)=0.40$，$P(X=0|Y=0)=0.10/0.40=0.25$，$P(X=1|Y=0)=0.30/0.40=0.75$，故 $E(X|Y=0)=0.75$。<br>
+  对照：$E(X|Y=0)=0.75$，$E(X|Y=1)=0.5$，$E(X|Y=2)=0.10/0.20=0.5$。可见条件期望随 $Y$ 变化 —— <b>$E(X|Y)$ 是 $Y$ 的函数，本身也是随机变量</b>，这正是重期望公式 $E(X)=E[E(X|Y)]$ 的由来。验证：
+  $$E[E(X|Y)]=0.75\times0.4+0.5\times0.4+0.5\times0.2=0.3+0.2+0.1=0.6=E(X)\ ✓$$
+</div>
+
+<h3 class="q" id="q442"><span class="no">4-4 · 题2</span>连续型：$p(x,y)=8xy,\ 0&lt;x&lt;y&lt;1$ 的条件密度与条件期望</h3>
+
+<div class="qbox">
+  <span class="tag">题目</span>
+  <p>设 $(X,Y)$ 的联合密度为</p>
+  <p>$$p(x,y)=8xy,\qquad 0&lt;x&lt;y&lt;1.$$</p>
+  <p>求：(1) $p_Y(y)$；(2) 条件密度 $p_{X|Y}(x|y)$；(3) $E(X|Y=y)$；(4) 判断独立性。</p>
+</div>
+
+<h4>考点定位</h4>
+<p>连续条件密度的标准流程：<b>先求边际 → 做除法 → 写清条件支撑集</b>。条件支撑集（给定 $y$ 后 $x$ 的范围）是本讲最容易被忽略、但必须写的一步。</p>
+
+<h4>解题思路</h4>
+<p>条件密度定义：</p>
+<p>$$p_{X|Y}(x|y)=\frac{p(x,y)}{p_Y(y)}.$$</p>
+<p>这里 $p_Y(y)$ 充当「归一化因子」，作用是把 $x$ 方向上的截面曲线重新缩放成积分为 1 的密度。<b>因此求 $p_Y$ 是必经之路，不能跳过。</b></p>
+<p>求 $p_Y(y)$ 时固定 $y$，$x$ 的范围由 $0&lt;x&lt;y$ 给出，即 $x:0\to y$。</p>
+<p>得到条件密度后，$E(X|Y=y)$ 就是对这个条件密度求期望 —— 注意<b>结果里通常还带 $y$</b>，这是正常的：条件期望是 $y$ 的函数。</p>
+
+<h4>分步解</h4>
+<div class="step">
+  <div><b>求 $p_Y(y)$（固定 $y$，$x:0\to y$）</b><br>
+  $$p_Y(y)=\int_0^y 8xy\,\mathrm{d}x=8y\cdot\frac{y^2}{2}=4y^3,\qquad 0&lt;y&lt;1.$$
+  检验：$\int_0^1 4y^3\mathrm dy=1$ ✓</div>
+
+  <div><b>求条件密度</b><br>
+  $$p_{X|Y}(x|y)=\frac{p(x,y)}{p_Y(y)}=\frac{8xy}{4y^3}=\frac{2x}{y^2},\qquad 0&lt;x&lt;y.$$
+  检验（固定 $y$，对 $x$ 积分）：
+  $$\int_0^y\frac{2x}{y^2}\mathrm{d}x=\frac{2}{y^2}\cdot\frac{y^2}{2}=1\ ✓$$
+  <b>注意条件支撑集是 $0&lt;x&lt;y$（上限含 $y$），不是 $0&lt;x&lt;1$。</b></div>
+
+  <div><b>求条件期望</b><br>
+  $$E(X|Y=y)=\int_0^y x\cdot\frac{2x}{y^2}\,\mathrm{d}x=\frac{2}{y^2}\int_0^y x^2\mathrm{d}x=\frac{2}{y^2}\cdot\frac{y^3}{3}=\frac{2y}{3}.$$
+  <b>结果含 $y$ 是正确的</b> —— 给定不同的 $y$，$X$ 的平均位置不同（$y$ 越大，$X$ 的可取范围越宽，均值也越大）。</div>
+
+  <div><b>顺带求条件方差（常考延伸）</b><br>
+  $$E(X^2|Y=y)=\int_0^y x^2\cdot\frac{2x}{y^2}\mathrm{d}x=\frac{2}{y^2}\cdot\frac{y^4}{4}=\frac{y^2}{2}.$$
+  $$\mathrm{Var}(X|Y=y)=\frac{y^2}{2}-\Big(\frac{2y}{3}\Big)^2=\frac{y^2}{2}-\frac{4y^2}{9}=\frac{y^2}{18}.$$</div>
+
+  <div><b>判断独立性</b><br>
+  支撑集是三角形 $0&lt;x&lt;y&lt;1$，非矩形，故<b>不独立</b>。<br>
+  <i>也可从条件密度验证：$p_{X|Y}(x|y)=\frac{2x}{y^2}$ 明显<b>依赖 $y$</b>；若独立，条件密度应退化为 $p_X(x)$，与 $y$ 无关。</i></div>
+</div>
+
+<div class="ans">答案</div>
+<p>$p_Y(y)=4y^3\ (0&lt;y&lt;1)$；$p_{X|Y}(x|y)=\dfrac{2x}{y^2}\ (0&lt;x&lt;y)$；$E(X|Y=y)=\dfrac{2y}{3}$；<b>不独立</b>。另：$\mathrm{Var}(X|Y=y)=\dfrac{y^2}{18}$。</p>
+
+<div class="trap">
+  <b>易错点</b>
+  <ul>
+    <li><b>$p_Y$ 的积分限写成 $x:y\to1$。</b>由 $0&lt;x&lt;y$ 得 $x$ 从 $0$ 到 $y$；写成 $y\to1$ 是 $p_X$ 的限（$p_X(x)=\int_x^1 8xy\,\mathrm dy=4x(1-x^2)$）。两个方向正好相反。</li>
+    <li><b>条件密度忘写支撑集。</b>$\frac{2x}{y^2}$ 只在 $0&lt;x&lt;y$ 上成立，漏掉会导致后续积分限错误。</li>
+    <li><b>看到 $E(X|Y=y)$ 含 $y$ 就以为算错。</b>条件期望本来就是 $y$ 的函数，不含 $y$ 才是可疑的（那意味着条件独立）。</li>
+    <li><b>用 $E(X|Y=y)=E(X)$。</b>无条件 $E(X)=\int_0^1 4x(1-x^2)\cdot x\,\mathrm dx=\frac{8}{15}\approx0.533$；条件期望 $\frac{2y}{3}$ 随 $y$ 变，二者不同。</li>
+    <li><b>条件方差用 $\frac{y^2}{18}$ 之外的形式。</b>注意它是 $y$ 的函数，取值随 $y$ 变化；$y=1$ 时最大为 $\frac1{18}$。</li>
+  </ul>
+</div>
+
+<div class="idea">
+  <b>变式（连接重期望公式）</b>：用 $E(X)=E[E(X|Y)]$ 验证：
+  $$E\big[E(X|Y)\big]=\int_0^1 \frac{2y}{3}\cdot 4y^3\,\mathrm{d}y=\frac{8}{3}\int_0^1 y^4\mathrm{d}y=\frac{8}{3}\cdot\frac15=\frac{8}{15},$$
+  与直接算出的 $E(X)=\frac{8}{15}$ 完全一致 ✓。<br>
+  这就是<b>重期望公式</b>：把「求 $X$ 的平均」拆成「先按 $Y$ 分层求平均，再对 $Y$ 求平均」两步。M5 处理复合随机变量（如保险总赔付）时，这是最核心的工具。
+</div>
+
+<!-- ============ 附录 ============ -->
+<h2 class="sec" id="app">附录：M4 速查表<small>考前 10 分钟扫一遍</small></h2>
+
+<h4>一、联合分布 → 边际 → 独立</h4>
+<table>
+  <tr><th class="l">操作</th><th class="l">离散</th><th class="l">连续</th></tr>
+  <tr><td class="l">归一化</td><td class="l">全部概率和 $=1$</td><td class="l">$\iint p(x,y)\mathrm dx\mathrm dy=1$</td></tr>
+  <tr><td class="l">边际 $p_X$</td><td class="l">按行求和</td><td class="l">$\int p(x,y)\mathrm dy$（积分限看支撑）</td></tr>
+  <tr><td class="l">边际 $p_Y$</td><td class="l">按列求和</td><td class="l">$\int p(x,y)\mathrm dx$</td></tr>
+  <tr><td class="l">独立判据</td><td class="l">$p(x,y)=p_X(x)p_Y(y)$ 全成立</td><td class="l">同左，且支撑集须为矩形</td></tr>
+</table>
+<p class="tbl-note">⚠ 支撑集非矩形（三角形、楔形等）$\Rightarrow$ 一定不独立，可秒判。</p>
+
+<h4>二、函数的分布</h4>
+<table>
+  <tr><th class="l">类型</th><th class="l">方法</th><th class="l">关键</th></tr>
+  <tr><td class="l">$M=\max$</td><td class="l">$F_M(m)=[F(m)]^n$（iid）</td><td class="l">用 $\le$ 方向</td></tr>
+  <tr><td class="l">$L=\min$</td><td class="l">$F_L(l)=1-[1-F(l)]^n$</td><td class="l">用 $&gt;$ 方向</td></tr>
+  <tr><td class="l">变量代换</td><td class="l">$p_{U,V}=p_{X,Y}(x(u,v),y(u,v))|J|$</td><td class="l">必须重写支撑集</td></tr>
+  <tr><td class="l">和的分布</td><td class="l">卷积 $p_Z(z)=\int p(x,z-x)\mathrm dx$</td><td class="l">积分限由支撑定</td></tr>
+</table>
+
+<h4>三、矩</h4>
+<table>
+  <tr><th class="l">量</th><th class="l">公式</th></tr>
+  <tr><td class="l">协方差</td><td class="l">$\mathrm{Cov}(X,Y)=E(XY)-E(X)E(Y)$</td></tr>
+  <tr><td class="l">相关系数</td><td class="l">$\rho=\dfrac{\mathrm{Cov}(X,Y)}{\sigma_X\sigma_Y}$</td></tr>
+  <tr><td class="l">线性组合方差</td><td class="l">$\mathrm{Var}(aX+bY)=a^2\sigma_X^2+b^2\sigma_Y^2+2ab\,\mathrm{Cov}$</td></tr>
+  <tr><td class="l">协方差线性性</td><td class="l">$\mathrm{Cov}(aX+b,\ cY+d)=ac\,\mathrm{Cov}(X,Y)$</td></tr>
+  <tr><td class="l">二元正态和</td><td class="l">$X+Y\sim N(\mu_1+\mu_2,\ \sigma_1^2+\sigma_2^2+2\rho\sigma_1\sigma_2)$</td></tr>
+</table>
+
+<h4>四、条件分布</h4>
+<table>
+  <tr><th class="l">量</th><th class="l">离散</th><th class="l">连续</th></tr>
+  <tr><td class="l">条件分布</td><td class="l">$p(x|y)=\dfrac{p(x,y)}{p_Y(y)}$</td><td class="l">$p(x|y)=\dfrac{p(x,y)}{p_Y(y)}$</td></tr>
+  <tr><td class="l">条件期望</td><td class="l">$\sum_x x\,p(x|y)$</td><td class="l">$\int x\,p(x|y)\mathrm dx$</td></tr>
+  <tr><td class="l">条件方差</td><td class="l">$E(X^2|y)-[E(X|y)]^2$</td><td class="l">同左</td></tr>
+  <tr><td class="l">重期望</td><td class="l" colspan="2">$E(X)=E[E(X|Y)]$</td></tr>
+  <tr><td class="l">方差分解</td><td class="l" colspan="2">$\mathrm{Var}(X)=\mathrm{Var}(E(X|Y))+E(\mathrm{Var}(X|Y))$</td></tr>
+</table>
+
+<hr>
+
+<div class="card">
+  <b>一句话总纲</b>
+  <p style="margin-bottom:0">M4 全部题目都在问同一件事：<b>「已知 $(X,Y)$ 的完整信息，如何回答关于它们的问题」</b>。联合分布是唯一的源头，边际是「忽略一个变量」，条件是「固定一个变量」，函数分布是「换一组坐标看」，矩是「用几个数字概括」。四讲其实是同一个对象（联合分布）的四种投影方式。</p>
+</div>
+
+</div>
+</body>
+</html>
