@@ -24,7 +24,10 @@ app = Flask(__name__)
 # ---------------------------------------------------------------------------
 # 存储（内存 + 本地落盘，进程重启后进度不丢；生产请换 Redis / DB）
 # ---------------------------------------------------------------------------
-STORE_PATH = os.environ.get("GAME_STORE", "/tmp/time_rift_sessions.json")
+STORE_PATH = os.environ.get(
+    "GAME_STORE",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), ".game_sessions.json"),
+)
 SESSIONS: dict[str, dict] = {}
 
 
