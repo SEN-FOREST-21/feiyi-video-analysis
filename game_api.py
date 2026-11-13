@@ -81,7 +81,7 @@ def _generate_timestamp_puzzle() -> dict:
         ],
         "question": "哪一条日志的时间被挪走了？给出它的编号和正确时间（HHMM），格式如 C2135。",
         "answer": letter + _fmt(true_times[idx]),
-        "answer_hint": f"按间隔从 A 一路推下来，对比哪一条对不上；{letter} 的正确时间应是 {_fmt(true_times[idx])} 之外的那个链条位置——别急，自己算一遍。",
+        "answer_hint": "从 A 的时间开始，按每条规则给出的分钟数依次往后加，得到一条完整时间链；再看哪一条日志的现场时间偏离了链条。",
     }
 
 
