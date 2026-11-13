@@ -9,8 +9,8 @@
     关卡3 · 循环的栅栏   算出循环次数 → 栅栏密码栏数
     关卡4 · 时间锁       前三关明文拼成密钥 → 维吉尼亚解密
 
-闯关规则：每关 3 次作答机会，用尽则该关换题重置；答对进入下一关。
-每关可以免费看一次提示。
+闯关规则：逐章解锁，答对即进入下一章；作答次数不限，提示随时可看、不扣任何东西。
+最末一章的密钥由前三章明文拼成，所以每一章都得吃透。
 """
 
 import json
@@ -38,10 +38,9 @@ def _restore(raw: dict) -> dict:
     raw["puzzles"] = {int(k): v for k, v in raw.get("puzzles", {}).items()}
     raw["answers"] = {int(k): v for k, v in raw.get("answers", {}).items()}
     raw["hints"] = {int(k): v for k, v in raw.get("hints", {}).items()}
-    raw.setdefault("lives", 3)
     raw.setdefault("mistakes", 0)
-    raw.pop("score", None)
-    raw.pop("wrong_attempts", None)
+    for stale in ("score", "wrong_attempts", "lives"):
+        raw.pop(stale, None)
     return raw
 
 
@@ -304,7 +303,6 @@ LEVEL_NAMES = {
     4: "终极关 · 时间锁",
 }
 TOTAL_LEVELS = 4
-MAX_LIVES = 3
 
 
 def _new_session(player_name: str = "匿名特工") -> dict:
@@ -323,25 +321,8 @@ def _new_session(player_name: str = "匿名特工") -> dict:
         "hints": {},
         "final_puzzle": None,
         "solved": False,
-        "lives": MAX_LIVES,
         "mistakes": 0,
     }
-
-
-def _regenerate_level(s: dict, level: int) -> None:
-    """机会用尽时换一道新题。"""
-    if level == 1:
-        s["puzzles"][1] = _generate_caesar_puzzle()
-    elif level == 2:
-        s["puzzles"][2] = _generate_transposition_puzzle()
-    elif level == 3:
-        s["puzzles"][3] = _generate_railfence_puzzle()
-    else:
-        s["final_puzzle"] = _generate_final_puzzle([
-            s["puzzles"][1]["answer"],
-            s["puzzles"][2]["answer"],
-            s["puzzles"][3]["answer"],
-        ])
 
 
 def _normalize(s: str) -> str:
@@ -357,8 +338,6 @@ def _public_session(s: dict) -> dict:
         "solved": s["solved"],
         "total_levels": TOTAL_LEVELS,
         "level_names": LEVEL_NAMES,
-        "lives": s["lives"],
-        "max_lives": MAX_LIVES,
         "mistakes": s["mistakes"],
         "hints_used": sum(s["hints"].values()),
     }
@@ -407,7 +386,6 @@ def get_puzzle(sid: str, level: int):
         "level": level,
         "level_name": LEVEL_NAMES[level],
         "puzzle": safe,
-        "lives": s["lives"],
     })
 
 
@@ -420,14 +398,9 @@ def get_hint(sid: str):
     puzzle = s["final_puzzle"] if level == 4 else s["puzzles"].get(level)
     if not puzzle:
         return jsonify({"error": "该关不存在"}), 404
-    if s["hints"].get(level):
-        return jsonify({"hint": puzzle["answer_hint"], "lives": s["lives"],
-                        "note": "这一关的提示你已经看过了。"})
-
     s["hints"][level] = 1
     _save_sessions()
-    return jsonify({"hint": puzzle["answer_hint"], "lives": s["lives"],
-                    "note": "每关限一次提示，不消耗机会。"})
+    return jsonify({"hint": puzzle["answer_hint"], "note": "随时可以再问。"})
 
 
 @app.post("/api/game/<sid>/submit")
@@ -456,7 +429,6 @@ def submit_answer(sid: str):
                 "session": _public_session(s),
             })
         s["current_level"] += 1
-        s["lives"] = MAX_LIVES
         if s["current_level"] == 4:
             s["final_puzzle"] = _generate_final_puzzle([
                 s["puzzles"][1]["answer"],
@@ -471,19 +443,10 @@ def submit_answer(sid: str):
         })
 
     s["mistakes"] += 1
-    s["lives"] -= 1
-    if s["lives"] <= 0:
-        _regenerate_level(s, level)
-        s["lives"] = MAX_LIVES
-        s["hints"].pop(level, None)
-        message = "💥 三次机会用尽，时间线重组——这一关换了一道新题，重新来。"
-    else:
-        message = f"❌ 解错了，还剩 {s['lives']} 次机会。"
     _save_sessions()
     return jsonify({
         "ok": False,
-        "message": message,
-        "lives": s["lives"],
+        "message": "❌ 还不对，再想想。卡住了可以找我要提示。",
         "session": _public_session(s),
     })
 
