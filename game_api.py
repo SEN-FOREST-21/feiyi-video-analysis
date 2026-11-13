@@ -345,7 +345,7 @@ def _regenerate_level(s: dict, level: int) -> None:
 
 
 def _normalize(s: str) -> str:
-    return re.sub(r"[\s,，、:：\-—/|]", "", str(s)).upper()
+    return re.sub(r"[\s,，、。.:：;；!！?？\-—–_/|\\]", "", str(s)).upper()
 
 
 def _public_session(s: dict) -> dict:
