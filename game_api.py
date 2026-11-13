@@ -11,6 +11,8 @@
     关卡4 → 时间锁（综合前三关答案解锁）
 """
 
+import json
+import os
 import random
 import re
 import uuid
@@ -20,9 +22,38 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 # ---------------------------------------------------------------------------
-# 内存存储（demo 用；生产请换 Redis / DB）
+# 存储（内存 + 本地落盘，进程重启后进度不丢；生产请换 Redis / DB）
 # ---------------------------------------------------------------------------
+STORE_PATH = os.environ.get("GAME_STORE", "/tmp/time_rift_sessions.json")
 SESSIONS: dict[str, dict] = {}
+
+
+def _restore(raw: dict) -> dict:
+    """JSON 会把 int 键变成字符串，这里还原回来。"""
+    raw["puzzles"] = {int(k): v for k, v in raw.get("puzzles", {}).items()}
+    raw["answers"] = {int(k): v for k, v in raw.get("answers", {}).items()}
+    return raw
+
+
+def _load_sessions() -> None:
+    if not os.path.exists(STORE_PATH):
+        return
+    try:
+        with open(STORE_PATH, encoding="utf-8") as f:
+            SESSIONS.update({k: _restore(v) for k, v in json.load(f).items()})
+    except Exception:
+        pass
+
+
+def _save_sessions() -> None:
+    try:
+        with open(STORE_PATH, "w", encoding="utf-8") as f:
+            json.dump(SESSIONS, f, ensure_ascii=False)
+    except Exception:
+        pass
+
+
+_load_sessions()
 
 
 # ---------------------------------------------------------------------------
@@ -251,6 +282,7 @@ def create_game():
     player = (request.json or {}).get("player", "匿名特工")
     session = _new_session(player)
     SESSIONS[session["session_id"]] = session
+    _save_sessions()
     return jsonify(_public_session(session))
 
 
@@ -298,6 +330,7 @@ def submit_answer(sid: str):
     if _normalize(answer) == _normalize(puzzle["answer"]):
         if level == TOTAL_LEVELS:
             s["solved"] = True
+            _save_sessions()
             return jsonify({
                 "ok": True,
                 "message": "🎉 时间线修复完成！你是真正的时间特工！",
@@ -310,6 +343,7 @@ def submit_answer(sid: str):
                 s["puzzles"][2]["answer"],
                 s["puzzles"][3]["answer"],
             ])
+        _save_sessions()
         return jsonify({
             "ok": True,
             "message": f"✅ 第 {level} 关通过！已解锁第 {s['current_level']} 关。",
@@ -329,6 +363,7 @@ def restart_game(sid: str):
     if not s:
         return jsonify({"error": "会话不存在"}), 404
     SESSIONS[sid] = _new_session(s["player"])
+    _save_sessions()
     return jsonify(_public_session(SESSIONS[sid]))
 
 
