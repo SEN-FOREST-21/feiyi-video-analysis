@@ -7,10 +7,12 @@
     关卡1 · 位移的日志   算出日志被挪走的分钟数 → 凯撒位移
     关卡2 · 倒错的碎片   还原碎片先后 → 列换位重排文件块
     关卡3 · 循环的栅栏   算出循环次数 → 栅栏密码栏数
-    关卡4 · 时间锁       前三关明文拼成密钥 → 维吉尼亚解密
+    关卡4 · 第一重时间锁 前三章明文拼成密钥 → 维吉尼亚解密
+    关卡5 · 仿射的编号   模 26 求逆元 → 仿射解密
+    关卡6 · 一次性时间线 五章明文首字母铸成密钥流 → 一次性密码本
 
 闯关规则：逐章解锁，答对即进入下一章；作答次数不限，提示随时可看、不扣任何东西。
-最末一章的密钥由前三章明文拼成，所以每一章都得吃透。
+最末一章的密钥由前五章明文拼成，所以每一章都得吃透。
 """
 
 import json
@@ -115,6 +117,13 @@ def vigenere_encrypt(text: str, key: str) -> str:
         k = key[i % len(key)].upper()
         out.append(chr((ord(c) - 65 + ord(k) - 65) % 26 + 65))
     return "".join(out)
+
+
+def affine_encrypt(text: str, a: int, b: int) -> str:
+    return "".join(
+        chr(((a * (ord(c) - 65) + b) % 26) + 65) if c.isalpha() else c
+        for c in text.upper()
+    )
 
 
 def vigenere_decrypt(text: str, key: str) -> str:
@@ -272,24 +281,69 @@ def _generate_railfence_puzzle() -> dict:
 
 
 # ---------------------------------------------------------------------------
-# 关卡 4：时间锁（维吉尼亚）
+# 关卡 4：时间锁（维吉尼亚，密钥来自前三章明文）
 # ---------------------------------------------------------------------------
 PLAIN_4 = ["CIPHER", "UNLOCK", "REBOOT", "ESCAPE", "RETURN", "STATIC"]
 
 
-def _generate_final_puzzle(answers: list[str]) -> dict:
+def _generate_vigenere_puzzle(answers: list[str]) -> dict:
     key = answers[0][:2] + answers[1][:2] + answers[2][:2]
     plain = random.choice(PLAIN_4)
     cipher = vigenere_encrypt(plain, key)
     return {
         "type": "vigenere",
-        "story": "三道封印全部解开，时间锁浮现。它用你解出的三段明文当作钥匙。",
-        "key_rule": "密钥 = 第一关明文前 2 个字母 + 第二关明文前 2 个字母 + 第三关明文前 2 个字母（共 6 位）。",
+        "story": "三道封印解开，第一重时间锁浮现。它用你解出的三段明文当作钥匙。",
+        "key_rule": "密钥 = 第一章明文前 2 字母 + 第二章明文前 2 字母 + 第三章明文前 2 字母（共 6 位）。",
         "cipher": cipher,
         "cipher_note": "维吉尼亚：明文字母序号 = 密文字母序号 − 密钥字母序号（A=0，B=1 … Z=25，结果按 26 取模）。",
-        "question": "用你自己拼出的密钥解开最后一道锁，写出 6 个字母的明文。",
+        "question": "用你自己拼出的密钥解开第一重锁，写出 6 字母明文。",
         "answer": plain,
-        "answer_hint": "密钥由你前三关的答案拼成。逐位相减，负数就加 26；0 对应 A，25 对应 Z。",
+        "answer_hint": "密钥由你前三章的答案拼成。逐位相减，负数就加 26；0 对应 A，25 对应 Z。",
+    }
+
+
+# ---------------------------------------------------------------------------
+# 关卡 5：仿射的编号（仿射密码）
+# ---------------------------------------------------------------------------
+PLAIN_5 = ["MIDNIGHT", "BLACKOUT", "ECLIPSES", "TIMEWARP"]
+AFFINE_A, AFFINE_B = 7, 11
+
+
+def _generate_affine_puzzle() -> dict:
+    plain = random.choice(PLAIN_5)
+    cipher = affine_encrypt(plain, AFFINE_A, AFFINE_B)
+    return {
+        "type": "affine",
+        "story": "锁后是一条编号走廊，每个字母都被重新编了号——编号被拧了一下，拧的角度藏在那道公式里。",
+        "formula": f"y = ({AFFINE_A}x + {AFFINE_B}) mod 26",
+        "params": {"a": AFFINE_A, "b": AFFINE_B},
+        "cipher": cipher,
+        "cipher_note": "x 是明文字母的编号（A=0 … Z=25），y 是密文字母的编号。要解密就得反着来。",
+        "question": "解开这条仿射密码，写出 8 字母明文。",
+        "answer": plain,
+        "answer_hint": f"先求 {AFFINE_A} 在模 26 下的逆元（乘起来 ≡ 1 mod 26），得到 {15}；再用 x = {15}(y − {AFFINE_B}) mod 26 逐位还原。",
+    }
+
+
+# ---------------------------------------------------------------------------
+# 关卡 6：一次性时间线（一次性密码本）
+# ---------------------------------------------------------------------------
+PLAIN_6 = ["AFTERIMAGE", "TIMESTREAM", "PARALLAXES"]
+
+
+def _generate_otp_puzzle(answers: list[str]) -> dict:
+    key = "".join(a[0] for a in answers)
+    plain = random.choice(PLAIN_6)
+    cipher = vigenere_encrypt(plain, key)
+    return {
+        "type": "otp",
+        "story": "最后一道门没有锁孔。它只认一把一次性密钥——钥匙就是你一路解出的五段明文的第一个字母。",
+        "key_rule": "密钥流 = 前五章明文的第一个字母，依次拼接成 5 位，循环使用。",
+        "cipher": cipher,
+        "cipher_note": "一次性密码本：明文字母 = 密文字母 − 密钥字母（逐位，mod 26）。密钥只用一次，解密后即焚。",
+        "question": "用你自己铸出的密钥解开最后一道门，写出 10 字母明文。",
+        "answer": plain,
+        "answer_hint": "把前五章答案的首字母按顺序连起来当密钥流，逐位相减，负数加 26。",
     }
 
 
@@ -300,9 +354,12 @@ LEVEL_NAMES = {
     1: "第一关 · 位移的日志",
     2: "第二关 · 倒错的碎片",
     3: "第三关 · 循环的栅栏",
-    4: "终极关 · 时间锁",
+    4: "第四关 · 第一重时间锁",
+    5: "第五关 · 仿射的编号",
+    6: "终极关 · 一次性时间线",
 }
-TOTAL_LEVELS = 4
+TOTAL_LEVELS = 6
+FINAL_LEVEL = 6
 
 
 def _new_session(player_name: str = "匿名特工") -> dict:
@@ -316,6 +373,7 @@ def _new_session(player_name: str = "匿名特工") -> dict:
             1: _generate_caesar_puzzle(),
             2: _generate_transposition_puzzle(),
             3: _generate_railfence_puzzle(),
+            5: _generate_affine_puzzle(),
         },
         "answers": {},
         "hints": {},
@@ -378,7 +436,7 @@ def get_puzzle(sid: str, level: int):
     if level > s["current_level"]:
         return jsonify({"error": f"请先通过第 {level - 1} 关"}), 403
 
-    puzzle = s["final_puzzle"] if level == 4 else s["puzzles"][level]
+    puzzle = s["final_puzzle"] if level == FINAL_LEVEL else s["puzzles"].get(level)
     if puzzle is None:
         return jsonify({"error": "该关尚未生成"}), 409
     safe = {k: v for k, v in puzzle.items() if k != "answer"}
@@ -395,7 +453,7 @@ def get_hint(sid: str):
     if not s:
         return jsonify({"error": "会话不存在"}), 404
     level = int((request.json or {}).get("level", s["current_level"]))
-    puzzle = s["final_puzzle"] if level == 4 else s["puzzles"].get(level)
+    puzzle = s["final_puzzle"] if level == FINAL_LEVEL else s["puzzles"].get(level)
     if not puzzle:
         return jsonify({"error": "该关不存在"}), 404
     s["hints"][level] = 1
@@ -416,25 +474,31 @@ def submit_answer(sid: str):
     if level != s["current_level"]:
         return jsonify({"error": f"当前应提交第 {s['current_level']} 关答案"}), 400
 
-    puzzle = s["final_puzzle"] if level == 4 else s["puzzles"][level]
+    puzzle = s["final_puzzle"] if level == FINAL_LEVEL else s["puzzles"].get(level)
+    if puzzle is None:
+        return jsonify({"error": "该关尚未生成"}), 409
     s["answers"][level] = answer
 
     if _normalize(answer) == _normalize(puzzle["answer"]):
-        if level == TOTAL_LEVELS:
+        if level == FINAL_LEVEL:
             s["solved"] = True
             _save_sessions()
             return jsonify({
                 "ok": True,
-                "message": "🎉 四道封印全部解开，时间线复原！",
+                "message": "🎉 六道封印全部解开，时间线复原！",
                 "session": _public_session(s),
             })
         s["current_level"] += 1
         if s["current_level"] == 4:
-            s["final_puzzle"] = _generate_final_puzzle([
+            s["puzzles"][4] = _generate_vigenere_puzzle([
                 s["puzzles"][1]["answer"],
                 s["puzzles"][2]["answer"],
                 s["puzzles"][3]["answer"],
             ])
+        if s["current_level"] == FINAL_LEVEL:
+            s["final_puzzle"] = _generate_otp_puzzle(
+                [s["puzzles"][i]["answer"] for i in (1, 2, 3, 4, 5)]
+            )
         _save_sessions()
         return jsonify({
             "ok": True,
