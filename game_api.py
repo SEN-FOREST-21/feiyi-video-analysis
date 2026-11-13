@@ -9,7 +9,8 @@
     关卡3 · 循环的栅栏   算出循环次数 → 栅栏密码栏数
     关卡4 · 时间锁       前三关明文拼成密钥 → 维吉尼亚解密
 
-计分：满分 100，答错 -5，使用提示 -10，最低 0 分。
+闯关规则：每关 3 次作答机会，用尽则该关换题重置；答对进入下一关。
+每关可以免费看一次提示。
 """
 
 import json
@@ -37,6 +38,10 @@ def _restore(raw: dict) -> dict:
     raw["puzzles"] = {int(k): v for k, v in raw.get("puzzles", {}).items()}
     raw["answers"] = {int(k): v for k, v in raw.get("answers", {}).items()}
     raw["hints"] = {int(k): v for k, v in raw.get("hints", {}).items()}
+    raw.setdefault("lives", 3)
+    raw.setdefault("mistakes", 0)
+    raw.pop("score", None)
+    raw.pop("wrong_attempts", None)
     return raw
 
 
@@ -299,9 +304,7 @@ LEVEL_NAMES = {
     4: "终极关 · 时间锁",
 }
 TOTAL_LEVELS = 4
-BASE_SCORE = 100
-PENALTY_WRONG = 5
-PENALTY_HINT = 10
+MAX_LIVES = 3
 
 
 def _new_session(player_name: str = "匿名特工") -> dict:
@@ -320,9 +323,25 @@ def _new_session(player_name: str = "匿名特工") -> dict:
         "hints": {},
         "final_puzzle": None,
         "solved": False,
-        "score": BASE_SCORE,
-        "wrong_attempts": 0,
+        "lives": MAX_LIVES,
+        "mistakes": 0,
     }
+
+
+def _regenerate_level(s: dict, level: int) -> None:
+    """机会用尽时换一道新题。"""
+    if level == 1:
+        s["puzzles"][1] = _generate_caesar_puzzle()
+    elif level == 2:
+        s["puzzles"][2] = _generate_transposition_puzzle()
+    elif level == 3:
+        s["puzzles"][3] = _generate_railfence_puzzle()
+    else:
+        s["final_puzzle"] = _generate_final_puzzle([
+            s["puzzles"][1]["answer"],
+            s["puzzles"][2]["answer"],
+            s["puzzles"][3]["answer"],
+        ])
 
 
 def _normalize(s: str) -> str:
@@ -338,8 +357,9 @@ def _public_session(s: dict) -> dict:
         "solved": s["solved"],
         "total_levels": TOTAL_LEVELS,
         "level_names": LEVEL_NAMES,
-        "score": s["score"],
-        "wrong_attempts": s["wrong_attempts"],
+        "lives": s["lives"],
+        "max_lives": MAX_LIVES,
+        "mistakes": s["mistakes"],
         "hints_used": sum(s["hints"].values()),
     }
 
@@ -387,7 +407,7 @@ def get_puzzle(sid: str, level: int):
         "level": level,
         "level_name": LEVEL_NAMES[level],
         "puzzle": safe,
-        "score": s["score"],
+        "lives": s["lives"],
     })
 
 
@@ -401,14 +421,13 @@ def get_hint(sid: str):
     if not puzzle:
         return jsonify({"error": "该关不存在"}), 404
     if s["hints"].get(level):
-        return jsonify({"hint": puzzle["answer_hint"], "score": s["score"],
-                        "note": "这条提示已经买过了，不重复扣分。"})
+        return jsonify({"hint": puzzle["answer_hint"], "lives": s["lives"],
+                        "note": "这一关的提示你已经看过了。"})
 
     s["hints"][level] = 1
-    s["score"] = max(0, s["score"] - PENALTY_HINT)
     _save_sessions()
-    return jsonify({"hint": puzzle["answer_hint"], "score": s["score"],
-                    "note": f"已扣 {PENALTY_HINT} 分。"})
+    return jsonify({"hint": puzzle["answer_hint"], "lives": s["lives"],
+                    "note": "每关限一次提示，不消耗机会。"})
 
 
 @app.post("/api/game/<sid>/submit")
@@ -434,10 +453,10 @@ def submit_answer(sid: str):
             return jsonify({
                 "ok": True,
                 "message": "🎉 四道封印全部解开，时间线复原！",
-                "score": s["score"],
                 "session": _public_session(s),
             })
         s["current_level"] += 1
+        s["lives"] = MAX_LIVES
         if s["current_level"] == 4:
             s["final_puzzle"] = _generate_final_puzzle([
                 s["puzzles"][1]["answer"],
@@ -448,17 +467,24 @@ def submit_answer(sid: str):
         return jsonify({
             "ok": True,
             "message": f"✅ 第 {level} 关通过！已解锁第 {s['current_level']} 关。",
-            "score": s["score"],
             "session": _public_session(s),
         })
 
-    s["wrong_attempts"] += 1
-    s["score"] = max(0, s["score"] - PENALTY_WRONG)
+    s["mistakes"] += 1
+    s["lives"] -= 1
+    if s["lives"] <= 0:
+        _regenerate_level(s, level)
+        s["lives"] = MAX_LIVES
+        s["hints"].pop(level, None)
+        message = "💥 三次机会用尽，时间线重组——这一关换了一道新题，重新来。"
+    else:
+        message = f"❌ 解错了，还剩 {s['lives']} 次机会。"
     _save_sessions()
     return jsonify({
         "ok": False,
-        "message": f"❌ 解错了，封印反噬，扣 {PENALTY_WRONG} 分。",
-        "score": s["score"],
+        "message": message,
+        "lives": s["lives"],
+        "session": _public_session(s),
     })
 
 
@@ -477,14 +503,14 @@ def leaderboard(sid: str):
     board = [
         {
             "player": s["player"],
-            "score": s["score"],
             "current_level": s["current_level"],
             "solved": s["solved"],
+            "mistakes": s["mistakes"],
             "created_at": s["created_at"],
         }
         for s in SESSIONS.values()
     ]
-    board.sort(key=lambda x: (-x["score"], -x["current_level"]))
+    board.sort(key=lambda x: (-x["current_level"], not x["solved"], x["mistakes"]))
     return jsonify({"board": board[:50]})
 
 
