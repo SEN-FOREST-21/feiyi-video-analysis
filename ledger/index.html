@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>小账本</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- 顶部汇总 -->
+  <header class="header">
+    <div class="month-label" id="monthLabel">2026年11月</div>
+    <div class="summary">
+      <div class="summary-item">
+        <span class="summary-label">收入</span>
+        <span class="summary-value income" id="monthIncome">0.00</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-item">
+        <span class="summary-label">支出</span>
+        <span class="summary-value expense" id="monthExpense">0.00</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-item">
+        <span class="summary-label">结余</span>
+        <span class="summary-value" id="monthBalance">0.00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 快捷筛选 -->
+  <nav class="tabs">
+    <button class="tab active" data-view="list">账单</button>
+    <button class="tab" data-view="stats">分类</button>
+  </nav>
+
+  <!-- 账单列表视图 -->
+  <main id="viewList" class="view active">
+    <div id="billList" class="bill-list"></div>
+    <div id="emptyTip" class="empty-tip hidden">还没有记账哦，点下面的 + 记一笔吧</div>
+  </main>
+
+  <!-- 分类统计视图 -->
+  <main id="viewStats" class="view">
+    <div class="stats-switch">
+      <button class="switch-btn active" data-type="expense">支出</button>
+      <button class="switch-btn" data-type="income">收入</button>
+    </div>
+    <div id="statsList" class="stats-list"></div>
+    <div id="statsEmpty" class="empty-tip hidden">本月还没有记录</div>
+  </main>
+
+  <!-- 底部记账按钮 -->
+  <button class="fab" id="fabBtn">+</button>
+
+</div>
+
+<!-- 记账弹窗 -->
+<div class="modal-overlay hidden" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">记一笔</span>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+
+    <!-- 类型切换 -->
+    <div class="type-switch">
+      <button class="type-btn expense-type" data-type="expense">支出</button>
+      <button class="type-btn income-type" data-type="income">收入</button>
+    </div>
+
+    <!-- 金额 -->
+    <div class="amount-input-wrap">
+      <span class="currency">¥</span>
+      <input type="number" id="amountInput" class="amount-input" placeholder="0.00" step="0.01" min="0">
+    </div>
+
+    <!-- 分类 -->
+    <div class="section-label">选择分类</div>
+    <div id="categoryGrid" class="category-grid"></div>
+
+    <!-- 备注 -->
+    <input type="text" id="noteInput" class="note-input" placeholder="备注（选填）" maxlength="20">
+
+    <!-- 日期 -->
+    <div class="date-row">
+      <span class="section-label">日期</span>
+      <input type="date" id="dateInput" class="date-input">
+    </div>
+
+    <button class="save-btn" id="saveBtn">保存</button>
+  </div>
+</div>
+
+<!-- 编辑弹窗 -->
+<div class="modal-overlay hidden" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">编辑记录</span>
+      <button class="modal-close" id="editClose">✕</button>
+    </div>
+    <input type="hidden" id="editId">
+    <div class="type-switch">
+      <button class="type-btn expense-type" data-type="expense">支出</button>
+      <button class="type-btn income-type" data-type="income">收入</button>
+    </div>
+    <div class="amount-input-wrap">
+      <span class="currency">¥</span>
+      <input type="number" id="editAmount" class="amount-input" step="0.01" min="0">
+    </div>
+    <div class="section-label">选择分类</div>
+    <div id="editCategoryGrid" class="category-grid"></div>
+    <input type="text" id="editNote" class="note-input" placeholder="备注（选填）" maxlength="20">
+    <div class="date-row">
+      <span class="section-label">日期</span>
+      <input type="date" id="editDate" class="date-input">
+    </div>
+    <div class="btn-row">
+      <button class="delete-btn" id="deleteBtn">删除</button>
+      <button class="save-btn" id="updateBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
