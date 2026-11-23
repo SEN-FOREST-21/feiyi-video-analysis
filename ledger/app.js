@@ -30,16 +30,35 @@ const CATEGORIES = {
 // 存储 key
 const STORAGE_KEY = 'ledger_bills_v1';
 
-/* ============ 数据层 ============ */
+/* ============ 数据层（localStorage 持久化 + 内存兜底） ============ */
 const Store = {
+  _mem: [],
+  _persistOk: true,
   getAll() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch { return []; }
+      const data = raw ? JSON.parse(raw) : [];
+      this._mem = Array.isArray(data) ? data : [];
+      return this._mem;
+    } catch {
+      if (this._persistOk) {
+        this._persistOk = false;
+        showToast('本地存储不可用，数据仅本次打开有效');
+      }
+      return this._mem;
+    }
   },
   save(bills) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(bills));
+    this._mem = bills;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(bills));
+      this._persistOk = true;
+    } catch {
+      if (this._persistOk) {
+        this._persistOk = false;
+        showToast('本地存储不可用，数据仅本次打开有效');
+      }
+    }
   },
   add(bill) {
     const bills = this.getAll();
@@ -105,7 +124,13 @@ function renderSummary() {
     if (b.type === 'income') income += b.amount;
     else expense += b.amount;
   });
-  document.getElementById('monthLabel').textContent = `${state.curYear}年${state.curMonth}月`;
+  const label = document.getElementById('monthLabel');
+  label.textContent = `${state.curYear}年${state.curMonth}月`;
+  const nowD = new Date();
+  label.classList.toggle(
+    'is-current',
+    state.curYear === nowD.getFullYear() && state.curMonth === nowD.getMonth() + 1
+  );
   document.getElementById('monthIncome').textContent = fmtAmount(income);
   document.getElementById('monthExpense').textContent = fmtAmount(expense);
   document.getElementById('monthBalance').textContent = fmtAmount(income - expense);
@@ -183,7 +208,21 @@ function renderStats() {
   );
   const listEl = document.getElementById('statsList');
   const emptyEl = document.getElementById('statsEmpty');
+  const summaryEl = document.getElementById('statsSummary');
+  const typeName = state.statsType === 'expense' ? '支出' : '收入';
   listEl.innerHTML = '';
+
+  // 按分类汇总（金额 + 笔数）
+  const agg = {};
+  bills.forEach(b => {
+    if (!agg[b.category]) agg[b.category] = { amount: 0, count: 0 };
+    agg[b.category].amount += b.amount;
+    agg[b.category].count += 1;
+  });
+  const total = Object.values(agg).reduce((s, v) => s + v.amount, 0);
+
+  // 顶部合计
+  summaryEl.innerHTML = `${state.curYear}年${state.curMonth}月${typeName}合计 <b>¥${fmtAmount(total)}</b> · 共 ${bills.length} 笔`;
 
   if (bills.length === 0) {
     emptyEl.classList.remove('hidden');
@@ -191,24 +230,18 @@ function renderStats() {
   }
   emptyEl.classList.add('hidden');
 
-  // 按分类汇总
-  const agg = {};
-  bills.forEach(b => {
-    agg[b.category] = (agg[b.category] || 0) + b.amount;
-  });
-  const total = Object.values(agg).reduce((s, v) => s + v, 0);
-  const sorted = Object.entries(agg).sort((a, b) => b[1] - a[1]);
+  const sorted = Object.entries(agg).sort((a, b) => b[1].amount - a[1].amount);
 
-  sorted.forEach(([key, amount]) => {
+  sorted.forEach(([key, val]) => {
     const cat = getCat(state.statsType, key);
-    const pct = total > 0 ? (amount / total * 100).toFixed(1) : 0;
+    const pct = total > 0 ? (val.amount / total * 100).toFixed(1) : 0;
     const card = document.createElement('div');
     card.className = 'stat-card';
     card.innerHTML = `
       <div class="stat-head">
         <div class="stat-icon">${cat.emoji}</div>
-        <div class="stat-name">${cat.name}</div>
-        <div class="stat-amount ${state.statsType}">${state.statsType === 'income' ? '+' : '-'}${fmtAmount(amount)}</div>
+        <div class="stat-name">${cat.name}<span class="stat-count">${val.count}笔</span></div>
+        <div class="stat-amount ${state.statsType}">${state.statsType === 'income' ? '+' : '-'}${fmtAmount(val.amount)}</div>
         <span class="stat-percent">${pct}%</span>
       </div>
       <div class="stat-bar">
@@ -289,8 +322,18 @@ function saveBill() {
     time: `${pad(now2.getHours())}:${pad(now2.getMinutes())}`,
   };
   Store.add(bill);
+  syncViewToDate(date);
   closeAddModal();
   refresh();
+  showToast('已保存');
+}
+
+function syncViewToDate(dateStr) {
+  const [y, m] = dateStr.split('-').map(Number);
+  if (y !== state.curYear || m !== state.curMonth) {
+    state.curYear = y;
+    state.curMonth = m;
+  }
 }
 
 /* ============ 弹窗：编辑 ============ */
@@ -325,8 +368,10 @@ function updateBill() {
     date: document.getElementById('editDate').value,
   };
   Store.update(id, patch);
+  syncViewToDate(patch.date);
   closeEditModal();
   refresh();
+  showToast('已更新');
 }
 
 function deleteBill() {
@@ -338,6 +383,32 @@ function deleteBill() {
 }
 
 /* ============ 辅助 ============ */
+let toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add('hidden'), 1800);
+}
+
+function shiftMonth(delta) {
+  let m = state.curMonth + delta;
+  let y = state.curYear;
+  while (m < 1) { m += 12; y--; }
+  while (m > 12) { m -= 12; y++; }
+  state.curYear = y;
+  state.curMonth = m;
+  refresh();
+}
+
+function backToCurrentMonth() {
+  const d = new Date();
+  state.curYear = d.getFullYear();
+  state.curMonth = d.getMonth() + 1;
+  refresh();
+}
+
 function shake(el) {
   el.style.transition = 'transform 0.1s';
   el.style.transform = 'translateX(-6px)';
@@ -355,6 +426,11 @@ function refresh() {
 document.addEventListener('DOMContentLoaded', () => {
   // FAB
   document.getElementById('fabBtn').addEventListener('click', openAddModal);
+
+  // 月份切换
+  document.getElementById('prevMonth').addEventListener('click', () => shiftMonth(-1));
+  document.getElementById('nextMonth').addEventListener('click', () => shiftMonth(1));
+  document.getElementById('monthLabel').addEventListener('click', backToCurrentMonth);
 
   // 关闭弹窗
   document.getElementById('modalClose').addEventListener('click', closeAddModal);

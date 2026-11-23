@@ -11,7 +11,11 @@
 
   <!-- 顶部汇总 -->
   <header class="header">
-    <div class="month-label" id="monthLabel">2026年11月</div>
+    <div class="month-bar">
+      <button class="month-nav" id="prevMonth" aria-label="上个月">‹</button>
+      <button class="month-label" id="monthLabel" title="点击回到本月">2026年11月</button>
+      <button class="month-nav" id="nextMonth" aria-label="下个月">›</button>
+    </div>
     <div class="summary">
       <div class="summary-item">
         <span class="summary-label">收入</span>
@@ -39,7 +43,7 @@
   <!-- 账单列表视图 -->
   <main id="viewList" class="view active">
     <div id="billList" class="bill-list"></div>
-    <div id="emptyTip" class="empty-tip hidden">还没有记账哦，点下面的 + 记一笔吧</div>
+    <div id="emptyTip" class="empty-tip hidden">该月还没有记录，点右下角 + 记一笔吧</div>
   </main>
 
   <!-- 分类统计视图 -->
@@ -48,8 +52,9 @@
       <button class="switch-btn active" data-type="expense">支出</button>
       <button class="switch-btn" data-type="income">收入</button>
     </div>
+    <div class="stats-summary" id="statsSummary"></div>
     <div id="statsList" class="stats-list"></div>
-    <div id="statsEmpty" class="empty-tip hidden">本月还没有记录</div>
+    <div id="statsEmpty" class="empty-tip hidden">该月还没有记录</div>
   </main>
 
   <!-- 底部记账按钮 -->
@@ -123,6 +128,8 @@
     </div>
   </div>
 </div>
+
+<div class="toast hidden" id="toast"></div>
 
 <script src="app.js"></script>
 </body>
