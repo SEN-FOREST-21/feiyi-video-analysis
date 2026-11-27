@@ -119,6 +119,13 @@ def vigenere_encrypt(text: str, key: str) -> str:
     return "".join(out)
 
 
+def mod_inverse(a: int, m: int = 26) -> int:
+    for k in range(1, m):
+        if (a * k) % m == 1:
+            return k
+    raise ValueError(f"{a} 在模 {m} 下没有逆元")
+
+
 def affine_encrypt(text: str, a: int, b: int) -> str:
     return "".join(
         chr(((a * (ord(c) - 65) + b) % 26) + 65) if c.isalpha() else c
@@ -161,7 +168,7 @@ def _generate_caesar_puzzle() -> dict:
         true_times.append(cursor % (24 * 60))
 
     idx = random.choice([1, 2, 3])
-    gap_after = true_times[idx + 1] - true_times[idx]
+    gap_after = LOG_CHAIN[idx + 1][2]
     delta = gap_after + random.randint(1, 10)
     if delta > 24:
         delta = 24
@@ -206,7 +213,10 @@ FRAGMENTS = [
     "时间锚点被启动",
     "裂缝彻底闭合",
 ]
-PLAIN_2 = ["RETROGRADE", "CHRONOLOGY", "TIMEPIECES"]
+PLAIN_2 = [
+    "RETROGRADE", "CHRONOLOGY", "TIMEPIECES",
+    "PARALLAXES", "AFTERIMAGE", "BACKTRACKS", "REWINDINGS",
+]
 
 
 def _generate_transposition_puzzle() -> dict:
@@ -253,7 +263,7 @@ def _generate_transposition_puzzle() -> dict:
 # ---------------------------------------------------------------------------
 # 关卡 3：循环的栅栏（栅栏密码）
 # ---------------------------------------------------------------------------
-PLAIN_3 = ["GROUNDHOGDAY", "SAMEOLDSONG1", "DEJAVUALLDAY"]
+PLAIN_3 = ["GROUNDHOGDAY", "DEJAVUALLDAY", "CLOCKWORKDAY", "LOOPINGHOURS"]
 
 
 def _generate_railfence_puzzle() -> dict:
@@ -261,7 +271,7 @@ def _generate_railfence_puzzle() -> dict:
     start_no = random.randint(1, 40)
     now_no = start_no + loops - 1
 
-    plain = "GROUNDHOGDAY"
+    plain = random.choice(PLAIN_3)
     cipher = rail_encrypt(plain, loops)
 
     return {
@@ -283,7 +293,10 @@ def _generate_railfence_puzzle() -> dict:
 # ---------------------------------------------------------------------------
 # 关卡 4：时间锁（维吉尼亚，密钥来自前三章明文）
 # ---------------------------------------------------------------------------
-PLAIN_4 = ["CIPHER", "UNLOCK", "REBOOT", "ESCAPE", "RETURN", "STATIC"]
+PLAIN_4 = [
+    "CIPHER", "UNLOCK", "REBOOT", "ESCAPE",
+    "RETURN", "STATIC", "DECODE", "VORTEX", "REWIND",
+]
 
 
 def _generate_vigenere_puzzle(answers: list[str]) -> dict:
@@ -305,30 +318,33 @@ def _generate_vigenere_puzzle(answers: list[str]) -> dict:
 # ---------------------------------------------------------------------------
 # 关卡 5：仿射的编号（仿射密码）
 # ---------------------------------------------------------------------------
-PLAIN_5 = ["MIDNIGHT", "BLACKOUT", "ECLIPSES", "TIMEWARP"]
-AFFINE_A, AFFINE_B = 7, 11
+PLAIN_5 = ["MIDNIGHT", "BLACKOUT", "ECLIPSES", "TIMEWARP", "HOURGLAS"]
+AFFINE_A_CHOICES = [3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]
 
 
 def _generate_affine_puzzle() -> dict:
     plain = random.choice(PLAIN_5)
-    cipher = affine_encrypt(plain, AFFINE_A, AFFINE_B)
+    a = random.choice(AFFINE_A_CHOICES)
+    b = random.randint(1, 25)
+    inv = mod_inverse(a)
+    cipher = affine_encrypt(plain, a, b)
     return {
         "type": "affine",
         "story": "锁后是一条编号走廊，每个字母都被重新编了号——编号被拧了一下，拧的角度藏在那道公式里。",
-        "formula": f"y = ({AFFINE_A}x + {AFFINE_B}) mod 26",
-        "params": {"a": AFFINE_A, "b": AFFINE_B},
+        "formula": f"y = ({a}x + {b}) mod 26",
+        "params": {"a": a, "b": b},
         "cipher": cipher,
         "cipher_note": "x 是明文字母的编号（A=0 … Z=25），y 是密文字母的编号。要解密就得反着来。",
         "question": "解开这条仿射密码，写出 8 字母明文。",
         "answer": plain,
-        "answer_hint": f"先求 {AFFINE_A} 在模 26 下的逆元（乘起来 ≡ 1 mod 26），得到 {15}；再用 x = {15}(y − {AFFINE_B}) mod 26 逐位还原。",
+        "answer_hint": f"先求 {a} 在模 26 下的逆元（乘起来 ≡ 1 mod 26），得到 {inv}；再用 x = {inv}(y − {b}) mod 26 逐位还原。",
     }
 
 
 # ---------------------------------------------------------------------------
 # 关卡 6：一次性时间线（一次性密码本）
 # ---------------------------------------------------------------------------
-PLAIN_6 = ["AFTERIMAGE", "TIMESTREAM", "PARALLAXES"]
+PLAIN_6 = ["TIMESTREAM", "PALIMPSEST", "RECURRENCE", "CROSSROADS"]
 
 
 def _generate_otp_puzzle(answers: list[str]) -> dict:
@@ -364,10 +380,12 @@ FINAL_LEVEL = 6
 
 def _new_session(player_name: str = "匿名特工") -> dict:
     pid = str(uuid.uuid4())[:8]
+    now = datetime.utcnow().isoformat() + "Z"
     return {
         "session_id": pid,
         "player": player_name,
-        "created_at": datetime.utcnow().isoformat() + "Z",
+        "created_at": now,
+        "started_at": now,
         "current_level": 1,
         "puzzles": {
             1: _generate_caesar_puzzle(),
@@ -385,6 +403,29 @@ def _new_session(player_name: str = "匿名特工") -> dict:
 
 def _normalize(s: str) -> str:
     return re.sub(r"[\s,，、。.:：;；!！?？\-—–_/|\\]", "", str(s)).upper()
+
+
+def _ending_report(s: dict) -> dict:
+    started = datetime.fromisoformat(s.get("started_at", s["created_at"]).rstrip("Z"))
+    elapsed = max(1, int((datetime.utcnow() - started).total_seconds() // 60))
+    mistakes, hints = s["mistakes"], sum(s["hints"].values())
+    if mistakes == 0 and hints == 0:
+        title = "时间线守护者"
+        note = "零失误、零提示，裂缝在你手里连一次抖动都没有。"
+    elif mistakes + hints <= 2:
+        title = "精确的观测者"
+        note = "几乎没走弯路，时间的毛边被你一根根抚平。"
+    else:
+        title = "归来的旅人"
+        note = "你走错过，也求助过，但最后一步都没落下。"
+    return {
+        "title": title,
+        "note": note,
+        "elapsed_minutes": elapsed,
+        "mistakes": mistakes,
+        "hints_used": hints,
+        "answers": {LEVEL_NAMES[k]: v for k, v in sorted(s["answers"].items(), key=lambda kv: int(kv[0]))},
+    }
 
 
 def _public_session(s: dict) -> dict:
@@ -487,6 +528,7 @@ def submit_answer(sid: str):
                 "ok": True,
                 "message": "🎉 六道封印全部解开，时间线复原！",
                 "session": _public_session(s),
+                "report": _ending_report(s),
             })
         s["current_level"] += 1
         if s["current_level"] == 4:
